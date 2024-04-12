@@ -1,0 +1,88 @@
+﻿@page
+@using ItTakesAVillage.Models
+@model ItTakesAVillage.Pages.DinnerInvitationModel
+@{
+}
+
+@if (Model.CurrentUser != null)
+{
+    <div class="d-flex align-items-center flex-column">
+        <img class="mx-auto eventImg" alt="cutleries with blue background" src="img/dinner.png" />
+        <h2 class="abrilFont text-center mt-2 mb-5">Matlag</h2>
+    </div>
+    @if (Model.GroupsOfCurrentUser != null && Model.GroupsOfCurrentUser.Any())
+    {
+        await Html.RenderPartialAsync("_MemberPartial", Model.GroupsOfCurrentUser);
+
+        <div class="blueBgColor py-4">
+            <div class="container w-75">
+                <h4 class="abrilFont mt-4 mb-3">Skapa ny matlagsinbjudan</h4>
+                <div class="w-50">
+                    <form method="post">
+                        <label class="form-label fw-bold mt-2">Vilken grupp?*</label>
+                        <select class="form-control w-25 bg-transparent" asp-for="NewInvitation.GroupId" asp-items="ViewBag.GroupId">
+                            <option disabled selected>Välj grupp</option>
+                        </select>
+                        <label class="form-label fw-bold mt-2">Vilket datum och tid?*</label>
+                        <input required class="form-control bg-transparent" asp-for="NewInvitation.DateTime" value="@DateTime.Now.ToString("yyyy-MM-dd HH:mm", new System.Globalization.CultureInfo("sv-SE"))" />
+                        <label class="form-label fw-bold mt-2">Vad ska du bjuda på?</label>
+                        <input class="form-control bg-transparent" asp-for="NewInvitation.Course" />
+                        <label class="form-label fw-bold mt-2">Var ska ni vara?</label>
+                        <input class="form-control bg-transparent" asp-for="NewInvitation.Location" />
+                        <label class="form-label fw-bold mt-2">Övrig information</label>
+                        <textarea class="form-control bg-transparent" asp-for="NewInvitation.Message"></textarea>
+                        <input type="submit" class="btn pinkBgColor fw-bold mt-2" value="Spara" />
+                    </form>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="blueBgColor py-4 customColouredContainer d-flex align-items-center justify-content-center">
+            <div class="container d-flex flex-column align-items-center">
+                <h4 class="abrilFont my-4">Skapa en grupp för att bjuda in till matlag!</h4>
+                <a asp-page="/Group" class="btn custom-btn fontColor fw-bold pinkBgColor my-4">Skapa ny grupp</a>
+            </div>
+        </div>
+    }
+
+    if (Model.Notifications.Any())
+    {
+        <div class="border border-start-0 border-end-0 border-top-0 py-4">
+
+            <div class="container w-75 pt-5 pb-4">
+                <h4 class="abrilFont mb-3">På gång - matlag</h4>
+                <div class="accordion" id="notification-accordion">
+                    @foreach (var notification in Model.Notifications.Where(x => x.RelatedEvent is DinnerInvitation).OrderBy(x => x.RelatedEvent.DateTime).Take(5))
+                    {
+                        var textstyle = notification.IsRead ? "" : "fw-bold";
+                        <div class="accordion-item border-0">
+                            <button class="accordion-button collapsed @textstyle"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#collapse_@notification.Id"
+                                    aria-expanded="false"
+                                    aria-controls="collapse_@notification.Id"
+                                    onclick="handleAccordionClick(@notification.Id)">
+                                <i class="bi bi-circle-fill pinkFontColor p-2"></i>
+                                <span class="">@notification.RelatedEvent.DateTime.ToShortDateString() - @notification.Title</span>
+                            </button>
+
+                            <div id="collapse_@notification.Id" class="accordion-collapse collapse" aria-labelledby="heading_@notification.Id" data-bs-parent="#notification-accordion">
+                                <div class="accordion-body p-4">
+                                    @if (notification.RelatedEvent is DinnerInvitation invitation)
+                                    {
+                                        await Html.RenderPartialAsync("_DinnerNotificationPartial", invitation);
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+
+    <partial name="_FooterQuote" />
+}

@@ -1,0 +1,55 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using ItTakesAVillage.Models
+@using ItTakesAVillage.Contracts
+
+@inject SignInManager<ItTakesAVillageUser> SignInManager
+@inject UserManager<ItTakesAVillageUser> UserManager
+@inject INotificationService notificationService
+@{
+    var user = await UserManager.GetUserAsync(User);
+}
+
+<ul class="navbar-nav">
+    @if (user != null)
+    {
+        <div class="dropdown mx-2">
+            <button type="button" class="btn greenBgColor dropdown-toggle" data-bs-toggle="dropdown">
+                Meny
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end greenBgColor">
+                <li><a class="dropdown-item" asp-page="/Group">Grupper</a></li>
+                <li><a class="dropdown-item" asp-page="/DinnerInvitation">Matlag</a></li>
+                <li><a class="dropdown-item" asp-page="/PlayDate">Lekträffar</a></li>
+                <li><a class="dropdown-item" asp-page="/ToolPool">Prylpool</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" asp-page="/Notification">På gång</a></li>
+                <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index">Mitt konto</a></li>
+            </ul>
+        </div>
+
+        int unreadNotifications = await notificationService.CountAsync(user.Id);
+        <li class="nav-item">
+            <a id="notification-link" class="nav-link" asp-page="/Notification" data-bs-toggle="tooltip" title="Notiser">
+                <i class="bi bi-bell"></i>
+                @if (unreadNotifications > 0)
+                {
+                    <span class="badge bg-danger">@unreadNotifications</span>
+                }
+            </a>
+        </li>
+        <li class="nav-item">
+            <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">
+                <button id="logout" type="submit" class="nav-link btn btn-link text-dark border-0" data-bs-toggle="tooltip" title="Logga ut"><i class="bi bi-door-open"></i></button>
+            </form>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item me-2">
+            <a class="nav-link text-dark btn pinkBgColor" id="register" asp-area="Identity" asp-page="/Account/Register">Registrera</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark btn greenBgColor px-3" id="login" asp-area="Identity" asp-page="/Account/Login">Logga in</a>
+        </li>
+    }
+</ul>

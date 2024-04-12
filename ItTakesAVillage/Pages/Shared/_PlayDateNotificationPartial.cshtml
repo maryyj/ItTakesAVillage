@@ -1,0 +1,21 @@
+﻿@model ItTakesAVillage.Models.PlayDate
+
+<p class="fw-bold">
+    När?
+    <span class="fw-light"> @Model.DateTime.ToString("g")</span>
+</p>
+<p class="fw-bold">
+    Var?
+    <span class="fw-light"> @Model.Location</span>
+</p>
+<p class="fw-bold">
+    Vilka ska leka?
+    <span class="fw-light"> @Model.ChildName & @Model.InvitedChildName</span>
+</p>
+@if (@Model.Message != null)
+{
+    <p class="fw-bold">
+        Meddelande:
+        <span class="fw-light"> @Model.Message</span>
+    </p>
+}

@@ -1,12 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿namespace ItTakesAVillage.API.Controllers;
 
-namespace ItTakesAVillage.API.Controllers
+public class DinnerInvitationController : Controller
 {
-    public class DinnerInvitationController : Controller
+    public IActionResult Index()
     {
-        public IActionResult Index()
-        {
-            return View();
-        }
+        return View();
     }
 }

@@ -7,9 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ItTakesAVillage", "ItTakesA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ItTakesAVillage.Tests", "ItTakesAVillage.Tests\ItTakesAVillage.Tests.csproj", "{1FD5AB16-8D54-400A-B3CD-50F18BFA2479}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ItTakesAVillage.Infrastructure", "ItTakesAVillage.Infrastructure\ItTakesAVillage.Infrastructure.csproj", "{5D3A9755-4C7E-4277-977E-676CF8434FD4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ItTakesAVillage.Infrastructure", "ItTakesAVillage.Infrastructure\ItTakesAVillage.Infrastructure.csproj", "{5D3A9755-4C7E-4277-977E-676CF8434FD4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ItTakesAVillage.Core", "ItTakesAVillage.Core\ItTakesAVillage.Core.csproj", "{D59B6B5E-81B7-4BDC-BF39-2D71303CC3D3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ItTakesAVillage.Core", "ItTakesAVillage.Core\ItTakesAVillage.Core.csproj", "{D59B6B5E-81B7-4BDC-BF39-2D71303CC3D3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ItTakesAVillage.API", "ItTakesAVillage.API\ItTakesAVillage.API.csproj", "{539C9119-3BD1-4289-90D3-8BBFBCF2EB95}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{D59B6B5E-81B7-4BDC-BF39-2D71303CC3D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D59B6B5E-81B7-4BDC-BF39-2D71303CC3D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D59B6B5E-81B7-4BDC-BF39-2D71303CC3D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{539C9119-3BD1-4289-90D3-8BBFBCF2EB95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{539C9119-3BD1-4289-90D3-8BBFBCF2EB95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{539C9119-3BD1-4289-90D3-8BBFBCF2EB95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{539C9119-3BD1-4289-90D3-8BBFBCF2EB95}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

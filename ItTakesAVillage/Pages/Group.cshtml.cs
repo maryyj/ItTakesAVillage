@@ -57,5 +57,10 @@ namespace ItTakesAVillage.Pages
             }
             return RedirectToPage("/Group");
         }
+        public async Task<IActionResult> OnRemoveFromGroup()
+        {
+            //await _groupService.Rem
+            return RedirectToPage("/ToolPool");
+        }
     }
 }

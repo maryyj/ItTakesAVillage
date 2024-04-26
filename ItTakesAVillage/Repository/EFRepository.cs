@@ -20,9 +20,10 @@ namespace ItTakesAVillage.Repository
             await _context.SaveChangesAsync();
         }
 
-        public Task DeleteAsync(int id)
+        public async Task DeleteAsync(T t)
         {
-            throw new NotImplementedException();
+            _context.Set<T>().Remove(t);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<List<T>> GetAsync()

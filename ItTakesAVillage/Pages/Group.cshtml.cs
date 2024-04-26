@@ -1,13 +1,7 @@
-using ItTakesAVillage.Contracts;
-using ItTakesAVillage.Data;
-using ItTakesAVillage.Helper;
-using ItTakesAVillage.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System;
-using System.Text.RegularExpressions;
 
 namespace ItTakesAVillage.Pages
 {
@@ -61,6 +55,13 @@ namespace ItTakesAVillage.Pages
             {
                 await _groupService.AddUser(NewUserGroup.UserId, NewUserGroup.GroupId);
             }
+            return RedirectToPage("/Group");
+        }
+        public async Task<IActionResult> OnPostRemoveFromGroup(int groupId)
+        {
+            CurrentUser = await _userManager.GetUserAsync(User);
+            if(CurrentUser != null)
+                await _groupService.RemoveUser(CurrentUser.Id, groupId);
             return RedirectToPage("/Group");
         }
     }

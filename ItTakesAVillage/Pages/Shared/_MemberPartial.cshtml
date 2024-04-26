@@ -1,7 +1,11 @@
 ﻿@model List<ItTakesAVillage.Models.Group>
+@* @model ItTakesAVillageUser *@
 @using ItTakesAVillage.Contracts
+@using Microsoft.AspNetCore.Identity
 @inject IGroupService _groupService
+@inject UserManager<ItTakesAVillageUser> _userManager
 
+<link rel="stylesheet" href="~/css/group.css" />
 <div class="container w-75  mb-4">
 
     <h4 class="abrilFont mb-4">Mina grupper</h4>
@@ -30,8 +34,15 @@
                         {
                             if (member != null)
                             {
-                                <div class="container">
-                                    <p>@member.FirstName @member.LastName<p />
+                                <div class="container d-flex pt-2 member-container">
+                                    <p>@member.FirstName @member.LastName</p>
+                                    @if (member.UserName == _userManager.GetUserName(User))
+                                    {
+                                        <form method="post" asp-page-handler="RemoveFromGroup">
+                                            <input type="hidden" name="groupId" value="@group.Id" />
+                                            <button type="submit" class="bi bi-x-circle delete-btn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ta bort från grupp"></button>
+                                        </form>
+                                    }
                                 </div>
                             }
                         }

@@ -2,24 +2,19 @@
 using ItTakesAVillage.Data;
 using ItTakesAVillage.Helper;
 using ItTakesAVillage.Models;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 namespace ItTakesAVillage.Services
 {
-    public class GroupService : IGroupService
+    public class GroupService(IRepository<Group> groupRepository,
+        IRepository<ItTakesAVillageUser> userRepository,
+        IRepository<UserGroup> userGroupRepository) : IGroupService
     {
-        private readonly IRepository<Group> _groupRepository;
-        private readonly IRepository<ItTakesAVillageUser> _userRepository;
-        private readonly IRepository<UserGroup> _userGroupRepository;
-        public GroupService(IRepository<Group> groupRepository,
-            IRepository<ItTakesAVillageUser> userRepository,
-            IRepository<UserGroup> userGroupRepository)
-        {
-            _groupRepository = groupRepository;
-            _userRepository = userRepository;
-            _userGroupRepository = userGroupRepository;
-        }
+        private readonly IRepository<Group> _groupRepository = groupRepository;
+        private readonly IRepository<ItTakesAVillageUser> _userRepository = userRepository;
+        private readonly IRepository<UserGroup> _userGroupRepository = userGroupRepository;
 
         public async Task<int> Save(Group group, string userId)
         {
@@ -52,6 +47,21 @@ namespace ItTakesAVillage.Services
 
             await _userGroupRepository.AddAsync(userGroup);
 
+            return true;
+        }
+        public async Task<bool> RemoveUser (string userId, int groupId)
+        {
+            var usergroups = await _userGroupRepository.GetAsync();
+            
+            if (usergroups == null) 
+                return false;
+            
+            var userGroup = usergroups.FirstOrDefault(x => x.GroupId == groupId && x.UserId == userId);
+            
+            if(userGroup == null)
+                return false;
+
+            await _userGroupRepository.DeleteAsync(userGroup);
             return true;
         }
         public async Task<List<ItTakesAVillageUser?>> GetMembers(int groupId)

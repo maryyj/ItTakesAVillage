@@ -1,11 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿namespace ItTakesAVillage.API.Controllers;
 
-namespace ItTakesAVillage.API.Controllers
+[Route("api/[controller]")]
+[ApiController]
+public class PoolToolController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class PoolToolController : ControllerBase
-    {
-    }
 }

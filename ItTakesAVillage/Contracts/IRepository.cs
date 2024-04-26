@@ -8,6 +8,6 @@ public interface IRepository<T>
     Task<T?> GetAsync(string id);
     Task<List<T>> GetOfTypeAsync<R>() where R : class;
     Task UpdateAsync(T t);
-    Task DeleteAsync(int id);
+    Task DeleteAsync(T t);
     Task<List<T>> GetByFilterAsync(Expression<Func<T, bool>> expression);
 }

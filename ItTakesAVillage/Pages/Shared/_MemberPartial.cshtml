@@ -39,7 +39,7 @@
                                     @if (member.UserName == _userManager.GetUserName(User))
                                     {
                                         <form method="post" asp-page-handler="RemoveFromGroup">
-                                            <input type="hidden" name="memberId" value="@member.Id" />
+                                            <input type="hidden" name="groupId" value="@group.Id" />
                                             <button type="submit" class="bi bi-x-circle delete-btn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ta bort från grupp"></button>
                                         </form>
                                     }

@@ -57,10 +57,12 @@ namespace ItTakesAVillage.Pages
             }
             return RedirectToPage("/Group");
         }
-        public async Task<IActionResult> OnRemoveFromGroup()
+        public async Task<IActionResult> OnPostRemoveFromGroup(int groupId)
         {
-            //await _groupService.Rem
-            return RedirectToPage("/ToolPool");
+            CurrentUser = await _userManager.GetUserAsync(User);
+            if(CurrentUser != null)
+                await _groupService.RemoveUser(CurrentUser.Id, groupId);
+            return RedirectToPage("/Group");
         }
     }
 }

@@ -1,13 +1,7 @@
-using ItTakesAVillage.Contracts;
-using ItTakesAVillage.Data;
-using ItTakesAVillage.Helper;
-using ItTakesAVillage.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System;
-using System.Text.RegularExpressions;
 
 namespace ItTakesAVillage.Pages
 {

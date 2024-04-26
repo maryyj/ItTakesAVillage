@@ -1,0 +1,9 @@
+﻿.member-container{
+    justify-content:space-between;
+}
+.member-container:hover {
+    background-color: rgb(240, 248, 248)
+} 
+.delete-icon {
+    color: red;
+}

@@ -4,6 +4,8 @@
 .member-container:hover {
     background-color: rgb(240, 248, 248)
 } 
-.delete-icon {
+.delete-btn {
     color: red;
+    background-color:transparent;
+    border: none;
 }

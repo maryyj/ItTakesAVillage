@@ -36,10 +36,13 @@
                             {
                                 <div class="container d-flex pt-2 member-container">
                                     <p>@member.FirstName @member.LastName</p>
-                                        @if (member.UserName == _userManager.GetUserName(User))
-                                        {
-                                         <i class="bi bi-x-circle delete-icon" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ta bort från grupp"></i>
-                                        }
+                                    @if (member.UserName == _userManager.GetUserName(User))
+                                    {
+                                        <form method="post" asp-page-handler="RemoveFromGroup">
+                                            <input type="hidden" name="memberId" value="@member.Id" />
+                                            <button type="submit" class="bi bi-x-circle delete-btn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ta bort från grupp"></button>
+                                        </form>
+                                    }
                                 </div>
                             }
                         }

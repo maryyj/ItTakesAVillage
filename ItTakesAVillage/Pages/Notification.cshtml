@@ -38,6 +38,10 @@
                                     {
                                         await Html.RenderPartialAsync("_PlayDateNotificationPartial", playDate);
                                     }
+                                    @if (notification.RelatedEvent is ToolPool toolPool)
+                                    {
+                                        await Html.RenderPartialAsync("_ToolPoolNotificationPartial", toolPool);
+                                    }
 
                                 </div>
                             </div>

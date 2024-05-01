@@ -378,7 +378,7 @@ namespace ItTakesAVillage.Migrations
                     b.HasDiscriminator().HasValue("PlayDate");
                 });
 
-            modelBuilder.Entity("ItTakesAVillage.Models.PoolTool", b =>
+            modelBuilder.Entity("ItTakesAVillage.Models.ToolPool", b =>
                 {
                     b.HasBaseType("ItTakesAVillage.Models.BaseEvent");
 
@@ -406,7 +406,7 @@ namespace ItTakesAVillage.Migrations
 
                     b.HasIndex("BorrowerId");
 
-                    b.HasDiscriminator().HasValue("PoolTool");
+                    b.HasDiscriminator().HasValue("ToolPool");
                 });
 
             modelBuilder.Entity("ItTakesAVillage.Models.BaseEvent", b =>
@@ -501,7 +501,7 @@ namespace ItTakesAVillage.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ItTakesAVillage.Models.PoolTool", b =>
+            modelBuilder.Entity("ItTakesAVillage.Models.ToolPool", b =>
                 {
                     b.HasOne("ItTakesAVillage.Models.ItTakesAVillageUser", "Borrower")
                         .WithMany()

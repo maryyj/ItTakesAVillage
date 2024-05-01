@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ItTakesAVillage.Migrations
 {
     [DbContext(typeof(ItTakesAVillageContext))]
-    [Migration("20240501083552_AddPoolToolToBaseEvent")]
-    partial class AddPoolToolToBaseEvent
+    [Migration("20240501100149_AddToolPoolToBaseEvent")]
+    partial class AddToolPoolToBaseEvent
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -381,7 +381,7 @@ namespace ItTakesAVillage.Migrations
                     b.HasDiscriminator().HasValue("PlayDate");
                 });
 
-            modelBuilder.Entity("ItTakesAVillage.Models.PoolTool", b =>
+            modelBuilder.Entity("ItTakesAVillage.Models.ToolPool", b =>
                 {
                     b.HasBaseType("ItTakesAVillage.Models.BaseEvent");
 
@@ -393,6 +393,9 @@ namespace ItTakesAVillage.Migrations
 
                     b.Property<DateOnly>("FromDate")
                         .HasColumnType("date");
+
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsBorrowed")
                         .HasColumnType("bit");
@@ -406,7 +409,7 @@ namespace ItTakesAVillage.Migrations
 
                     b.HasIndex("BorrowerId");
 
-                    b.HasDiscriminator().HasValue("PoolTool");
+                    b.HasDiscriminator().HasValue("ToolPool");
                 });
 
             modelBuilder.Entity("ItTakesAVillage.Models.BaseEvent", b =>
@@ -501,7 +504,7 @@ namespace ItTakesAVillage.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ItTakesAVillage.Models.PoolTool", b =>
+            modelBuilder.Entity("ItTakesAVillage.Models.ToolPool", b =>
                 {
                     b.HasOne("ItTakesAVillage.Models.ItTakesAVillageUser", "Borrower")
                         .WithMany()

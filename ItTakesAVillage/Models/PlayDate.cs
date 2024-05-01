@@ -1,9 +1,8 @@
-﻿namespace ItTakesAVillage.Models
+﻿namespace ItTakesAVillage.Models;
+
+public class PlayDate : BaseEvent
 {
-    public class PlayDate : BaseEvent
-    {
-        public string? ChildName { get; set; }
-        public string? InvitedChildName { get; set; }
-        public string? Location { get; set; }
-    }
+    public string? ChildName { get; set; }
+    public string? InvitedChildName { get; set; }
+    public string? Location { get; set; }
 }

@@ -5,3 +5,4 @@ global using System.Linq.Expressions;
 global using ItTakesAVillage.Contracts;
 global using System;
 global using Microsoft.EntityFrameworkCore.Migrations;
+global using Microsoft.AspNetCore.Identity;

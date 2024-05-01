@@ -4,11 +4,14 @@ namespace ItTakesAVillage.Pages;
 public class ToolPoolModel(
     UserManager<ItTakesAVillageUser> userManager,
     IGroupService groupService,
-    INotificationService notificationService) : PageModel
+    INotificationService notificationService,
+    IEventService<ToolPool> toolPoolService) : PageModel
 {
     private readonly UserManager<ItTakesAVillageUser> _userManager = userManager;
     private readonly IGroupService _groupService = groupService;
     private readonly INotificationService _notificationService = notificationService;
+    private readonly IEventService<ToolPool> _toolPoolService = toolPoolService;
+
     public ItTakesAVillageUser? CurrentUser { get; set; }
     public List<Models.Group?> GroupsOfCurrentUser { get; set; } = [];
     public List<Notification> Notifications { get; set; } = [];
@@ -32,7 +35,9 @@ public class ToolPoolModel(
     {
         if(ModelState.IsValid)
         {
-            
+            bool success = await _toolPoolService.Create(NewToolPool);
+            if (success)
+                await _notificationService.NotifyGroupAsync(NewToolPool);
         }
         return RedirectToPage("/ToolPool");
     }

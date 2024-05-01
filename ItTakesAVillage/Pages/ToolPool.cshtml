@@ -17,12 +17,13 @@
             <div class="container w-75">
                 <h4 class="abrilFont mt-4 mb-3">Lägg upp en pryl</h4>
                 <div class="w-50">
-                    <form method="post">
+                    <form method="post" asp-page-handler="AddToolToPool">
                         <label class="form-label fw-bold mt-2">Vilken grupp?*</label>
                         <select class="form-control w-25 bg-transparent" asp-for="NewToolPool.GroupId" asp-items="ViewBag.GroupId">
                             <option disabled selected>Välj grupp</option>
                         </select>
                         <input type="hidden" asp-for="NewToolPool.DateTime" value="@DateTime.Now.ToString("yyyy-MM-dd HH:mm", new System.Globalization.CultureInfo("sv-SE"))" />
+                        <input type="hidden" asp-for="NewToolPool.CreatorId" value="@Model.CurrentUser.Id" />
                         <label class="form-label fw-bold mt-2">Vilken pryl?*</label>
                         <input class="form-control bg-transparent" asp-for="NewToolPool.Name" />
                         <label class="form-label fw-bold mt-2">Vill du ange en beskrvning?</label>

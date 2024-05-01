@@ -28,4 +28,12 @@ public class ToolPoolModel(
         }
         return Page();
     }
+    public async Task<IActionResult> OnPostAddToolToPool()
+    {
+        if(ModelState.IsValid)
+        {
+            
+        }
+        return RedirectToPage("/ToolPool");
+    }
 }

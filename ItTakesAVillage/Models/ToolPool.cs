@@ -1,6 +1,6 @@
 ﻿namespace ItTakesAVillage.Models;
 
-public class PoolTool : BaseEvent
+public class ToolPool : BaseEvent
 {
     public string Name { get; set; } = string.Empty;
     public string? Description { get; set; }

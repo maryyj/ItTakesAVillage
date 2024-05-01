@@ -29,7 +29,7 @@ public class ItTakesAVillageContext : IdentityDbContext<ItTakesAVillageUser>
        .HasValue<BaseEvent>("BaseEvent")
        .HasValue<DinnerInvitation>("DinnerInvitation")
        .HasValue<PlayDate>("PlayDate")
-       .HasValue<PoolTool>("PoolTool");
+       .HasValue<ToolPool>("ToolPool");
 
         builder.Entity<UserGroup>().Navigation(x => x.Group).AutoInclude();
         builder.Entity<UserGroup>().Navigation(x => x.User).AutoInclude();

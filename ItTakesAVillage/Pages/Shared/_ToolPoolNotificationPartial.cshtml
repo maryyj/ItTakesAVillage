@@ -1,0 +1,24 @@
+﻿@model ItTakesAVillage.Models.ToolPool
+
+<p class="fw-bold">
+    Skapat datum?
+    <span class="fw-light"> @Model.DateTime.ToString("g")</span>
+</p>
+<p class="fw-bold">
+    Pryl?
+    <span class="fw-light"> @Model.Name</span>
+</p>
+@if (Model.Description != null)
+{
+    <p class="fw-bold">
+        Beskrivning?
+        <span class="fw-light"> @Model.Description</span>
+    </p>
+}
+@if (@Model.Message != null)
+{
+    <p class="fw-bold">
+        Meddelande:
+        <span class="fw-light"> @Model.Message</span>
+    </p>
+}

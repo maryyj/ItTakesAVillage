@@ -1,8 +1,7 @@
-﻿namespace ItTakesAVillage.Models
+﻿namespace ItTakesAVillage.Models;
+
+public class DinnerInvitation : BaseEvent 
 {
-    public class DinnerInvitation : BaseEvent 
-    {
-        public string? Course { get; set; }  
-        public string? Location { get; set; }
-    }
+    public string? Course { get; set; }  
+    public string? Location { get; set; }
 }

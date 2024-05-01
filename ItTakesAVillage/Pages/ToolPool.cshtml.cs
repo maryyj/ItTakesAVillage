@@ -1,4 +1,6 @@
 
+using Microsoft.Identity.Client;
+
 namespace ItTakesAVillage.Pages;
 
 public class ToolPoolModel(

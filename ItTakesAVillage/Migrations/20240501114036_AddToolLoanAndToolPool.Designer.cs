@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ItTakesAVillage.Migrations
 {
     [DbContext(typeof(ItTakesAVillageContext))]
-    [Migration("20240501100149_AddToolPoolToBaseEvent")]
-    partial class AddToolPoolToBaseEvent
+    [Migration("20240501114036_AddToolLoanAndToolPool")]
+    partial class AddToolLoanAndToolPool
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -183,6 +183,38 @@ namespace ItTakesAVillage.Migrations
                     b.HasIndex("RelatedEventId");
 
                     b.ToTable("Notifications");
+                });
+
+            modelBuilder.Entity("ItTakesAVillage.Models.ToolLoan", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("BorrowerId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateOnly>("FromDate")
+                        .HasColumnType("date");
+
+                    b.Property<DateOnly>("ToDate")
+                        .HasColumnType("date");
+
+                    b.Property<int>("ToolId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ToolPoolId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BorrowerId");
+
+                    b.HasIndex("ToolPoolId");
+
+                    b.ToTable("ToolLoans");
                 });
 
             modelBuilder.Entity("ItTakesAVillage.Models.UserGroup", b =>
@@ -385,14 +417,8 @@ namespace ItTakesAVillage.Migrations
                 {
                     b.HasBaseType("ItTakesAVillage.Models.BaseEvent");
 
-                    b.Property<string>("BorrowerId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateOnly>("FromDate")
-                        .HasColumnType("date");
 
                     b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
@@ -403,11 +429,6 @@ namespace ItTakesAVillage.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateOnly>("ToDate")
-                        .HasColumnType("date");
-
-                    b.HasIndex("BorrowerId");
 
                     b.HasDiscriminator().HasValue("ToolPool");
                 });
@@ -432,6 +453,21 @@ namespace ItTakesAVillage.Migrations
                         .IsRequired();
 
                     b.Navigation("RelatedEvent");
+                });
+
+            modelBuilder.Entity("ItTakesAVillage.Models.ToolLoan", b =>
+                {
+                    b.HasOne("ItTakesAVillage.Models.ItTakesAVillageUser", "Borrower")
+                        .WithMany()
+                        .HasForeignKey("BorrowerId");
+
+                    b.HasOne("ItTakesAVillage.Models.ToolPool", "ToolPool")
+                        .WithMany()
+                        .HasForeignKey("ToolPoolId");
+
+                    b.Navigation("Borrower");
+
+                    b.Navigation("ToolPool");
                 });
 
             modelBuilder.Entity("ItTakesAVillage.Models.UserGroup", b =>
@@ -502,15 +538,6 @@ namespace ItTakesAVillage.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("ItTakesAVillage.Models.ToolPool", b =>
-                {
-                    b.HasOne("ItTakesAVillage.Models.ItTakesAVillageUser", "Borrower")
-                        .WithMany()
-                        .HasForeignKey("BorrowerId");
-
-                    b.Navigation("Borrower");
                 });
 
             modelBuilder.Entity("ItTakesAVillage.Models.Group", b =>

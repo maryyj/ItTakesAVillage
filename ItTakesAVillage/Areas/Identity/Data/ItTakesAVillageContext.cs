@@ -13,6 +13,7 @@ public class ItTakesAVillageContext : IdentityDbContext<ItTakesAVillageUser>
     public DbSet<Models.Group> Groups { get; set; }
     public DbSet<UserGroup> UserGroups { get; set; }
     public DbSet<Notification> Notifications { get; set; }
+    public DbSet<ToolLoan> ToolLoans { get; set; }
 
     public ItTakesAVillageContext(DbContextOptions<ItTakesAVillageContext> options)
         : base(options)
@@ -34,5 +35,6 @@ public class ItTakesAVillageContext : IdentityDbContext<ItTakesAVillageUser>
         builder.Entity<UserGroup>().Navigation(x => x.Group).AutoInclude();
         builder.Entity<UserGroup>().Navigation(x => x.User).AutoInclude();
         builder.Entity<Notification>().Navigation(x => x.RelatedEvent).AutoInclude();
+        builder.Entity<ToolLoan>().Navigation(x => x.ToolPool).AutoInclude();
     }
 }

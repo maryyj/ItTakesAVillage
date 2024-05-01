@@ -17,12 +17,13 @@
             <div class="container w-75">
                 <h4 class="abrilFont mt-4 mb-3">Lägg upp en pryl</h4>
                 <div class="w-50">
-                    <form method="post">
+                    <form method="post" asp-page-handler="AddToolToPool">
                         <label class="form-label fw-bold mt-2">Vilken grupp?*</label>
                         <select class="form-control w-25 bg-transparent" asp-for="NewToolPool.GroupId" asp-items="ViewBag.GroupId">
                             <option disabled selected>Välj grupp</option>
                         </select>
                         <input type="hidden" asp-for="NewToolPool.DateTime" value="@DateTime.Now.ToString("yyyy-MM-dd HH:mm", new System.Globalization.CultureInfo("sv-SE"))" />
+                        <input type="hidden" asp-for="NewToolPool.CreatorId" value="@Model.CurrentUser.Id" />
                         <label class="form-label fw-bold mt-2">Vilken pryl?*</label>
                         <input class="form-control bg-transparent" asp-for="NewToolPool.Name" />
                         <label class="form-label fw-bold mt-2">Vill du ange en beskrvning?</label>
@@ -42,7 +43,7 @@
     {
         <div class="pinkBgColor py-4 customColouredContainer d-flex align-items-center justify-content-center">
             <div class="container d-flex flex-column align-items-center">
-                <h4 class="abrilFont my-4">Skapa en grupp för att bjuda in till lekträff!</h4>
+                <h4 class="abrilFont my-4">Skapa en grupp för att dela prylar!</h4>
                 <a asp-page="/Group" class="btn custom-btn fontColor fw-bold greenBgColor my-4">Skapa ny grupp</a>
             </div>
         </div>
@@ -54,7 +55,7 @@
         <div class="border border-start-0 border-end-0 border-top-0 py-4">
 
             <div class="container w-75 pt-5 pb-4">
-                <h4 class="abrilFont mb-3">På gång - lekträff</h4>
+                <h4 class="abrilFont mb-3">På gång - Delade prylar</h4>
                 <div class="accordion" id="notification-accordion">
                     @foreach (var notification in ToolPoolNotifications.OrderBy(x => x.RelatedEvent.DateTime).Take(5))
                     {

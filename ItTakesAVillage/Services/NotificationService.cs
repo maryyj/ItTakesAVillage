@@ -23,7 +23,7 @@ namespace ItTakesAVillage.Services
             _notificationRepository = notificationRepository;
         }
 
-        public async Task<List<Notification>> GetAsync(string userId) 
+        public async Task<List<Notification>> GetAsync(string userId)
             => await _notificationRepository.GetByFilterAsync(x => x.UserId == userId && x.RelatedEvent.DateTime.Date >= DateTime.Now.Date);
         public async Task<int> CountAsync(string userId)
         {
@@ -62,13 +62,22 @@ namespace ItTakesAVillage.Services
             var creatorId = creatorIdFunc(invitation);
             var creator = await _userRepository.GetAsync(creatorId);
             var eventtype = "";
+            var title = "";
 
             if (invitation is DinnerInvitation)
                 eventtype = "Matlag";
             if (invitation is PlayDate)
                 eventtype = "Lekträff";
-
-            var title = creator == null ? $"{eventtype} hos okänd" : $"{eventtype} hos {creator.FirstName} {creator.LastName}";
+            if (invitation is ToolPool)
+                eventtype = "Pryl";
+            if (invitation is ToolPool)
+            {
+                title = creator == null ? $"{eventtype} av okänd" : $"{eventtype} av {creator.FirstName} {creator.LastName}";
+            }
+            else
+            {
+                title = creator == null ? $"{eventtype} hos okänd" : $"{eventtype} hos {creator.FirstName} {creator.LastName}";
+            }
 
             var newNotification = new Notification
             {
@@ -88,6 +97,10 @@ namespace ItTakesAVillage.Services
 
             }
             else if (typeof(TEvent) == typeof(PlayDate))
+            {
+                return (TEvent pd) => pd.CreatorId;
+            }
+            else if (typeof(TEvent) == typeof(ToolPool))
             {
                 return (TEvent pd) => pd.CreatorId;
             }

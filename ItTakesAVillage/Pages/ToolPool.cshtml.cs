@@ -1,4 +1,6 @@
 
+using Microsoft.Identity.Client;
+
 namespace ItTakesAVillage.Pages;
 
 public class ToolPoolModel(
@@ -18,6 +20,8 @@ public class ToolPoolModel(
 
     [BindProperty]
     public ToolPool NewToolPool { get; set; } = new();
+    [BindProperty]
+    public IFormFile UploadedImage { get; set; }
     public async Task<IActionResult> OnGet()
     {
         CurrentUser = await _userManager.GetUserAsync(User);
@@ -35,6 +39,21 @@ public class ToolPoolModel(
     {
         if(ModelState.IsValid)
         {
+            if (UploadedImage != null)
+            {
+                var uniqueFileName = Guid.NewGuid().ToString() + "_" + UploadedImage.FileName;
+                var uploads = Path.Combine("wwwroot/uploadedImg", uniqueFileName);
+                if (!Directory.Exists(uploads))
+                {
+                    Directory.CreateDirectory(uploads);
+                }
+                var filePath = Path.Combine(uploads, uniqueFileName);
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    await UploadedImage.CopyToAsync(fileStream);
+                }
+                NewToolPool.Image = uniqueFileName;
+            }
             bool success = await _toolPoolService.Create(NewToolPool);
             if (success)
                 await _notificationService.NotifyGroupAsync(NewToolPool);

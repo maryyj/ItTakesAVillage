@@ -11,13 +11,22 @@
     </div>
     @if (Model.GroupsOfCurrentUser != null && Model.GroupsOfCurrentUser.Any())
     {
-        await Html.RenderPartialAsync("_MemberPartial", Model.GroupsOfCurrentUser);
-
+        @* await Html.RenderPartialAsync("_MemberPartial", Model.GroupsOfCurrentUser); *@
+        <div class="container w-75">
+            <ul class="nav nav-tabs">
+                <li class="nav-item greenBgColor">
+                    <a class="nav-link" href="#">Prylar</a>
+                </li>
+                <li class="nav-item blueBgColor">
+                    <a class="nav-link" href="#">Dela pryl</a>
+                </li>
+            </ul>
+        </div>
         <div class="pinkBgColor py-4">
             <div class="container w-75">
                 <h4 class="abrilFont mt-4 mb-3">Lägg upp en pryl</h4>
                 <div class="w-50">
-                    <form method="post" asp-page-handler="AddToolToPool">
+                    <form method="post" asp-page-handler="AddToolToPool" enctype="multipart/form-data">
                         <label class="form-label fw-bold mt-2">Vilken grupp?*</label>
                         <select class="form-control w-25 bg-transparent" asp-for="NewToolPool.GroupId" asp-items="ViewBag.GroupId">
                             <option disabled selected>Välj grupp</option>
@@ -29,10 +38,10 @@
                         <label class="form-label fw-bold mt-2">Vill du ange en beskrvning?</label>
                         <input class="form-control bg-transparent" asp-for="NewToolPool.Description" />
                         <label class="form-label fw-bold mt-2">Vill du lägga till en bild?</label>
-                        <input class="form-control bg-transparent" asp-for="NewToolPool.Image" />
+                        <input class="form-control bg-transparent" type="file" name="UploadedImage" asp-for="NewToolPool.Image" accept="image/*" />
                         <label class="form-label fw-bold mt-2">Övrig information</label>
                         <textarea class="form-control bg-transparent" asp-for="NewToolPool.Message"></textarea>
-                        <input type="submit" class="btn greenBgColor fw-bold mt-2" value="Spara" />
+                        <input type="submit" class="btn blueBgColor fw-bold mt-2" value="Spara" />
                         <span class="ms-2 "><b> * </b> - Obligatorigskt fält</span>
                     </form>
                 </div>
@@ -87,6 +96,4 @@
         </div>
     }
     <partial name="Shared/_FooterQuote" />
-
-
 }

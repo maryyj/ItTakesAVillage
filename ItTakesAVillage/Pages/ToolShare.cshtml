@@ -1,0 +1,90 @@
+﻿@page
+@model ItTakesAVillage.Pages.ToolPoolModel
+@{
+}
+@if (Model.CurrentUser != null)
+{
+
+    <div class="d-flex align-items-center flex-column">
+        <img class="mx-auto eventImg" alt="wrench with pink background" src="img/tool.png" />
+        <h2 class="abrilFont text-center mt-2 mb-5">Prylpool</h2>
+    </div>
+    @if (Model.GroupsOfCurrentUser != null && Model.GroupsOfCurrentUser.Any())
+    {
+        @* await Html.RenderPartialAsync("_MemberPartial", Model.GroupsOfCurrentUser); *@
+        await Html.RenderPartialAsync("_ToolPoolTabPartial");
+        <div class="pinkBgColor py-4">
+            <div class="container w-75">
+                <h4 class="abrilFont mt-4 mb-3">Lägg upp en pryl</h4>
+                <div class="w-50">
+                    <form method="post" asp-page-handler="AddToolToPool" enctype="multipart/form-data">
+                        <label class="form-label fw-bold mt-2">Vilken grupp?*</label>
+                        <select class="form-control w-25 bg-transparent" asp-for="NewToolPool.GroupId" asp-items="ViewBag.GroupId">
+                            <option disabled selected>Välj grupp</option>
+                        </select>
+                        <input type="hidden" asp-for="NewToolPool.DateTime" value="@DateTime.Now.ToString("yyyy-MM-dd HH:mm", new System.Globalization.CultureInfo("sv-SE"))" />
+                        <input type="hidden" asp-for="NewToolPool.CreatorId" value="@Model.CurrentUser.Id" />
+                        <label class="form-label fw-bold mt-2">Vilken pryl?*</label>
+                        <input class="form-control bg-transparent" asp-for="NewToolPool.Name" />
+                        <label class="form-label fw-bold mt-2">Vill du ange en beskrvning?</label>
+                        <input class="form-control bg-transparent" asp-for="NewToolPool.Description" />
+                        <label class="form-label fw-bold mt-2">Vill du lägga till en bild?</label>
+                        <input class="form-control bg-transparent" type="file" name="UploadedImage" asp-for="NewToolPool.Image" accept="image/*" />
+                        <label class="form-label fw-bold mt-2">Övrig information</label>
+                        <textarea class="form-control bg-transparent" asp-for="NewToolPool.Message"></textarea>
+                        <input type="submit" class="btn blueBgColor fw-bold mt-2" value="Spara" />
+                        <span class="ms-2 "><b> * </b> - Obligatorigskt fält</span>
+                    </form>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="pinkBgColor py-4 customColouredContainer d-flex align-items-center justify-content-center">
+            <div class="container d-flex flex-column align-items-center">
+                <h4 class="abrilFont my-4">Skapa en grupp för att dela prylar!</h4>
+                <a asp-page="/Group" class="btn custom-btn fontColor fw-bold greenBgColor my-4">Skapa ny grupp</a>
+            </div>
+        </div>
+    }
+
+    var ToolPoolNotifications = Model.Notifications.Where(x => x.RelatedEvent is Models.ToolPool);
+    if (ToolPoolNotifications.Any())
+    {
+        <div class="border border-start-0 border-end-0 border-top-0 py-4">
+
+            <div class="container w-75 pt-5 pb-4">
+                <h4 class="abrilFont mb-3">På gång - Delade prylar</h4>
+                <div class="accordion" id="notification-accordion">
+                    @foreach (var notification in ToolPoolNotifications.OrderBy(x => x.RelatedEvent.DateTime).Take(5))
+                    {
+                        var textstyle = notification.IsRead ? "" : "fw-bold";
+                        <div class="accordion-item border-0">
+                            <button class="accordion-button collapsed @textstyle"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#collapse_@notification.Id"
+                                    aria-expanded="false"
+                                    aria-controls="collapse_@notification.Id"
+                                    onclick="handleAccordionClick(@notification.Id)">
+                                <i class="bi bi-circle-fill pinkFontColor p-2"></i>
+                                <span class="">@notification.RelatedEvent.DateTime.ToShortDateString() - @notification.Title</span>
+                            </button>
+
+                            <div id="collapse_@notification.Id" class="accordion-collapse collapse" aria-labelledby="heading_@notification.Id" data-bs-parent="#notification-accordion">
+                                <div class="accordion-body p-4">
+                                    @if (notification.RelatedEvent is Models.ToolPool toolPool)
+                                    {
+                                        await Html.RenderPartialAsync("_ToolPoolNotificationPartial", toolPool);
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+    <partial name="Shared/_FooterQuote" />
+}

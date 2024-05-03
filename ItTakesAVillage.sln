@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ItTakesAVillage.Infrastruct
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ItTakesAVillage.Core", "ItTakesAVillage.Core\ItTakesAVillage.Core.csproj", "{D59B6B5E-81B7-4BDC-BF39-2D71303CC3D3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ItTakesAVillage.API", "ItTakesAVillage.API\ItTakesAVillage.API.csproj", "{69717F0F-26AD-456F-B659-2EFBC2664463}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ItTakesAVillage.API", "ItTakesAVillage.API\ItTakesAVillage.API.csproj", "{69717F0F-26AD-456F-B659-2EFBC2664463}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

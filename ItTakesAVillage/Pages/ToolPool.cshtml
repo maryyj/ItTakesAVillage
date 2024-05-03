@@ -38,7 +38,10 @@
                                 </p>
                                 @if (tool.CreatorId == Model.CurrentUser?.Id)
                                 {
-                                    <a href="#" class="btn greenBgColor">Ta bort</a>
+                                    <form method="post" asp-page-handler="RemoveToolFromPool">
+                                    <input type="hidden" name="toolId" value="@tool.Id"/>
+                                    <button type="submit" class="btn greenBgColor">Ta bort</button>
+                                    </form>
                                 }
                                 else
                                 {

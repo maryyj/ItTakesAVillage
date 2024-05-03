@@ -24,5 +24,9 @@
         {
             throw new NotImplementedException();
         }
+        public Task<bool> Delete(int eventId, string userId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

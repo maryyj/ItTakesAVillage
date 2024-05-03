@@ -24,6 +24,15 @@ public class ToolPoolService(IRepository<ToolPool> toolPoolRepository, IReposito
 
         return await GetTools(groupsOfUser);
     }
+    public async Task<bool> Delete(int toolId, string userId)
+    {
+        var groupsOfUser = await GetUserGroups(userId);
+        var tools = await GetTools(groupsOfUser);
+        var tool = tools.Find(x => x.Id == toolId);
+        await _toolPoolRepository.DeleteAsync(tool);
+
+        return true;
+    }
     private async Task<List<UserGroup>> GetUserGroups(string id)
     {
         var groupsAndUsers = await _userGroupRepository.GetAsync();

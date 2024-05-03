@@ -14,6 +14,8 @@ public class ToolLoanModel(
     public ItTakesAVillageUser? CurrentUser { get; set; }
     public List<Models.Group?> GroupsOfCurrentUser { get; set; } = [];
     public List<ToolPool>? Tools { get; set; } = [];
+    [BindProperty]
+    public ToolPool? Tool { get; set; }
     public async Task<IActionResult> OnGet()
     {
         CurrentUser = await _userManager.GetUserAsync(User);
@@ -24,5 +26,14 @@ public class ToolLoanModel(
             Tools = await _toolPoolService.GetAllOfGroup(CurrentUser.Id);
         }
         return Page();
+    }
+    public async Task<IActionResult> OnPostRemoveToolFromPool(int toolId)
+    {
+        CurrentUser = await _userManager.GetUserAsync(User);
+        if (CurrentUser != null)
+        {
+            bool success = await _toolPoolService.Delete(toolId, CurrentUser.Id);
+        }
+        return RedirectToPage("/ToolPool");
     }
 }

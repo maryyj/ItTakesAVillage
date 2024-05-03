@@ -1,6 +1,6 @@
 ﻿namespace ItTakesAVillage.Services;
 
-public class ToolPoolService(IRepository<ToolPool> toolPoolRepository,IRepository<UserGroup> userGroupRepository) : IEventService<ToolPool>
+public class ToolPoolService(IRepository<ToolPool> toolPoolRepository, IRepository<UserGroup> userGroupRepository) : IEventService<ToolPool>
 {
     private readonly IRepository<ToolPool> _toolPoolRepository = toolPoolRepository;
     private readonly IRepository<UserGroup> _userGroupRepository = userGroupRepository;
@@ -29,7 +29,7 @@ public class ToolPoolService(IRepository<ToolPool> toolPoolRepository,IRepositor
         var groupsAndUsers = await _userGroupRepository.GetAsync();
         return groupsAndUsers.Where(x => x.UserId == id).ToList();
     }
-        private async Task<List<ToolPool>> GetTools(List<UserGroup> groupsOfUser)
+    private async Task<List<ToolPool>> GetTools(List<UserGroup> groupsOfUser)
     {
         var tools = await _toolPoolRepository.GetOfTypeAsync<BaseEvent>();
         var toolsOfUserGroups = new List<ToolPool>();

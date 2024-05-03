@@ -16,8 +16,7 @@ public class ToolLoanModel(
     public List<ToolPool>? Tools { get; set; } = [];
     public async Task<IActionResult> OnGet()
     {
-        CurrentUser = await _userManager.GetUserAsync(User);
-        if (CurrentUser != null)
+        public void OnGet()
         {
             GroupsOfCurrentUser = await _groupService.GetGroupsByUserId(CurrentUser.Id);
             ViewData["GroupId"] = new SelectList(GroupsOfCurrentUser, "Id", "Name");

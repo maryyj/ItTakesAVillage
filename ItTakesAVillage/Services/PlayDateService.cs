@@ -15,4 +15,8 @@ public class PlayDateService(IRepository<PlayDate> playDateRepository) : IEventS
     {
         return await _playDateRepository.GetOfTypeAsync<BaseEvent>();
     }
+    public Task<List<PlayDate>> GetAllOfGroup(string id)
+    {
+        throw new NotImplementedException();
+    }
 }

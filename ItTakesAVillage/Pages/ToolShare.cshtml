@@ -12,16 +12,7 @@
     @if (Model.GroupsOfCurrentUser != null && Model.GroupsOfCurrentUser.Any())
     {
         @* await Html.RenderPartialAsync("_MemberPartial", Model.GroupsOfCurrentUser); *@
-        <div class="container w-75">
-            <ul class="nav nav-tabs">
-                <li class="nav-item greenBgColor">
-                    <a class="nav-link" href="#">Prylar</a>
-                </li>
-                <li class="nav-item blueBgColor">
-                    <a class="nav-link" href="/ToolShare">Dela pryl</a>
-                </li>
-            </ul>
-        </div>
+        await Html.RenderPartialAsync("_ToolPoolTabPartial");
         <div class="pinkBgColor py-4">
             <div class="container w-75">
                 <h4 class="abrilFont mt-4 mb-3">Lägg upp en pryl</h4>

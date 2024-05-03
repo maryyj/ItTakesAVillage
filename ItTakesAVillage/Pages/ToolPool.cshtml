@@ -2,6 +2,37 @@
 @model ItTakesAVillage.Pages.ToolLoanModel
 @{
 }
-<div>
-    <p>ToooolLoooaaan</p>
-</div>
+@if (Model.CurrentUser != null)
+{
+    <div class="d-flex align-items-center flex-column">
+        <img class="mx-auto eventImg" alt="wrench with pink background" src="img/tool.png" />
+        <h2 class="abrilFont text-center mt-2 mb-5">Prylpool</h2>
+    </div>
+}
+@if (Model.GroupsOfCurrentUser != null && Model.GroupsOfCurrentUser.Any())
+{
+    await Html.RenderPartialAsync("_ToolPoolTabPartial");
+    <div class="pinkBgColor py-4">
+        @if (Model.Tools != null && Model.Tools.Any())
+        {
+            foreach(var tool in Model.Tools)
+            {
+                <p><b>@tool.Name</b></p>
+                <p>@tool.Description</p>
+                <p>@(tool.Creator != null ? tool.Creator.FirstName : "")</p>
+                <img src="@Url.Content("~/uploads/@tool.Image")" alt="Beskrivning" />
+            }
+
+        }
+    </div>
+
+}
+else
+{
+    <div class="pinkBgColor py-4 customColouredContainer d-flex align-items-center justify-content-center">
+        <div class="container d-flex flex-column align-items-center">
+            <h4 class="abrilFont my-4">Skapa en grupp för att dela prylar!</h4>
+            <a asp-page="/Group" class="btn custom-btn fontColor fw-bold greenBgColor my-4">Skapa ny grupp</a>
+        </div>
+    </div>
+}

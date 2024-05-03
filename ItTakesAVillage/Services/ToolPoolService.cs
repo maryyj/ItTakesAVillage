@@ -1,9 +1,10 @@
 ﻿
 namespace ItTakesAVillage.Services;
 
-public class ToolPoolService(IRepository<ToolPool> toolPoolRepository) : IEventService<ToolPool>
+public class ToolPoolService(IRepository<ToolPool> toolPoolRepository,IRepository<UserGroup> userGroupRepository) : IEventService<ToolPool>
 {
     private readonly IRepository<ToolPool> _toolPoolRepository = toolPoolRepository;
+    private readonly IRepository<UserGroup> _userGroupRepository = userGroupRepository;
 
     public async Task<bool> Create(ToolPool tool)
     {
@@ -13,8 +14,30 @@ public class ToolPoolService(IRepository<ToolPool> toolPoolRepository) : IEventS
         return true;
     }
 
-    public Task<List<ToolPool>> GetAll()
+    public async Task<List<ToolPool>> GetAll()
     {
-        throw new NotImplementedException();
+        return await _toolPoolRepository.GetOfTypeAsync<BaseEvent>();
+    }
+
+    public async Task<List<ToolPool>> GetAllOfGroup(string id)
+    {
+        var groupsOfUser = await GetUserGroups(id);
+
+        return await GetTools(groupsOfUser);
+    }
+    private async Task<List<UserGroup>> GetUserGroups(string id)
+    {
+        var groupsAndUsers = await _userGroupRepository.GetAsync();
+        return groupsAndUsers.Where(x => x.UserId == id).ToList();
+    }
+        private async Task<List<ToolPool>> GetTools(List<UserGroup> groupsOfUser)
+    {
+        var tools = await _toolPoolRepository.GetOfTypeAsync<BaseEvent>();
+        var toolsOfUserGroups = new List<ToolPool>();
+        foreach (var group in groupsOfUser)
+        {
+            toolsOfUserGroups = tools.Where(x => x.GroupId == group.GroupId).ToList();
+        }
+        return toolsOfUserGroups;
     }
 }

@@ -1,9 +1,4 @@
-﻿using ItTakesAVillage.Contracts;
-using ItTakesAVillage.Data;
-using ItTakesAVillage.Models;
-using Microsoft.EntityFrameworkCore;
-
-namespace ItTakesAVillage.Services
+﻿namespace ItTakesAVillage.Services
 {
     public class DinnerInvitationService : IEventService<DinnerInvitation>
     {
@@ -24,6 +19,10 @@ namespace ItTakesAVillage.Services
 
             await _dinnerInvitationRepository.AddAsync(invitation);
             return true;
+        }
+        public Task<List<DinnerInvitation>> GetAllOfGroup(string id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

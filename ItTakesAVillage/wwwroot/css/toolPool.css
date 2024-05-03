@@ -1,0 +1,6 @@
+﻿.toolPoolTab {
+    color: rgb(23, 64, 56);
+}
+.toolPoolTab:hover{
+    color: gray;
+}

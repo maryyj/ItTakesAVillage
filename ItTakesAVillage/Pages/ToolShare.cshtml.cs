@@ -26,7 +26,6 @@ public class ToolPoolModel(
         {
             GroupsOfCurrentUser = await _groupService.GetGroupsByUserId(CurrentUser.Id);
             Notifications = await _notificationService.GetAsync(CurrentUser.Id);
-            //ViewData["GroupId"] = new SelectList(await _groupService.GetGroupsByUserId(CurrentUser.Id), "Id", "Name");
             ViewData["GroupId"] = new SelectList(GroupsOfCurrentUser, "Id", "Name");
 
         }

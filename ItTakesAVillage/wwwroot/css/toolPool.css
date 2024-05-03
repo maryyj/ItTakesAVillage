@@ -4,3 +4,6 @@
 .toolPoolTab:hover{
     color: gray;
 }
+.creator-txt{
+    font-style:italic;
+}

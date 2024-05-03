@@ -2,6 +2,7 @@
 @model ItTakesAVillage.Pages.ToolLoanModel
 @{
 }
+<link rel="stylesheet" href="~/css/toolPool.css" />
 @if (Model.CurrentUser != null)
 {
     <div class="d-flex align-items-center flex-column">
@@ -13,17 +14,39 @@
 {
     await Html.RenderPartialAsync("_ToolPoolTabPartial");
     <div class="pinkBgColor py-4">
-        @if (Model.Tools != null && Model.Tools.Any())
-        {
-            foreach(var tool in Model.Tools)
+        <div class="container w-75 pt-5 pb-4">
+            @if (Model.Tools != null && Model.Tools.Any())
             {
-                <p><b>@tool.Name</b></p>
-                <p>@tool.Description</p>
-                <p>@(tool.Creator != null ? tool.Creator.FirstName : "")</p>
-                <img src="@Url.Content("~/uploads/@tool.Image")" alt="Beskrivning" />
-            }
+                <div class="row">
+                    @foreach (var tool in Model.Tools)
+                    {
+                        @* <div class="col-sm-6 mb-3 mb-sm-0"> *@
+                            <div class="card ms-2" style="width: 18rem;">
+                                <img src="@(tool.Image != null ?
+                                $"uploads/@tool.Image" :
+                                $"img/defaultImg.svg")"
+                                     alt="Beskrivning" />
+                                <div class="card-body">
+                                    <h5 class="card-title"><b>@tool.Name</b></h5>
+                                    <p class="card-text">@tool.Description</p>
+                                    <p class="card-text creator-txt small">
+                                        Delad av @(tool.Creator != null ?
+                                   tool.Creator.FirstName + " " + tool.Creator.LastName :
+                                   "")
+                                    </p>
+                                    <a href="#" class="btn pinkBgColor">Låna</a>
+                                    @if (tool.CreatorId == Model.CurrentUser?.Id)
+                                    {
+                                        <a href="#" class="btn greenBgColor">Ta bort</a>
+                                    }
+                                </div>
+                            </div>
+                        @* </div> *@
+                    }
+                </div>
 
-        }
+            }
+        </div>
     </div>
 
 }

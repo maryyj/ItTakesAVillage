@@ -1,5 +1,4 @@
-﻿
-namespace ItTakesAVillage.Services;
+﻿namespace ItTakesAVillage.Services;
 
 public class ToolPoolService(IRepository<ToolPool> toolPoolRepository,IRepository<UserGroup> userGroupRepository) : IEventService<ToolPool>
 {

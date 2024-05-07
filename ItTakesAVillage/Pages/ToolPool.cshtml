@@ -1,13 +1,20 @@
 ﻿@page
 @model ItTakesAVillage.Pages.ToolLoanModel
 @{
+    string toolPool = "Prylpool";
+    string sharedOf = "Delad av";
+    string remove = "Ta bort";
+    string borrow = "Låna";
+    string borrowed = "Utlånad";
+    string createGroupText = "Skapa en grupp för att dela prylar!";
+    string createGroup = "Skapa ny grupp";
 }
 <link rel="stylesheet" href="~/css/toolPool.css" />
 @if (Model.CurrentUser != null)
 {
     <div class="d-flex align-items-center flex-column">
         <img class="mx-auto eventImg" alt="wrench with pink background" src="img/tool.png" />
-        <h2 class="abrilFont text-center mt-2 mb-5">Prylpool</h2>
+        <h2 class="abrilFont text-center mt-2 mb-5">@toolPool</h2>
     </div>
 }
 @if (Model.GroupsOfCurrentUser != null && Model.GroupsOfCurrentUser.Any())
@@ -20,36 +27,86 @@
                 <div class="row">
                     @foreach (var tool in Model.Tools)
                     {
-                        @* <div class="col-sm-6 mb-3 mb-sm-0"> *@
                         <div class="card ms-2">
                             <div>
                                 <img src="@(tool.Image != null ?
                                     $"/uploadedImg/{tool.Image}/{tool.Image}" :
                                     $"/img/defaultImg.svg")"
-                                    alt="Beskrivning" />
+                                     alt="Beskrivning" />
                             </div>
                             <div class="card-body">
                                 <h5 class="card-title"><b>@tool.Name</b></h5>
                                 <p class="card-text">@tool.Description</p>
                                 <p class="card-text creator-txt small">
-                                    Delad av @(tool.Creator != null ?
-                               tool.Creator.FirstName + " " + tool.Creator.LastName :
-                               "")
+                                    @sharedOf @(tool.Creator != null ?
+                              tool.Creator.FirstName + " " + tool.Creator.LastName :
+                              "")
                                 </p>
                                 @if (tool.CreatorId == Model.CurrentUser?.Id)
                                 {
                                     <form method="post" asp-page-handler="RemoveToolFromPool">
-                                    <input type="hidden" name="toolId" value="@tool.Id"/>
-                                    <button type="submit" class="btn greenBgColor">Ta bort</button>
+                                        <input type="hidden" name="toolId" value="@tool.Id" />
+                                        <button type="submit" class="btn greenBgColor">@remove</button>
                                     </form>
+                                }
+                                else if (tool.IsBorrowed)
+                                {
+                                    <button disabled type="button" class="btn pinkBgColor">
+                                        @borrowed
+                                    </button>
                                 }
                                 else
                                 {
-                                    <a href="#" class="btn pinkBgColor">Låna</a>
+                                    <button type="button" class="btn pinkBgColor" data-bs-toggle="modal" data-bs-target="#borrowModal">
+                                        @borrow
+                                    </button>
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="borrowModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5" id="exampleModalLabel"><b>Fyll i formuläret för att låna</b></h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <form method="post" asp-page-handler="BorrowTool">
+                                                    <div class="modal-body">
+                                                        <div>
+                                                            <p>Vilken pryl? @tool.Name</p>
+                                                            <p>Beskrivning: @tool.Description</p>
+                                                            <p>Meddelande: @tool.Message</p>
+                                                            <p>
+                                                                Utlånare:
+                                                                @(tool.Creator != null ?
+                                                                    tool.Creator.FirstName + " " + tool.Creator.LastName :
+                                                                    "")
+                                                            </p>
+                                                        </div>
+                                                        <label class="form-label fw-bold mt-2">Från vilket datum?</label>
+                                                        <input type="date"
+                                                               asp-for="NewToolLoan.FromDate"
+                                                               class="form-control bg-transparent"
+                                                               required />
+                                                        @* min="@DateTime.Now.ToString("yyyy-MM-dd")"/>*@
+                                                        <label class="form-label fw-bold mt-2">Till vilket datum?</label>
+                                                        <input type="date"
+                                                               asp-for="NewToolLoan.ToDate"
+                                                               class="form-control bg-transparent"
+                                                               required />
+                                                        @* min="@DateTime.Now.ToString("yyyy-MM-dd")" *@
+                                                        <input type="hidden" asp-for="NewToolLoan.BorrowerId" value="@Model.CurrentUser.Id" />
+                                                        <input type="hidden" asp-for="NewToolLoan.ToolId" value="@tool.Id" />
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                        <button type="submit" class="btn pinkBgColor">Spara</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
                                 }
                             </div>
                         </div>
-                        @* </div> *@
                     }
                 </div>
 
@@ -62,8 +119,8 @@ else
 {
     <div class="pinkBgColor py-4 customColouredContainer d-flex align-items-center justify-content-center">
         <div class="container d-flex flex-column align-items-center">
-            <h4 class="abrilFont my-4">Skapa en grupp för att dela prylar!</h4>
-            <a asp-page="/Group" class="btn custom-btn fontColor fw-bold greenBgColor my-4">Skapa ny grupp</a>
+            <h4 class="abrilFont my-4">@createGroupText</h4>
+            <a asp-page="/Group" class="btn custom-btn fontColor fw-bold greenBgColor my-4">@createGroup</a>
         </div>
     </div>
 }

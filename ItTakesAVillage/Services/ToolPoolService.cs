@@ -1,6 +1,8 @@
 ﻿namespace ItTakesAVillage.Services;
 
-public class ToolPoolService(IRepository<ToolPool> toolPoolRepository, IRepository<UserGroup> userGroupRepository) : IEventService<ToolPool>
+public class ToolPoolService(
+    IRepository<ToolPool> toolPoolRepository,
+    IRepository<UserGroup> userGroupRepository) : IEventService<ToolPool>
 {
     private readonly IRepository<ToolPool> _toolPoolRepository = toolPoolRepository;
     private readonly IRepository<UserGroup> _userGroupRepository = userGroupRepository;
@@ -41,10 +43,24 @@ public class ToolPoolService(IRepository<ToolPool> toolPoolRepository, IReposito
     private async Task<List<ToolPool>> GetTools(List<UserGroup> groupsOfUser)
     {
         var tools = await _toolPoolRepository.GetOfTypeAsync<BaseEvent>();
-        var toolsOfUserGroups = new List<ToolPool>();
+        List<ToolPool> toolsOfUserGroups = [];
         foreach (var group in groupsOfUser)
         {
             toolsOfUserGroups = tools.Where(x => x.GroupId == group.GroupId).ToList();
+        }
+        return toolsOfUserGroups;
+    }
+    private List<ToolPool> ValidateToDate(List<ToolLoan> toolLoansOfUser, List<ToolPool> toolsOfUserGroups)
+    {
+        DateOnly today = DateOnly.FromDateTime(DateTime.Today);
+        foreach (var loan in toolLoansOfUser)
+        {
+            var tool = toolsOfUserGroups.Find(x => x.Id == loan.ToolId);
+
+            if (loan.ToDate < today)
+            {
+                tool.IsBorrowed = false;
+            }
         }
         return toolsOfUserGroups;
     }

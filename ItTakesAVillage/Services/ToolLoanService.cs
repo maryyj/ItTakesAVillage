@@ -8,6 +8,8 @@ public class ToolLoanService(
 
     public async Task<bool> Create(ToolLoan toolLoan)
     {
+        if(toolLoan.FromDate < DateOnly.FromDateTime(DateTime.Today) || toolLoan.ToDate < DateOnly.FromDateTime(DateTime.Today))
+            return false;
         if (toolLoan.ToolPool is null)
             return false;
 

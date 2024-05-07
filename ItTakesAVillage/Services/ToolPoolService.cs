@@ -2,9 +2,11 @@
 
 public class ToolPoolService(
     IRepository<ToolPool> toolPoolRepository,
+    IRepository<ToolLoan> toolLoanRepository,
     IRepository<UserGroup> userGroupRepository) : IEventService<ToolPool>
 {
     private readonly IRepository<ToolPool> _toolPoolRepository = toolPoolRepository;
+    private readonly IRepository<ToolLoan> _toolLoanRepository = toolLoanRepository;
     private readonly IRepository<UserGroup> _userGroupRepository = userGroupRepository;
 
     public async Task<bool> Create(ToolPool tool)
@@ -22,8 +24,9 @@ public class ToolPoolService(
 
     public async Task<List<ToolPool>> GetAllOfGroup(string id)
     {
+        //TODO: Check if ToDate is not passed todaysdate
         var groupsOfUser = await GetUserGroups(id);
-
+        await ValidateReturnDate();
         return await GetTools(groupsOfUser);
     }
     public async Task<bool> Delete(int toolId, string userId)
@@ -50,18 +53,18 @@ public class ToolPoolService(
         }
         return toolsOfUserGroups;
     }
-    private List<ToolPool> ValidateToDate(List<ToolLoan> toolLoansOfUser, List<ToolPool> toolsOfUserGroups)
+    private async Task ValidateReturnDate()
     {
         DateOnly today = DateOnly.FromDateTime(DateTime.Today);
-        foreach (var loan in toolLoansOfUser)
+        var loans = await _toolLoanRepository.GetAsync();
+        foreach (var loan in loans)
         {
-            var tool = toolsOfUserGroups.Find(x => x.Id == loan.ToolId);
+            //var tool = tools.Find(x => x.Id == loan.ToolId);
 
             if (loan.ToDate < today)
             {
-                tool.IsBorrowed = false;
+                loan.ToolPool.IsBorrowed = false;
             }
         }
-        return toolsOfUserGroups;
     }
 }

@@ -1,8 +1,12 @@
 ﻿namespace ItTakesAVillage.Services;
 
-public class ToolPoolService(IRepository<ToolPool> toolPoolRepository, IRepository<UserGroup> userGroupRepository) : IEventService<ToolPool>
+public class ToolPoolService(
+    IRepository<ToolPool> toolPoolRepository,
+    IRepository<ToolLoan> toolLoanRepository,
+    IRepository<UserGroup> userGroupRepository) : IEventService<ToolPool>
 {
     private readonly IRepository<ToolPool> _toolPoolRepository = toolPoolRepository;
+    private readonly IRepository<ToolLoan> _toolLoanRepository = toolLoanRepository;
     private readonly IRepository<UserGroup> _userGroupRepository = userGroupRepository;
 
     public async Task<bool> Create(ToolPool tool)
@@ -21,7 +25,7 @@ public class ToolPoolService(IRepository<ToolPool> toolPoolRepository, IReposito
     public async Task<List<ToolPool>> GetAllOfGroup(string id)
     {
         var groupsOfUser = await GetUserGroups(id);
-
+        await ValidateReturnDate();
         return await GetTools(groupsOfUser);
     }
     public async Task<bool> Delete(int toolId, string userId)
@@ -41,11 +45,23 @@ public class ToolPoolService(IRepository<ToolPool> toolPoolRepository, IReposito
     private async Task<List<ToolPool>> GetTools(List<UserGroup> groupsOfUser)
     {
         var tools = await _toolPoolRepository.GetOfTypeAsync<BaseEvent>();
-        var toolsOfUserGroups = new List<ToolPool>();
+        List<ToolPool> toolsOfUserGroups = [];
         foreach (var group in groupsOfUser)
         {
             toolsOfUserGroups = tools.Where(x => x.GroupId == group.GroupId).ToList();
         }
         return toolsOfUserGroups;
+    }
+    private async Task ValidateReturnDate()
+    {
+        DateOnly today = DateOnly.FromDateTime(DateTime.Today);
+        var loans = await _toolLoanRepository.GetAsync();
+        foreach (var loan in loans)
+        {
+            if (loan.ToDate < today)
+            {
+                loan.ToolPool.IsBorrowed = false;
+            }
+        }
     }
 }

@@ -18,6 +18,7 @@ namespace ItTakesAVillage
             builder.Services.AddScoped<IEventService<DinnerInvitation>, DinnerInvitationService>();
             builder.Services.AddScoped<IEventService<PlayDate>, PlayDateService>();
             builder.Services.AddScoped<IEventService<ToolPool>, ToolPoolService>();
+            builder.Services.AddScoped<IEventService<ToolLoan>, ToolLoanService>();
             builder.Services.AddScoped<INotificationService, NotificationService>();
             builder.Services.AddScoped<IRepository<Group>,EFRepository <Group>>();
             builder.Services.AddScoped<IRepository<UserGroup>,EFRepository <UserGroup>>();
@@ -26,6 +27,7 @@ namespace ItTakesAVillage
             builder.Services.AddScoped<IRepository<DinnerInvitation>,EFRepository <DinnerInvitation>>();
             builder.Services.AddScoped<IRepository<PlayDate>,EFRepository <PlayDate>>();
             builder.Services.AddScoped<IRepository<ToolPool>,EFRepository <ToolPool>>();
+            builder.Services.AddScoped<IRepository<ToolLoan>,EFRepository <ToolLoan>>();
 
 
             builder.Services.AddDbContext<ItTakesAVillageContext>(options => options.UseSqlServer(connectionString));

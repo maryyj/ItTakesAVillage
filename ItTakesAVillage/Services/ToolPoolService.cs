@@ -24,7 +24,6 @@ public class ToolPoolService(
 
     public async Task<List<ToolPool>> GetAllOfGroup(string id)
     {
-        //TODO: Check if ToDate is not passed todaysdate
         var groupsOfUser = await GetUserGroups(id);
         await ValidateReturnDate();
         return await GetTools(groupsOfUser);
@@ -59,8 +58,6 @@ public class ToolPoolService(
         var loans = await _toolLoanRepository.GetAsync();
         foreach (var loan in loans)
         {
-            //var tool = tools.Find(x => x.Id == loan.ToolId);
-
             if (loan.ToDate < today)
             {
                 loan.ToolPool.IsBorrowed = false;

@@ -74,31 +74,38 @@
                                                 </div>
                                                 <form method="post" asp-page-handler="BorrowTool">
                                                     <div class="modal-body">
-                                                        <div>
-                                                            <p>Vilken pryl? @tool.Name</p>
-                                                            <p>Beskrivning: @tool.Description</p>
-                                                            <p>Meddelande: @tool.Message</p>
-                                                            <p>
-                                                                Utlånare:
-                                                                @(tool.Creator != null ?
-                                                                    tool.Creator.FirstName + " " + tool.Creator.LastName :
-                                                                    "")
-                                                            </p>
-                                                        </div>
                                                         <label class="form-label fw-bold mt-2">Från vilket datum?</label>
                                                         <input type="date"
                                                                asp-for="NewToolLoan.FromDate"
+                                                               value="@DateTime.Now.ToString("yyyy-MM-dd")"
                                                                class="form-control bg-transparent"
                                                                min="@DateTime.Now.ToString("yyyy-MM-dd")"
                                                                required />
                                                         <label class="form-label fw-bold mt-2">Till vilket datum?</label>
                                                         <input type="date"
                                                                asp-for="NewToolLoan.ToDate"
+                                                               value="@DateTime.Now.ToString("yyyy-MM-dd")"
                                                                class="form-control bg-transparent"
                                                                min="@DateTime.Now.ToString("yyyy-MM-dd")"
                                                                required />
                                                         <input type="hidden" asp-for="NewToolLoan.BorrowerId" value="@Model.CurrentUser.Id" />
                                                         <input type="hidden" asp-for="NewToolLoan.ToolId" value="@tool.Id" />
+                                                        <div class="p-1 small">
+                                                            <div><b>Prylnamn:</b> @tool.Name</div>
+                                                            <div>
+                                                                @(tool.Description != null ? Html.Raw("<b>Beskrivning: </b>" + tool.Description) : "")
+                                                            </div>
+                                                            @(tool.Message != null ? Html.Raw("<b>Meddelande: </b>" + tool.Message) : "")
+                                                            @* <div><b>Meddelande:</b> @tool.Message</div> *@
+                                                            <div>
+                                                                <b class="bold-text">
+                                                                    Utlånare:
+                                                                </b>
+                                                                @(tool.Creator != null ?
+                                                                    tool.Creator.FirstName + " " + tool.Creator.LastName :
+                                                                    "")
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

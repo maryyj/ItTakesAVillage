@@ -11,7 +11,6 @@
     </div>
     @if (Model.GroupsOfCurrentUser != null && Model.GroupsOfCurrentUser.Any())
     {
-        @* await Html.RenderPartialAsync("_MemberPartial", Model.GroupsOfCurrentUser); *@
         await Html.RenderPartialAsync("_ToolPoolTabPartial");
         <div class="pinkBgColor py-4">
             <div class="container w-75">

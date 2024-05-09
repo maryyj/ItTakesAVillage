@@ -1,28 +1,37 @@
 ﻿.toolPoolTab {
     color: rgb(23, 64, 56);
 }
-.toolPoolTab:hover{
-    color: gray;
+
+    .toolPoolTab:hover {
+        color: gray;
+    }
+
+.creator-txt {
+    font-style: italic;
 }
-.creator-txt{
-    font-style:italic;
+
+.card {
+    width: 15rem;
+    height: auto
 }
-.card{
-    width:15rem;
-    height:auto
-}
-.card > div > img {
-    margin-top: 1rem;
-    max-width: 100%;
-    max-height: 100%;
-    width: fit-content;
-    height: 15rem;
-}
-.card-body{
+
+    .card > div > img {
+        margin-top: 1rem;
+        max-width: 100%;
+        max-height: 100%;
+        width: fit-content;
+        height: 15rem;
+    }
+
+.card-body {
     height: fit-content;
 }
-.a
-{
-    display:flex;
+
+.a {
+    display: flex;
     justify-items: end;
+}
+
+.bold-text {
+    font-weight: bold;
 }

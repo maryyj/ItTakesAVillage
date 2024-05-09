@@ -8,6 +8,15 @@
     string borrowed = "Utlånad";
     string createGroupText = "Skapa en grupp för att dela prylar!";
     string createGroup = "Skapa ny grupp";
+    string fromDateText = "Från vilket datum?";
+    string toDateText = "Till vilket datum?";
+    string fillFormular = "Fyll i formuläret för att låna";
+    string toolText = "Prylnamn: ";
+    string descriptionText = "Beskrivning: ";
+    string messageText = "Meddelande: ";
+    string sharedOfText = "Delad av: ";
+    string save = "Spara";
+    string close = "Stäng";
 }
 <link rel="stylesheet" href="~/css/toolPool.css" />
 @if (Model.CurrentUser != null)
@@ -69,19 +78,21 @@
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h1 class="modal-title fs-5" id="exampleModalLabel"><b>Fyll i formuläret för att låna</b></h1>
+                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">
+                                                        <b>@fillFormular</b>
+                                                    </h1>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <form method="post" asp-page-handler="BorrowTool">
                                                     <div class="modal-body">
-                                                        <label class="form-label fw-bold mt-2">Från vilket datum?</label>
+                                                        <label class="form-label fw-bold mt-2">@fromDateText</label>
                                                         <input type="date"
                                                                asp-for="NewToolLoan.FromDate"
                                                                value="@DateTime.Now.ToString("yyyy-MM-dd")"
                                                                class="form-control bg-transparent"
                                                                min="@DateTime.Now.ToString("yyyy-MM-dd")"
                                                                required />
-                                                        <label class="form-label fw-bold mt-2">Till vilket datum?</label>
+                                                        <label class="form-label fw-bold mt-2">@toDateText</label>
                                                         <input type="date"
                                                                asp-for="NewToolLoan.ToDate"
                                                                value="@DateTime.Now.ToString("yyyy-MM-dd")"
@@ -90,17 +101,17 @@
                                                                required />
                                                         <input type="hidden" asp-for="NewToolLoan.BorrowerId" value="@Model.CurrentUser.Id" />
                                                         <input type="hidden" asp-for="NewToolLoan.ToolId" value="@tool.Id" />
+                                                        <hr />
                                                         <div class="p-1 small">
-                                                            <div><b>Prylnamn:</b> @tool.Name</div>
+                                                            <div><b>@toolText</b> @tool.Name</div>
                                                             <div>
-                                                                @(tool.Description != null ? Html.Raw("<b>Beskrivning: </b>" + tool.Description) : "")
+                                                                @(tool.Description != null ?
+                                                                    Html.Raw("<b>" + descriptionText + "</b>" + tool.Description) : "")
                                                             </div>
-                                                            @(tool.Message != null ? Html.Raw("<b>Meddelande: </b>" + tool.Message) : "")
-                                                            @* <div><b>Meddelande:</b> @tool.Message</div> *@
+                                                            @(tool.Message != null ?
+                                                                Html.Raw("<b>" + messageText + "</b>" + tool.Message) : "")
                                                             <div>
-                                                                <b class="bold-text">
-                                                                    Utlånare:
-                                                                </b>
+                                                                <b>@sharedOfText</b>
                                                                 @(tool.Creator != null ?
                                                                     tool.Creator.FirstName + " " + tool.Creator.LastName :
                                                                     "")
@@ -108,8 +119,8 @@
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                        <button type="submit" class="btn pinkBgColor">Spara</button>
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@close</button>
+                                                        <button type="submit" class="btn pinkBgColor">@save</button>
                                                     </div>
                                                 </form>
                                             </div>
@@ -135,3 +146,4 @@ else
         </div>
     </div>
 }
+<partial name="Shared/_FooterQuote" />

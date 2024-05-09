@@ -1,0 +1,18 @@
+﻿@page
+@model ItTakesAVillage.Pages.ToolBorrowedModel
+@{
+    string toolPool = "Prylpool";
+}
+@if (Model.CurrentUser != null)
+{
+    <div class="d-flex align-items-center flex-column">
+        <img class="mx-auto eventImg" alt="wrench with pink background" src="img/tool.png" />
+        <h2 class="abrilFont text-center mt-2 mb-5">@toolPool</h2>
+    </div>
+@if (Model.GroupsOfCurrentUser != null && Model.GroupsOfCurrentUser.Any())
+{
+    await Html.RenderPartialAsync("_ToolPoolTabPartial");
+}
+
+    <partial name="Shared/_FooterQuote" />
+}

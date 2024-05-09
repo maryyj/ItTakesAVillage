@@ -2,6 +2,11 @@
 @model ItTakesAVillage.Pages.ToolBorrowedModel
 @{
     string toolPool = "Prylpool";
+    // string sharedOf = "Delad av";
+    string returnText = "Återlämna";
+    string returnDate = "Återlämnas:";
+    string borrowed = "Lånad:";
+
 }
 @if (Model.CurrentUser != null)
 {
@@ -9,10 +14,45 @@
         <img class="mx-auto eventImg" alt="wrench with pink background" src="img/tool.png" />
         <h2 class="abrilFont text-center mt-2 mb-5">@toolPool</h2>
     </div>
-@if (Model.GroupsOfCurrentUser != null && Model.GroupsOfCurrentUser.Any())
-{
-    await Html.RenderPartialAsync("_ToolPoolTabPartial");
-}
+    @if (Model.GroupsOfCurrentUser != null && Model.GroupsOfCurrentUser.Any())
+    {
+        await Html.RenderPartialAsync("_ToolPoolTabPartial");
+        <div class="pinkBgColor py-4">
+            <div class="container w-75 pt-5 pb-4">
+                @if (Model.BorrowedTools != null && Model.BorrowedTools.Any())
+                {
+                    <div class="row">
+                        @foreach (var tool in Model.BorrowedTools)
+                        {
+                            <div class="card ms-2">
+                                <div>
+                                    <img src="@(tool.ToolPool.Image != null ?
+                                    $"/uploadedImg/{tool.ToolPool.Image}/{tool.ToolPool.Image}" :
+                                    $"/img/defaultImg.svg")"
+                                         alt="Beskrivning" />
+                                </div>
+                                <div class="card-body">
+                                    <div class="fst-italic small">@borrowed @tool.FromDate</div>
+                                    <div class="fst-italic small">@returnDate @tool.ToDate</div>
+                                    <h5 class="card-title pt-2"><b>@tool.ToolPool.Name</b></h5>
+                                    <p class="card-text">@tool.ToolPool.Description</p>
+                                    @* <p class="card-text creator-txt small">
+                                        @sharedOf @(tool.ToolPool.Creator != null ?
+                                  tool.ToolPool.Creator.FirstName + " " + tool.ToolPool.Creator.LastName :
+                                  "")
+                                    </p> *@
+                                    <form method="post" asp-page-handler="ReturnTool">
+                                        <input type="hidden" name="toolId" value="@tool.Id" />
+                                        <button type="submit" class="btn greenBgColor">@returnText</button>
+                                    </form>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    }
 
     <partial name="Shared/_FooterQuote" />
 }

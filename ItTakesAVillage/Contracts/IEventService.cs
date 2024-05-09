@@ -6,4 +6,5 @@ public interface IEventService<T>
     Task<List<T>> GetAll();
     Task<List<T>> GetAllOfGroup(string id);
     Task <bool> Delete(int eventId, string userId);
+    Task <bool> Update(int id);
 }

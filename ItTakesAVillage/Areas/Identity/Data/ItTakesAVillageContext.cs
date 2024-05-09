@@ -1,12 +1,4 @@
-﻿using ItTakesAVillage.Contracts;
-using ItTakesAVillage.Models;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
-using System.Text.RegularExpressions;
-
-namespace ItTakesAVillage.Data;
-
+﻿namespace ItTakesAVillage.Data;
 public class ItTakesAVillageContext : IdentityDbContext<ItTakesAVillageUser>
 {
     public DbSet<Models.BaseEvent> Events { get; set; }

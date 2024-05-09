@@ -67,4 +67,9 @@ public class ToolPoolService(
             }
         }
     }
+
+    public Task<bool> Update(int t)
+    {
+        throw new NotImplementedException();
+    }
 }

@@ -42,12 +42,16 @@
                               tool.Creator.FirstName + " " + tool.Creator.LastName :
                               "")
                                 </p>
-                                @if (tool.CreatorId == Model.CurrentUser?.Id)
+                                @if (tool.CreatorId == Model.CurrentUser?.Id && tool.IsBorrowed == false)
                                 {
                                     <form method="post" asp-page-handler="RemoveToolFromPool">
                                         <input type="hidden" name="toolId" value="@tool.Id" />
                                         <button type="submit" class="btn greenBgColor">@remove</button>
                                     </form>
+                                }
+                                else if (tool.CreatorId == Model.CurrentUser?.Id && tool.IsBorrowed)
+                                {
+                                    <button disabled type="button" class="btn greenBgColor">@remove</button>
                                 }
                                 else if (tool.IsBorrowed)
                                 {

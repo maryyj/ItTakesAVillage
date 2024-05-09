@@ -33,6 +33,8 @@ public class ToolPoolService(
         var groupsOfUser = await GetUserGroups(userId);
         var tools = await GetTools(groupsOfUser);
         var tool = tools.Find(x => x.Id == toolId);
+        if(tool.IsBorrowed)
+            return false;
         await _toolPoolRepository.DeleteAsync(tool);
 
         return true;
@@ -61,6 +63,7 @@ public class ToolPoolService(
             if (loan.ToDate < today)
             {
                 loan.ToolPool.IsBorrowed = false;
+                loan.IsReturned = true;
             }
         }
     }

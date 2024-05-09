@@ -1,5 +1,4 @@
-﻿
-namespace ItTakesAVillage.Services;
+﻿namespace ItTakesAVillage.Services;
 
 public class ToolLoanService(
     IRepository<ToolLoan> toolLoanRepository) : IEventService<ToolLoan>

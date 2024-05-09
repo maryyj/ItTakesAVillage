@@ -42,9 +42,10 @@ public class ToolLoanModel(
     {
         if (ModelState.IsValid)
         {
-                Tools = await _toolPoolService.GetAllOfGroup(NewToolLoan.BorrowerId);
-                var tool = Tools.Find(x => x.Id == NewToolLoan.ToolId);
-                NewToolLoan.ToolPool = tool;
+            Tools = await _toolPoolService.GetAllOfGroup(NewToolLoan.BorrowerId);
+            var tool = Tools.Find(x => x.Id == NewToolLoan.ToolId);
+            NewToolLoan.ToolPool = tool;
+            bool success = await _toolLoanService.Create(NewToolLoan);
         }
         return RedirectToPage("/ToolPool");
     }

@@ -6,6 +6,7 @@ global using ItTakesAVillage.Contracts;
 global using System;
 global using Microsoft.EntityFrameworkCore.Migrations;
 global using Microsoft.AspNetCore.Identity;
+global using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 /*------------PAGES------------------------*/
 
 global using Microsoft.AspNetCore.Mvc;

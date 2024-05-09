@@ -23,4 +23,9 @@ public class PlayDateService(IRepository<PlayDate> playDateRepository) : IEventS
     {
         throw new NotImplementedException();
     }
+
+    public Task<bool> Update(int t)
+    {
+        throw new NotImplementedException();
+    }
 }

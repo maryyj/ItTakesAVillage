@@ -6,6 +6,7 @@ public class ItTakesAVillageContext : IdentityDbContext<ItTakesAVillageUser>
     public DbSet<UserGroup> UserGroups { get; set; }
     public DbSet<Notification> Notifications { get; set; }
     public DbSet<ToolLoan> ToolLoans { get; set; }
+    public DbSet<GroupChat> GroupChats { get; set; }
 
     public ItTakesAVillageContext(DbContextOptions<ItTakesAVillageContext> options)
         : base(options)
@@ -24,6 +25,7 @@ public class ItTakesAVillageContext : IdentityDbContext<ItTakesAVillageUser>
        .HasValue<PlayDate>("PlayDate")
        .HasValue<ToolPool>("ToolPool");
 
+        builder.Entity<GroupChat>().Navigation(x => x.Group).AutoInclude();
         builder.Entity<UserGroup>().Navigation(x => x.Group).AutoInclude();
         builder.Entity<UserGroup>().Navigation(x => x.User).AutoInclude();
         builder.Entity<Notification>().Navigation(x => x.RelatedEvent).AutoInclude();

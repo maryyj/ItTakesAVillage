@@ -9,3 +9,9 @@
     background-color:transparent;
     border: none;
 }
+.table > tbody > tr{
+    height:3rem;
+}
+.table > tbody > tr :hover{
+    color: rgb(203, 203, 203)
+}

@@ -1,45 +1,41 @@
-﻿@model List<ItTakesAVillage.Models.Group>
-@* @model ItTakesAVillageUser *@
+﻿@model List<ItTakesAVillage.Models.UserGroup>
 @using ItTakesAVillage.Contracts
 @using Microsoft.AspNetCore.Identity
-@inject IGroupService _groupService
 @inject UserManager<ItTakesAVillageUser> _userManager
 
 <link rel="stylesheet" href="~/css/group.css" />
 <div class="container w-75  mb-4">
 
-    <h4 class="abrilFont mb-4">Mina grupper</h4>
+    <a href="/Group" class="btn abrilFont mb-4 p-2 blueBgColor border-0">Tillbaka till dina grupper</a>
     <div class="accordion" id="notification-accordion">
-        @foreach (var group in Model)
-        {
+     @*    @foreach (var user in Model)
+        { *@
             <div class="accordion-item border-0">
-                <h2 class="accordion-header" id="heading_@group.Id">
+            <h2 class="accordion-header" id="heading_usersAccordion">
                     <button class="accordion-button collapsed "
                             type="submit"
                             data-bs-toggle="collapse"
-                            data-bs-target="#collapse_@group.Id"
+                        data-bs-target="#collapse_usersAccordion"
                             aria-expanded="false"
-                            aria-controls="collapse_@group.Id">
+                            aria-controls="collapse_usersAccordion">
                         <i class="bi bi-circle-fill pinkFontColor p-2"></i>
-                        <span class="fw-bold">@group.Name</span>
+                        <span class="fw-bold">Medlemmar</span>
                     </button>
                 </h2>
 
-                <div id="collapse_@group.Id" class="accordion-collapse collapse " aria-labelledby="heading_@group.Id" data-bs-parent="#notification-accordion">
+            <div id="collapse_usersAccordion" class="accordion-collapse collapse " aria-labelledby="heading_usersAccordion" data-bs-parent="#notification-accordion">
                     <div class="accordion-body">
-                        @{
-                            var members = await _groupService.GetMembers(group.Id);
-                        }
-                        @foreach (var member in members)
+                        @foreach (var member in Model)
                         {
                             if (member != null)
                             {
                                 <div class="container d-flex pt-2 member-container">
-                                    <p>@member.FirstName @member.LastName</p>
-                                    @if (member.UserName == _userManager.GetUserName(User))
+                                    <p>@member.User.FirstName @member.User.LastName</p>
+                                    @if (member.UserId == _userManager.GetUserId(User))
                                     {
                                         <form method="post" asp-page-handler="RemoveFromGroup">
-                                            <input type="hidden" name="groupId" value="@group.Id" />
+                                            <input type="hidden" name="userId" value="@member.UserId" />
+                                            <input type="hidden" name="groupId" value="@member.GroupId" />
                                             <button type="submit" class="bi bi-x-circle delete-btn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ta bort från grupp"></button>
                                         </form>
                                     }
@@ -49,6 +45,5 @@
                     </div>
                 </div>
             </div>
-        }
     </div>
 </div>

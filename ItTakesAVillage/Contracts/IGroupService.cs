@@ -6,5 +6,6 @@ public interface IGroupService
     Task<bool> AddUser(string userId, int groupId);
     Task<bool> RemoveUser(string userId, int groupId);
     Task<List<ItTakesAVillageUser?>> GetMembers(int groupId);
+    Task<List<UserGroup?>> GetUsersAndGroups(int groupId);
     Task<List<Group?>> GetGroupsByUserId(string userId);
 }

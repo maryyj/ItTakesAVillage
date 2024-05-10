@@ -12,6 +12,7 @@
 <ul class="navbar-nav">
     @if (user != null)
     {
+        <div class="user-name small">@user.FirstName @user.LastName</div>
         <div class="dropdown mx-2">
             <button type="button" class="btn greenBgColor dropdown-toggle" data-bs-toggle="dropdown">
                 Meny

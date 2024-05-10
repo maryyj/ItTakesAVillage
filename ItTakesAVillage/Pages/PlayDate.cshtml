@@ -10,7 +10,7 @@
     </div>
     @if (Model.GroupsOfCurrentUser != null && Model.GroupsOfCurrentUser.Any())
     {
-        await Html.RenderPartialAsync("_MemberPartial", Model.GroupsOfCurrentUser);
+        await Html.RenderPartialAsync("_GroupAndMemberPartial", Model.GroupsOfCurrentUser);
 
         <div class="greenBgColor py-4">
             <div class="container w-75">

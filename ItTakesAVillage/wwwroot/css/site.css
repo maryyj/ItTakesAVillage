@@ -29,22 +29,27 @@ body {
     font-family: 'Abril Fatface', serif;
     font-family: 'Source Serif 4', serif;
 }
-.greenBgColor {
-    background-color: rgba(173, 202, 179, 0.3);
-}
 .pinkFontColor {
     color: rgb(221, 172, 172, 0.3);
 }
+.blueFontColor {
+    color: rgba(180, 210, 234,0.3);
+}
+.greenFontColor {
+    color: rgba(173, 202, 179, 0.3);
+}.greenBgColor {
+    background-color: rgba(173, 202, 179, 0.3);
+}
 .pinkBgColor {
     background-color: rgb(221, 172, 172, 0.3);
+}
+.blueBgColor {
+    background-color: rgba(180, 210, 234,0.3);
 }
 .fontColor, input{
     color: rgb(23, 64, 56);
 }
 
-.blueBgColor {
-    background-color: rgba(180, 210, 234,0.3);
-}
 #registerImg {
     max-height: 100% !important;
     max-width: 100%;
@@ -60,8 +65,7 @@ a {
     text-decoration:none;
 }
 a:hover{
-    color:gray;
-    
+    color:gray;   
 }
 .eventImg {
     height: 150px;
@@ -76,4 +80,8 @@ a:hover{
 .register{
     margin-top: 5rem;
     margin-bottom: 5rem;
+}
+.user-name{
+    display:flex;
+    justify-items:end;
 }

@@ -9,7 +9,7 @@
 
     @if (Model.GroupsOfCurrentUser != null && Model.GroupsOfCurrentUser.Any())
     {
-        await Html.RenderPartialAsync("_MemberPartial", Model.GroupsOfCurrentUser);
+        await Html.RenderPartialAsync("_GroupsPartial", Model.GroupsOfCurrentUser);
     }
     <div class="greenBgColor py-5">
         <div class="container w-75">
@@ -27,23 +27,6 @@
                        asp-for="NewGroup.Name" />
                 <input type="submit" class="btn my-2 pinkBgColor fw-bold" value="Spara" />
             </form>
-
-            @if (Model.GroupsOfCurrentUser != null && Model.GroupsOfCurrentUser.Any())
-            {
-                <form method="post" asp-page-handler="AddUserToGroup">
-                    <h5 class="abrilFont mt-3">Lägg till medlem i grupp</h5>
-                    <div class="d-flex w-50 gap-2">
-                        @* TODO: Toast eller alert när det inte går att spara eller har sparats *@
-                        <select id="selectList1" class="form-control col bg-transparent" asp-for="NewUserGroup.GroupId" asp-items="ViewBag.GroupId" required>
-                            <option disabled selected>Välj grupp</option>
-                        </select>
-                        <select id="selectList2" class="form-control col bg-transparent inline-block" asp-for="NewUserGroup.UserId" asp-items="ViewBag.UserId" required>
-                            <option disabled selected>Välj medlem</option>
-                        </select>
-                    </div>
-                    <input type="submit" class="btn pinkBgColor my-2 fw-bold" value="Spara" />
-                </form>
-            }
         </div>
     </div>
     <partial name="Shared/_FooterQuote" />

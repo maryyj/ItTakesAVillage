@@ -1,8 +1,4 @@
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using ItTakesAVillage.Data;
-using ItTakesAVillage.Models;
-using ItTakesAVillage.Contracts;
+
 using ItTakesAVillage.Services;
 using ItTakesAVillage.Repository;
 namespace ItTakesAVillage

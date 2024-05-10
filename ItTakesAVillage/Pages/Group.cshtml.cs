@@ -1,26 +1,19 @@
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
-
 namespace ItTakesAVillage.Pages
 {
-    public class GroupModel : PageModel
+    public class GroupModel(
+        IGroupService groupService, 
+        UserManager<ItTakesAVillageUser> userManager) : PageModel
     {
-        private readonly IGroupService _groupService;
-        private readonly UserManager<ItTakesAVillageUser> _userManager;
+        private readonly IGroupService _groupService = groupService;
+        private readonly UserManager<ItTakesAVillageUser> _userManager = userManager;
 
         public ItTakesAVillageUser? CurrentUser { get; set; }
         [BindProperty]
-        public Models.Group NewGroup { get; set; } = new Models.Group();
+        public Group NewGroup { get; set; } = new();
         [BindProperty]
-        public UserGroup NewUserGroup { get; set; } = new UserGroup();
-        public List<Models.Group?> GroupsOfCurrentUser { get; set; } = new();
-        public GroupModel(IGroupService groupService, UserManager<ItTakesAVillageUser> userManager)
-        {
-            _groupService = groupService;
-            _userManager = userManager;
-        }
+        public UserGroup NewUserGroup { get; set; } = new();
+        public List<Group?> GroupsOfCurrentUser { get; set; } = [];
+
         public async Task<IActionResult> OnGet()
         {
             CurrentUser = await _userManager.GetUserAsync(User);
@@ -47,21 +40,6 @@ namespace ItTakesAVillage.Pages
                     await _groupService.AddUser(CurrentUser.Id, newGroupId);
                 }
             }
-            return RedirectToPage("/Group");
-        }
-        public async Task<IActionResult> OnPostAddUserToGroupAsync()
-        {
-            if (ModelState.IsValid)
-            {
-                await _groupService.AddUser(NewUserGroup.UserId, NewUserGroup.GroupId);
-            }
-            return RedirectToPage("/Group");
-        }
-        public async Task<IActionResult> OnPostRemoveFromGroup(int groupId)
-        {
-            CurrentUser = await _userManager.GetUserAsync(User);
-            if(CurrentUser != null)
-                await _groupService.RemoveUser(CurrentUser.Id, groupId);
             return RedirectToPage("/Group");
         }
     }

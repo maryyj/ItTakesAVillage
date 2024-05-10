@@ -47,12 +47,13 @@ public class ToolPoolService(
     private async Task<List<ToolPool>> GetTools(List<UserGroup> groupsOfUser)
     {
         var tools = await _toolPoolRepository.GetOfTypeAsync<BaseEvent>();
-        List<ToolPool> toolsOfUserGroups = [];
+        List<ToolPool> sharedTools = [];
         foreach (var group in groupsOfUser)
         {
-            toolsOfUserGroups = tools.Where(x => x.GroupId == group.GroupId).ToList();
+            List<ToolPool> toolsForGroup= tools.Where(x => x.GroupId == group.GroupId).ToList();
+            sharedTools.AddRange(toolsForGroup);
         }
-        return toolsOfUserGroups;
+        return sharedTools;
     }
     private async Task ValidateReturnDate()
     {
@@ -60,7 +61,7 @@ public class ToolPoolService(
         var loans = await _toolLoanRepository.GetAsync();
         foreach (var loan in loans)
         {
-            if (loan.ToDate < today)
+            if (loan.ToDate < today && loan.IsReturned == false)
             {
                 loan.ToolPool.IsBorrowed = false;
                 loan.IsReturned = true;

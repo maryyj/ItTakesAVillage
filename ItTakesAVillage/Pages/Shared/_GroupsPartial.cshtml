@@ -1,0 +1,29 @@
+﻿@model List<ItTakesAVillage.Models.Group>
+@using ItTakesAVillage.Contracts
+@using Microsoft.AspNetCore.Identity
+@inject IGroupService _groupService
+@inject UserManager<ItTakesAVillageUser> _userManager
+
+<link rel="stylesheet" href="~/css/group.css" />
+<div class="container w-75  mb-4">
+
+    <h4 class="abrilFont mb-4">Dina grupper</h4>
+    <table class="table">
+        <tbody>
+            @foreach (var group in Model)
+            {
+                <tr>
+                    <td>
+                        <i class="bi bi-circle-fill pinkFontColor p-2"></i>
+                        <span class="fw-bold">@group.Name</span>
+                    </td>
+                    <td>
+                        <a href="/Group/GroupDetails?groupId=@group.Id">
+                            <i class="bi bi-arrow-right-circle-fill" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Gå till grupp"></i>
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

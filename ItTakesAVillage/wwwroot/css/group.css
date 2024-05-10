@@ -9,9 +9,12 @@
     background-color:transparent;
     border: none;
 }
-.table > tbody > tr{
-    height:3rem;
+.group-row{
+    height: 3rem;
 }
-.table > tbody > tr :hover{
-    color: rgb(203, 203, 203)
+.arrow-container {
+    justify-content: flex-end;
+}
+.groupTab {
+    color: rgb(23, 64, 56);
 }

@@ -9,6 +9,7 @@
     @if (Model.UsersInGroup != null && Model.UsersInGroup.Any())
     {
         await Html.RenderPartialAsync("_MemberPartial", Model.UsersInGroup);
+        await Html.RenderPartialAsync("_GroupTabPartial");
     }
     <div class="greenBgColor py-5">
         <div class="container w-75">

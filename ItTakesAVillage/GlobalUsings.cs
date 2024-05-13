@@ -7,6 +7,11 @@ global using System;
 global using Microsoft.EntityFrameworkCore.Migrations;
 global using Microsoft.AspNetCore.Identity;
 global using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+global using ItTakesAVillage.Helper;
+
+global using ItTakesAVillage.Services;
+global using ItTakesAVillage.Repository;
+global using ItTakesAVillage.Interfaces;
 /*------------PAGES------------------------*/
 
 global using Microsoft.AspNetCore.Mvc;

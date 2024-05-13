@@ -18,3 +18,7 @@
 .groupTab {
     color: rgb(23, 64, 56);
 }
+/*------GROUPCHAT------*/
+.message{
+    border:dotted;
+}

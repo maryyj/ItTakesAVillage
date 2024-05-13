@@ -10,16 +10,16 @@ namespace ItTakesAVillage.Pages
         [BindProperty]
         public UserGroup NewUserGroup { get; set; } = new();
         public List<UserGroup?> UsersInGroup { get; set; } = [];
-        public int GroupId { get; set; }
         public async Task<IActionResult> OnGet(int groupId)
         {
             if (groupId == 0)
                 return RedirectToPage("/Group");
+
             CurrentUser = await _userManager.GetUserAsync(User);
+
             if (CurrentUser != null)
             {
-                GroupId = groupId;
-                CurrentGroup = await _groupService.GetGroup(groupId);
+                CurrentGroup = await _groupService.Get(groupId);
                 UsersInGroup = await _groupService.GetUsersAndGroups(groupId);
                 var allUsers = _userManager.Users.Where(x => x.Id != CurrentUser.Id).ToList();
                 ViewData["UserId"] = new SelectList(allUsers, "Id", "Email");

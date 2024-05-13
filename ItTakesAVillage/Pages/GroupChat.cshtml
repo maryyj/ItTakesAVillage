@@ -1,5 +1,44 @@
 ﻿@page
-@model ItTakesAVillage.Pages.Index1Model
+@model ItTakesAVillage.Pages.GroupChatModel
+@inject UserManager<ItTakesAVillageUser> _userManager
 @{
 }
-<h5>GruppCHATT</h5>
+<link rel="stylesheet" href="~/css/group.css" />
+@if (Model.CurrentUser != null)
+{
+    @* <a asp-page="/GroupDetails" asp-route-groupId="" class="btn abrilFont mx-2 mb-2 p-2 blueBgColor border-0">Tillbaka till dina grupper</a> *@
+    <h2 class="text-center abrilFont">Chatta med dina vänner och börja hjälpas åt!</h2>
+    @if (Model.UsersInGroup != null && Model.UsersInGroup.Any())
+    {
+        <h4 class="text-center abrilFont">@(Model.CurrentGroup != null ? Model.CurrentGroup.Name : "")</h4>
+        await Html.RenderPartialAsync("_MemberPartial", Model.UsersInGroup);
+        await Html.RenderPartialAsync("_GroupTabPartial", Model.CurrentGroup);
+    }
+    <div class="greenBgColor py-5">
+        <div class="container w-75">
+            @if (Model.GroupMessages != null && Model.GroupMessages.Any())
+            {
+                <div class="card">
+                    <h5 class="card-header">Gruppchatt för @Model.CurrentGroup.Name</h5>
+                    <div class="card-body">
+                        @foreach (var message in Model.GroupMessages)
+                        {
+
+                            var sender = await _userManager.FindByIdAsync(message.SenderId);
+
+                            <p class="card-text small">@message.Date - @sender.FirstName @sender.LastName</p>
+                            <p class="card-text message">@message.Message</p>
+                        }
+                    </div>
+                </div>
+            }
+            <form method="post" asp-page-handler="AddMessage">
+                <input type="hidden" name="groupId" value="@Model.CurrentGroup.Id"/>
+                <input type="hidden" asp-for="@Model.NewMessage.SenderId" value="@Model.CurrentUser.Id"/>
+                <input type="hidden" asp-for="@Model.NewMessage.Date" value="@DateTime.Now.ToString()"/>
+                <textarea asp-for="@Model.NewMessage.Message"></textarea>
+                <button type="submit" class="btn bgPinkColor"> skicka</button>
+            </form>
+        </div>
+    </div>
+}

@@ -1,11 +1,14 @@
-﻿<link rel="stylesheet" href="~/css/group.css" />
+﻿@model ItTakesAVillage.Models.Group
+<link rel="stylesheet" href="~/css/group.css" />
 <div class="container w-75">
     <ul class="nav nav-tabs">
         <li class="nav-item">
-            <a class="nav-link groupTab " href="/">Medlemmar</a>
+            <a class="nav-link groupTab"
+               asp-page="/GroupDetails"
+               asp-route-groupId="@Model.Id">Medlemmar</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link groupTab" href="/">Chatt</a>
+            <a class="nav-link groupTab" asp-page="/GroupChat">Gruppchatt</a>
         </li>
     </ul>
 </div>

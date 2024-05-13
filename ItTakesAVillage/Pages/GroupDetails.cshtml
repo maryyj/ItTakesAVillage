@@ -1,15 +1,19 @@
-﻿@page "/Group/GroupDetails"
+﻿@page
 @model ItTakesAVillage.Pages.GroupDetailsModel
 @{
 }
 @if (Model.CurrentUser != null)
 {
-    <h2 class="text-center abrilFont m-5">Samla dina vänner och börja hjälpas åt!</h2>
+    @* <div> *@
+        <a asp-page="/Group" class="btn abrilFont mx-2 mb-2 p-2 blueBgColor border-0">Tillbaka till dina grupper</a>
+        <h2 class="text-center abrilFont">Samla dina vänner och börja hjälpas åt!</h2>
+    @* </div> *@
 
     @if (Model.UsersInGroup != null && Model.UsersInGroup.Any())
     {
+        <h4 class="text-center abrilFont">@(Model.CurrentGroup != null ? Model.CurrentGroup.Name : "")</h4>
         await Html.RenderPartialAsync("_MemberPartial", Model.UsersInGroup);
-        await Html.RenderPartialAsync("_GroupTabPartial");
+        await Html.RenderPartialAsync("_GroupTabPartial", Model.CurrentGroup);
     }
     <div class="greenBgColor py-5">
         <div class="container w-75">
@@ -18,10 +22,7 @@
                 <form method="post" asp-page-handler="AddUserToGroup">
                     <h5 class="abrilFont mt-3">Lägg till medlem i grupp</h5>
                     <div class="d-flex w-50 gap-2">
-                        @* <select id="selectList1" class="form-control col bg-transparent" asp-for="NewUserGroup.GroupId" asp-items="ViewBag.GroupId" required>
-                            <option disabled selected>Välj grupp</option>
-                        </select> *@
-                        <input type="hidden" name="groupId" value="@Model.GroupId" />
+                        <input type="hidden" name="groupId" value="@Model.CurrentGroup.Id" />
                         <select id="selectList2" class="form-control col bg-transparent inline-block" asp-for="NewUserGroup.UserId" asp-items="ViewBag.UserId" required>
                             <option disabled selected>Välj medlem</option>
                         </select>

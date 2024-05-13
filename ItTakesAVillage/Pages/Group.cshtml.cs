@@ -1,7 +1,7 @@
 namespace ItTakesAVillage.Pages
 {
     public class GroupModel(
-        IGroupService groupService, 
+        IGroupService groupService,
         UserManager<ItTakesAVillageUser> userManager) : PageModel
     {
         private readonly IGroupService _groupService = groupService;

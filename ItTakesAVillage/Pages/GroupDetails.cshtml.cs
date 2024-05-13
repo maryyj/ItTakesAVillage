@@ -1,26 +1,25 @@
 namespace ItTakesAVillage.Pages
 {
-    public class GroupDetailsModel : PageModel
+    public class GroupDetailsModel(IGroupService groupService, UserManager<ItTakesAVillageUser> userManager) : PageModel
     {
-        private readonly IGroupService _groupService;
-        private readonly UserManager<ItTakesAVillageUser> _userManager;
+        private readonly IGroupService _groupService = groupService;
+        private readonly UserManager<ItTakesAVillageUser> _userManager = userManager;
 
-        public GroupDetailsModel(IGroupService groupService, UserManager<ItTakesAVillageUser> userManager)
-        {
-            _groupService = groupService;
-            _userManager = userManager;
-        }
         public ItTakesAVillageUser? CurrentUser { get; set; }
+        public Group? CurrentGroup { get; set; }
         [BindProperty]
         public UserGroup NewUserGroup { get; set; } = new();
         public List<UserGroup?> UsersInGroup { get; set; } = [];
         public int GroupId { get; set; }
         public async Task<IActionResult> OnGet(int groupId)
         {
+            if (groupId == 0)
+                return RedirectToPage("/Group");
             CurrentUser = await _userManager.GetUserAsync(User);
             if (CurrentUser != null)
             {
                 GroupId = groupId;
+                CurrentGroup = await _groupService.GetGroup(groupId);
                 UsersInGroup = await _groupService.GetUsersAndGroups(groupId);
                 var allUsers = _userManager.Users.Where(x => x.Id != CurrentUser.Id).ToList();
                 ViewData["UserId"] = new SelectList(allUsers, "Id", "Email");
@@ -41,7 +40,7 @@ namespace ItTakesAVillage.Pages
             {
                 await _groupService.AddUser(NewUserGroup.UserId, groupId);
             }
-            return RedirectToPage("/Group"); //TODO: Redirecct to correct page
+            return RedirectToPage("/GroupDetails", new {groupId});
         }
     }
 }

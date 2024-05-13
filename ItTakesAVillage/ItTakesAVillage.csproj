@@ -21,6 +21,7 @@
   </ItemGroup>
 
 	<ItemGroup>
+	  <Folder Include="Pages\GroupPages\" />
 	  <Folder Include="wwwroot\uploadedImg\" />
 	</ItemGroup>
 

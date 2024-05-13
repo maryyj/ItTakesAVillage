@@ -10,7 +10,7 @@
     <h4 class="abrilFont mb-4">Dina grupper</h4>
     @foreach (var group in Model)
     {
-        <a href="/Group/GroupDetails?groupId=@group.Id">
+        <a asp-page="/GroupDetails" asp-route-groupId="@group.Id"> 
             <div class="row group-row d-flex">
                 <div class="col group-container">
                     <i class="bi bi-circle-fill pinkFontColor p-2"></i>

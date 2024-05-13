@@ -16,6 +16,7 @@ namespace ItTakesAVillage.Services
         private readonly IRepository<ItTakesAVillageUser> _userRepository = userRepository;
         private readonly IRepository<UserGroup> _userGroupRepository = userGroupRepository;
 
+        public async Task<Group> GetGroup(int groupId) => await _groupRepository.GetAsync(groupId) ?? throw new ArgumentNullException($"Could not find group {groupId}");
         public async Task<int> Save(Group group, string userId)
         {
             var groupsByUserId = await GetGroupsByUserId(userId);
@@ -49,16 +50,16 @@ namespace ItTakesAVillage.Services
 
             return true;
         }
-        public async Task<bool> RemoveUser (string userId, int groupId)
+        public async Task<bool> RemoveUser(string userId, int groupId)
         {
             var usergroups = await _userGroupRepository.GetAsync();
-            
-            if (usergroups == null) 
+
+            if (usergroups == null)
                 return false;
-            
+
             var userGroup = usergroups.FirstOrDefault(x => x.GroupId == groupId && x.UserId == userId);
-            
-            if(userGroup == null)
+
+            if (userGroup == null)
                 return false;
 
             await _userGroupRepository.DeleteAsync(userGroup);
@@ -70,7 +71,7 @@ namespace ItTakesAVillage.Services
 
             return userGroups.Select(x => x.User).ToList();
         }
-        public async Task<List<UserGroup>> GetUsersAndGroups(int groupId)
+        public async Task<List<UserGroup?>> GetUsersAndGroups(int groupId)
         {
             var groupsAndUsers = await _userGroupRepository.GetAsync();
             return groupsAndUsers.Where(x => x.GroupId == groupId).ToList();

@@ -20,8 +20,11 @@
     justify-content: flex-end;
 }
 
-.groupTab {
+.groupTab:hover {
     color: rgb(23, 64, 56);
+}
+.groupTab:focus {
+    background-color: rgb(221, 172, 172, 0.3);
 }
 /*------GROUPCHAT------*/
 .date-separator {

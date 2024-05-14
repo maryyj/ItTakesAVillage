@@ -4,19 +4,22 @@
 }
 @if (Model.CurrentUser != null)
 {
-    @* <div> *@
-        <a asp-page="/Group" class="btn abrilFont mx-2 mb-2 p-2 blueBgColor border-0">Tillbaka till dina grupper</a>
-        <h2 class="text-center abrilFont">Samla dina vänner och börja hjälpas åt!</h2>
-    @* </div> *@
+    <div class="container w-75">
+        <a asp-page="/Group" class="btn abrilFont p-2 blueBgColor border-0">Tillbaka till dina grupper</a>
+    </div>
 
     @if (Model.UsersInGroup != null && Model.UsersInGroup.Any())
     {
-        <h4 class="text-center abrilFont">@(Model.CurrentGroup != null ? Model.CurrentGroup.Name : "")</h4>
+        @* <h4 class="text-center abrilFont">@(Model.CurrentGroup != null ? Model.CurrentGroup.Name : "")</h4> *@
+        <h2 class="text-center abrilFont mb-3">@(Model.CurrentGroup != null ? Model.CurrentGroup.Name : "")</h2>
+        <div class="text-center abrilFont text-muted mb-5">- Medlemmar -</div>
         await Html.RenderPartialAsync("_MemberPartial", Model.UsersInGroup);
         await Html.RenderPartialAsync("_GroupTabPartial", Model.CurrentGroup);
     }
     <div class="greenBgColor py-5">
         <div class="container w-75">
+            @{
+            }
             @if (Model.UsersInGroup != null && Model.UsersInGroup.Any())
             {
                 <form method="post" asp-page-handler="AddUserToGroup">

@@ -6,11 +6,14 @@
 <link rel="stylesheet" href="~/css/group.css" />
 @if (Model.CurrentUser != null)
 {
-    @* <a asp-page="/GroupDetails" asp-route-groupId="" class="btn abrilFont mx-2 mb-2 p-2 blueBgColor border-0">Tillbaka till dina grupper</a> *@
-    <h2 class="text-center abrilFont">Chatta med dina vänner och börja hjälpas åt!</h2>
+    <div class="container w-75">
+        <a asp-page="/Group" class="btn abrilFont p-2 blueBgColor border-0">Tillbaka till dina grupper</a>
+    </div>
     @if (Model.UsersInGroup != null && Model.UsersInGroup.Any())
     {
-        <h4 class="text-center abrilFont m-5">@(Model.CurrentGroup != null ? Model.CurrentGroup.Name : "")</h4>
+        <h2 class="text-center abrilFont mt-5 mb-3">@(Model.CurrentGroup != null ? Model.CurrentGroup.Name : "")</h2>
+        <div class="text-center abrilFont text-muted mb-5">- Gruppchatt -</div>
+
         @* await Html.RenderPartialAsync("_MemberPartial", Model.UsersInGroup); *@
         await Html.RenderPartialAsync("_GroupTabPartial", Model.CurrentGroup);
     }
@@ -75,16 +78,21 @@
                     </div>
                 </div>
             }
+            else
+            {
+                <h2 class="text-center abrilFont">Skriv ett meddelande och börja kommunicera med dina vänner</h2>
+                <div class="text-center abrilFont text-muted mb-5">- Inga meddelanden -</div>
+            }
             <form method="post" asp-page-handler="AddMessage">
                 <input type="hidden" name="groupId" value="@Model.CurrentGroup.Id" />
                 <input type="hidden" asp-for="@Model.NewMessage.SenderId" value="@Model.CurrentUser.Id" />
                 <input type="hidden" asp-for="@Model.NewMessage.Date" value="@DateTime.Now.ToString()" />
                 <div class="d-flex mt-2">
                     <textarea asp-for="@Model.NewMessage.Message"
-                              class="bg-lightrounded form-control"
+                              class="bg-lightrounded form-control me-2"
                               placeholder="Skriv in ditt meddelande...">
-                                                                </textarea>
-                    <button type="submit" class="bg-transparent"> <i class="bi bi-send-fill"></i> </button>
+                                                                    </textarea>
+                    <button type="submit" class="pinkBgColor border-0 rounded">Skicka</button>
                 </div>
             </form>
         </div>

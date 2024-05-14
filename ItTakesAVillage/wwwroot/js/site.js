@@ -75,3 +75,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 });
+
+$(document).ready(function () {
+    $('.scroll-container').scrollTop($('.scroll-container')[0].scrollHeight);
+});

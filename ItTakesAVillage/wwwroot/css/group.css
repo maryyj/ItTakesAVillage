@@ -1,24 +1,43 @@
-﻿.member-container{
-    justify-content:space-between;
+﻿.member-container {
+    justify-content: space-between;
 }
-.member-container:hover {
-    background-color: rgb(240, 248, 248)
-} 
+
+    .member-container:hover {
+        background-color: rgb(240, 248, 248)
+    }
+
 .delete-btn {
     color: red;
-    background-color:transparent;
+    background-color: transparent;
     border: none;
 }
-.group-row{
+
+.group-row {
     height: 3rem;
 }
+
 .arrow-container {
     justify-content: flex-end;
 }
+
 .groupTab {
     color: rgb(23, 64, 56);
 }
 /*------GROUPCHAT------*/
-.message{
-    border:dotted;
+.date-separator {
+    display: inline-block;
+    color: #9c9999;
+    border-bottom: 1px solid lightgray;
+}
+.message {
+    max-width: 50%; 
+}
+.user-message .message-body {
+    margin-left: auto;
+}
+.other-message .message-body {
+    margin-right: auto;
+}
+.card{
+    max-height: 30rem;
 }

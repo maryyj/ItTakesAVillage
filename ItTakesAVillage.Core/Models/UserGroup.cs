@@ -1,4 +1,4 @@
-﻿namespace ItTakesAVillage.Models;
+﻿namespace ItTakesAVillage.Core.Models;
 
 public class UserGroup
 {

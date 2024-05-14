@@ -1,4 +1,4 @@
-﻿namespace ItTakesAVillage.Contracts;
+﻿namespace ItTakesAVillage.Interfaces;
 
 public interface INotificationService
 {

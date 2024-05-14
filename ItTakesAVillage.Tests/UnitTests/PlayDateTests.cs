@@ -1,4 +1,4 @@
-﻿using ItTakesAVillage.Contracts;
+﻿using ItTakesAVillage.Interfaces;
 using ItTakesAVillage.Models;
 using ItTakesAVillage.Services;
 using Moq;

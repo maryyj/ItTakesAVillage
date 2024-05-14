@@ -1,8 +1,8 @@
-﻿namespace ItTakesAVillage.Data;
+﻿namespace ItTakesAVillage.Infrastructure.DAL;
 public class ItTakesAVillageContext : IdentityDbContext<ItTakesAVillageUser>
 {
-    public DbSet<Models.BaseEvent> Events { get; set; }
-    public DbSet<Models.Group> Groups { get; set; }
+    public DbSet<BaseEvent> Events { get; set; }
+    public DbSet<Group> Groups { get; set; }
     public DbSet<UserGroup> UserGroups { get; set; }
     public DbSet<Notification> Notifications { get; set; }
     public DbSet<ToolLoan> ToolLoans { get; set; }

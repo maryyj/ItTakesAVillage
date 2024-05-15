@@ -29,11 +29,15 @@ namespace ItTakesAVillage.API
 
 
             builder.Services.AddDbContext<ItTakesAVillageContext>(options => options.UseSqlServer(connectionString));
+            
+            builder.Services.AddControllers();
+            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen();
 
             //builder.Services.AddDefaultIdentity<ItTakesAVillageUser>(options => options.SignIn.RequireConfirmedAccount = false).AddEntityFrameworkStores<ItTakesAVillageContext>();
 
-            // Add services to the container.
-            builder.Services.AddRazorPages();
+            //builder.Services.AddRazorPages();
 
             var app = builder.Build();
 
@@ -45,6 +49,12 @@ namespace ItTakesAVillage.API
                 app.UseHsts();
             }
 
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseSwagger();
+                app.UseSwaggerUI();
+            }
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
@@ -53,8 +63,8 @@ namespace ItTakesAVillage.API
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.MapRazorPages();
-
+            //app.MapRazorPages();
+            app.MapControllers();
             app.Run();
         }
     }

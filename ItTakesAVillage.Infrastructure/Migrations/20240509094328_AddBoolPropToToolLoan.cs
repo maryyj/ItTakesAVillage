@@ -1,4 +1,5 @@
-﻿#nullable disable
+﻿
+#nullable disable
 
 namespace ItTakesAVillage.Infrastructure.Migrations;
 

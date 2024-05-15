@@ -1,9 +1,9 @@
 ﻿namespace ItTakesAVillage.Core.Interfaces;
 public interface IEventService<T>
 {
-    Task<bool> Create(T t);
-    Task<List<T>> GetAll();
-    Task<List<T>> GetAllOfGroup(string id);
-    Task <bool> Delete(int eventId, string userId);
-    Task <bool> Update(int id);
+    Task<bool> CreateAsync(T t);
+    Task<List<T>> GetAllAsync();
+    Task<List<T>> GetAllForUserGroupsAsync(string id);
+    Task <bool> DeleteAsync(int eventId);
+    Task <bool> UpdateAsync(int id);
 }

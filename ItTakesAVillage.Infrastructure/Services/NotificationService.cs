@@ -25,7 +25,7 @@
         }
         public async Task NotifyGroupAsync<TEvent>(TEvent invitation) where TEvent : BaseEvent
         {
-            var groupMembers = await _groupService.GetMembers(invitation.GroupId);
+            var groupMembers = await _groupService.GetMembersAsync(invitation.GroupId);
 
             if (!groupMembers.IsNullOrEmpty())
             {

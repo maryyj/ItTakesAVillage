@@ -3,7 +3,7 @@ public class GroupChatService(IRepository<GroupChat> groupChatRepository) : IGro
 {
     private readonly IRepository<GroupChat> _groupChatRepository = groupChatRepository;
 
-    public async Task<bool> Add(GroupChat message)
+    public async Task<bool> AddAsync(GroupChat message)
     {
         if (message == null)
             return false;
@@ -12,5 +12,5 @@ public class GroupChatService(IRepository<GroupChat> groupChatRepository) : IGro
         return true;
     }
 
-    public async Task<List<GroupChat>> Get(int groupId) => await _groupChatRepository.GetByFilterAsync(x => x.GroupId == groupId);
+    public async Task<List<GroupChat>> GetAsync(int groupId) => await _groupChatRepository.GetByFilterAsync(x => x.GroupId == groupId);
 }

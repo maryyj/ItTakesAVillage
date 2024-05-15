@@ -44,6 +44,11 @@
                 .ToListAsync();
         }
 
+        public async Task<T> GetOneByFilterAsync(Expression<Func<T, bool>> expression)
+        {
+            return await _context.Set<T>().Where(expression).FirstOrDefaultAsync();
+        }
+
         public async Task UpdateAsync(T t)
         {
             _context.Entry(t).State = EntityState.Modified;

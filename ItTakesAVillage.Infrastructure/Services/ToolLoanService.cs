@@ -5,7 +5,7 @@ public class ToolLoanService(
 {
     private readonly IRepository<ToolLoan> _toolLoanRepository = toolLoanRepository;
 
-    public async Task<bool> Create(ToolLoan toolLoan)
+    public async Task<bool> CreateAsync(ToolLoan toolLoan)
     {
         if (toolLoan.FromDate < DateOnly.FromDateTime(DateTime.Today) || toolLoan.ToDate < DateOnly.FromDateTime(DateTime.Today))
             return false;
@@ -16,9 +16,9 @@ public class ToolLoanService(
         await _toolLoanRepository.AddAsync(toolLoan);
         return true;
     }
-    public async Task<List<ToolLoan>> GetAllOfGroup(string id) => await _toolLoanRepository.GetByFilterAsync(x => x.BorrowerId == id && x.IsReturned == false);
-
-    public async Task<bool> Update(int id) //TODO: Change services and interfaces maybe only toolpool services
+    public async Task<List<ToolLoan>> GetAllForUserGroupsAsync(string id) => await _toolLoanRepository.GetByFilterAsync(x => x.BorrowerId == id && x.IsReturned == false);
+    public async Task<List<ToolLoan>> GetAllAsync() => await _toolLoanRepository.GetAsync();
+    public async Task<bool> UpdateAsync(int id) //TODO: Change services and interfaces maybe only toolpool services
     {
         var loan = await _toolLoanRepository.GetAsync(id);
         if (loan == null) return false;
@@ -27,13 +27,14 @@ public class ToolLoanService(
         await _toolLoanRepository.UpdateAsync(loan);
         return true;
     }
-    public Task<bool> Delete(int eventId, string userId)
+    public async Task<bool> DeleteAsync(int eventId)
     {
-        throw new NotImplementedException();
-    }
+        var tool = await _toolLoanRepository.GetOneByFilterAsync(x => x.ToolId == eventId);
+        
+        if (tool == null)
+            return false;
 
-    public Task<List<ToolLoan>> GetAll()
-    {
-        throw new NotImplementedException();
+        await _toolLoanRepository.DeleteAsync(tool);
+        return true;
     }
 }

@@ -2,14 +2,14 @@
 
 public class ToolPoolService(
     IRepository<ToolPool> toolPoolRepository,
-    IRepository<ToolLoan> toolLoanRepository,
+    IEventService<ToolLoan> toolLoanService,
     IRepository<UserGroup> userGroupRepository) : IEventService<ToolPool>
 {
     private readonly IRepository<ToolPool> _toolPoolRepository = toolPoolRepository;
-    private readonly IRepository<ToolLoan> _toolLoanRepository = toolLoanRepository;
+    private readonly IEventService<ToolLoan> _toolLoanService = toolLoanService;
     private readonly IRepository<UserGroup> _userGroupRepository = userGroupRepository;
 
-    public async Task<bool> Create(ToolPool tool)
+    public async Task<bool> CreateAsync(ToolPool tool)
     {
         if (tool.DateTime.Date < DateTime.Now.Date)
             return false;
@@ -17,27 +17,35 @@ public class ToolPoolService(
         return true;
     }
 
-    public async Task<List<ToolPool>> GetAll()
+    public async Task<List<ToolPool>> GetAllAsync()
     {
         return await _toolPoolRepository.GetOfTypeAsync<BaseEvent>();
     }
 
-    public async Task<List<ToolPool>> GetAllOfGroup(string id)
+    public async Task<List<ToolPool>> GetAllForUserGroupsAsync(string id)
     {
         var groupsOfUser = await GetUserGroups(id);
         await ValidateReturnDate();
         return await GetTools(groupsOfUser);
     }
-    public async Task<bool> Delete(int toolId, string userId)
+    public async Task<bool> DeleteAsync(int toolId)
     {
-        var groupsOfUser = await GetUserGroups(userId);
-        var tools = await GetTools(groupsOfUser);
-        var tool = tools.Find(x => x.Id == toolId);
+        var tool = await _toolPoolRepository.GetAsync(toolId);
+
+        if (tool == null)
+            return false;
+
         if(tool.IsBorrowed)
             return false;
+
+        await _toolLoanService.DeleteAsync(toolId);
         await _toolPoolRepository.DeleteAsync(tool);
 
         return true;
+    }
+    public Task<bool> UpdateAsync(int t)
+    {
+        throw new NotImplementedException();
     }
     private async Task<List<UserGroup>> GetUserGroups(string id)
     {
@@ -58,7 +66,7 @@ public class ToolPoolService(
     private async Task ValidateReturnDate()
     {
         DateOnly today = DateOnly.FromDateTime(DateTime.Today);
-        var loans = await _toolLoanRepository.GetAsync();
+        var loans = await _toolLoanService.GetAllAsync();
         foreach (var loan in loans)
         {
             if (loan.ToDate < today && loan.IsReturned == false)
@@ -67,10 +75,5 @@ public class ToolPoolService(
                 loan.IsReturned = true;
             }
         }
-    }
-
-    public Task<bool> Update(int t)
-    {
-        throw new NotImplementedException();
     }
 }

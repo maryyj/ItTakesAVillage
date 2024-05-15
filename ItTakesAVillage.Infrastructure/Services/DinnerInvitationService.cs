@@ -8,11 +8,11 @@
         {
             _dinnerInvitationRepository = dinnerInvitationRepository;
         }
-        public async Task<List<DinnerInvitation>> GetAll()
+        public async Task<List<DinnerInvitation>> GetAllAsync()
         {
             return await _dinnerInvitationRepository.GetOfTypeAsync<BaseEvent>();
         }
-        public async Task<bool> Create(DinnerInvitation invitation)
+        public async Task<bool> CreateAsync(DinnerInvitation invitation)
         {
             if (invitation.DateTime.Date < DateTime.Now.Date)
                 return false;
@@ -20,16 +20,16 @@
             await _dinnerInvitationRepository.AddAsync(invitation);
             return true;
         }
-        public Task<List<DinnerInvitation>> GetAllOfGroup(string id)
+        public Task<List<DinnerInvitation>> GetAllForUserGroupsAsync(string id)
         {
             throw new NotImplementedException();
         }
-        public Task<bool> Delete(int eventId, string userId)
+        public Task<bool> DeleteAsync(int eventId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> Update(int t)
+        public Task<bool> UpdateAsync(int t)
         {
             throw new NotImplementedException();
         }

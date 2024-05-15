@@ -1,4 +1,4 @@
-﻿using ItTakesAVillage.Contracts;
+﻿using ItTakesAVillage.Interfaces;
 using ItTakesAVillage.Data;
 using ItTakesAVillage.Models;
 using ItTakesAVillage.Repository;

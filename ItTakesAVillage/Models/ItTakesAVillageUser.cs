@@ -1,7 +1,4 @@
-﻿
-
-
-namespace ItTakesAVillage.Models;
+﻿namespace ItTakesAVillage.Models;
 
 public class ItTakesAVillageUser : IdentityUser
 {

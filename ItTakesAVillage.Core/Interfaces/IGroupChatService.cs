@@ -2,6 +2,6 @@
 
 public interface IGroupChatService
 {
-    Task<List<Models.GroupChat>> GetAsync(int groupId);
-    Task<bool> AddAsync(Models.GroupChat message);
+    Task<List<GroupChat>> GetAsync(int groupId);
+    Task<bool> AddAsync(GroupChat message);
 }

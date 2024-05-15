@@ -9,7 +9,7 @@ public class GroupService(IRepository<Group> groupRepository,
     private readonly IRepository<UserGroup> _userGroupRepository = userGroupRepository;
 
     public async Task<Group> GetAsync(int groupId) => await _groupRepository.GetAsync(groupId) ?? throw new ArgumentNullException($"Could not find group {groupId}");
-    public async Task<int> SaveAsync(Group group, string userId)
+    public async Task<int> CreateAsync(Group group, string userId)
     {
         var groupsByUserId = await GetGroupsByUserIdAsync(userId);
         var groupNameExists = ExistsWithSimilarName(groupsByUserId, group.Name);
@@ -42,7 +42,7 @@ public class GroupService(IRepository<Group> groupRepository,
 
         return true;
     }
-    public async Task<bool> RemoveUserAsync(string userId, int groupId)
+    public async Task<bool> DeleteUserAsync(string userId, int groupId)
     {
         var usergroups = await _userGroupRepository.GetAsync();
 
@@ -66,6 +66,7 @@ public class GroupService(IRepository<Group> groupRepository,
     public async Task<List<UserGroup?>> GetUsersAndGroupsAsync(int groupId)
     {
         var groupsAndUsers = await _userGroupRepository.GetAsync();
+
         return groupsAndUsers.Where(x => x.GroupId == groupId).ToList();
     }
     public async Task<List<Group?>> GetGroupsByUserIdAsync(string userId)

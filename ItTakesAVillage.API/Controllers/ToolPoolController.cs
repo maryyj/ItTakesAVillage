@@ -38,7 +38,7 @@ public class ToolPoolController(IEventService<ToolPool> toolPoolService) : Contr
         try
         {
             var result = await _toolPoolService.CreateAsync(toolPool);
-            return Ok();
+            return Ok(result);
         }
         catch(Exception ex) 
         {
@@ -51,7 +51,7 @@ public class ToolPoolController(IEventService<ToolPool> toolPoolService) : Contr
         try
         {
             var deleted = await _toolPoolService.DeleteAsync(id);
-            return Ok();
+            return Ok(deleted);
         }
         catch (Exception ex)
         {

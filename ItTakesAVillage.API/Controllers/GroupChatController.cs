@@ -33,7 +33,3 @@
         }
     }
 }
-
-
-//Task<List<GroupChat>> GetAsync(int groupId);
-//Task<bool> AddAsync(GroupChat message);

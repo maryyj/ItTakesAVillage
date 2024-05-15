@@ -1,5 +1,6 @@
 using ItTakesAVillage.Infrastructure.DAL;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 
 namespace ItTakesAVillage.API
 {
@@ -27,11 +28,12 @@ namespace ItTakesAVillage.API
             builder.Services.AddScoped<IRepository<ToolLoan>, EFRepository<ToolLoan>>();
             builder.Services.AddScoped<IRepository<GroupChat>, EFRepository<GroupChat>>();
 
-
             builder.Services.AddDbContext<ItTakesAVillageContext>(options => options.UseSqlServer(connectionString));
-            
-            builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+            builder.Services.AddControllers().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+            });
+
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 

@@ -3,7 +3,7 @@ public class GroupChatService(IRepository<GroupChat> groupChatRepository) : IGro
 {
     private readonly IRepository<GroupChat> _groupChatRepository = groupChatRepository;
 
-    public async Task<bool> AddAsync(GroupChat message)
+    public async Task<bool> CreateAsync(GroupChat message)
     {
         if (message == null)
             return false;

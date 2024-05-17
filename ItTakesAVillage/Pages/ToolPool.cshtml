@@ -50,6 +50,10 @@
                             <div class="card-body">
                                 <h5 class="card-title"><b>@tool.Name</b></h5>
                                 <p class="card-text">@tool.Description</p>
+                                <div class="card-text small d-flex mb-1">
+                                    <span>Meddelande</span>
+                                    <i class="ps-2 bi bi-patch-question d-flex align-items-center" data-bs-toggle="tooltip" data-bs-placement="bottom" title="@tool.Message"></i>
+                                </div>
                                 <p class="card-text creator-txt small">
                                     @sharedOf @(tool.Creator != null ?
                               tool.Creator.FirstName + " " + tool.Creator.LastName :
@@ -93,8 +97,7 @@
                                                         <label class="form-label fw-bold mt-2">Vill du ändra meddelandet?</label>
                                                         <textarea class="form-control bg-transparent"
                                                                   asp-for="EditTool.Message"
-                                                                  value="@tool.Message"></textarea>
-                                                        <hr />
+                                                                  value="@tool.Message">@tool.Message</textarea>
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@close</button>

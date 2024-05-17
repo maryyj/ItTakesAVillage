@@ -5,18 +5,22 @@
     string sharedOf = "Delad av";
     string remove = "Ta bort";
     string borrow = "Låna";
+    string edit = "Ändra";
     string borrowed = "Utlånad";
     string createGroupText = "Skapa en grupp för att dela prylar!";
     string createGroup = "Skapa ny grupp";
     string fromDateText = "Från vilket datum?";
     string toDateText = "Till vilket datum?";
-    string fillFormular = "Fyll i formuläret för att låna";
+    string borrowTitleFormular = "Fyll i formuläret för att låna";
+    string editTitleFormular = "Fyll i dina ändringar";
     string toolText = "Prylnamn: ";
     string descriptionText = "Beskrivning: ";
     string messageText = "Meddelande: ";
     string sharedOfText = "Delad av: ";
     string save = "Spara";
     string close = "Stäng";
+    string noSharedTools = "Finns inga delade prylar";
+    string shareTool = "Börja dela med dina vänner";
 }
 <link rel="stylesheet" href="~/css/toolPool.css" />
 @if (Model.CurrentUser != null)
@@ -46,6 +50,10 @@
                             <div class="card-body">
                                 <h5 class="card-title"><b>@tool.Name</b></h5>
                                 <p class="card-text">@tool.Description</p>
+                                <div class="card-text small d-flex mb-1">
+                                    <span>Meddelande</span>
+                                    <i class="ps-2 bi bi-patch-question d-flex align-items-center" data-bs-toggle="tooltip" data-bs-placement="bottom" title="@tool.Message"></i>
+                                </div>
                                 <p class="card-text creator-txt small">
                                     @sharedOf @(tool.Creator != null ?
                               tool.Creator.FirstName + " " + tool.Creator.LastName :
@@ -53,10 +61,53 @@
                                 </p>
                                 @if (tool.CreatorId == Model.CurrentUser?.Id && tool.IsBorrowed == false)
                                 {
-                                    <form method="post" asp-page-handler="RemoveToolFromPool">
-                                        <input type="hidden" name="toolId" value="@tool.Id" />
-                                        <button type="submit" class="btn greenBgColor">@remove</button>
-                                    </form>
+                                    <div class="d-flex">
+                                        <button type="submit" class="btn pinkBgColor me-2" data-bs-toggle="modal" data-bs-target="#editModal">
+                                            @edit
+                                        </button>
+                                        <form method="post" asp-page-handler="RemoveToolFromPool">
+                                            <input type="hidden" name="toolId" value="@tool.Id" />
+                                            <button type="submit" class="btn greenBgColor">@remove</button>
+                                        </form>
+                                    </div>
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">
+                                                        <b>@editTitleFormular</b>
+                                                    </h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <form method="post" asp-page-handler="EditTool">
+                                                    <div class="modal-body">
+                                                        <input type="hidden" asp-for="EditTool.DateTime" value="@DateTime.Now.ToString("yyyy-MM-dd HH:mm", new System.Globalization.CultureInfo("sv-SE"))" />
+                                                        <input type="hidden" asp-for="EditTool.CreatorId" value="@Model.CurrentUser.Id" />
+                                                        <input type="hidden" asp-for="EditTool.Id" value="@tool.Id" />
+                                                        <input type="hidden" asp-for="EditTool.Image" value="@tool.Image" />
+                                                        <label class="form-label fw-bold mt-2">Vill du ändra namn</label>
+                                                        <input asp-for="EditTool.Name"
+                                                               value="@tool.Name"
+                                                               class="form-control bg-transparent" />
+                                                        <label class="form-label fw-bold mt-2">Vill du ändra beskrivning</label>
+                                                        <input asp-for="EditTool.Description"
+                                                               value="@tool.Description"
+                                                               class="form-control bg-transparent" />       
+                                                        <label class="form-label fw-bold mt-2">Vill du ändra meddelandet?</label>
+                                                        <textarea class="form-control bg-transparent"
+                                                                  asp-for="EditTool.Message"
+                                                                  value="@tool.Message">@tool.Message</textarea>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@close</button>
+                                                        <button type="submit" class="btn pinkBgColor">@save</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 }
                                 else if (tool.CreatorId == Model.CurrentUser?.Id && tool.IsBorrowed)
                                 {
@@ -79,7 +130,7 @@
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <h1 class="modal-title fs-5" id="exampleModalLabel">
-                                                        <b>@fillFormular</b>
+                                                        <b>@borrowTitleFormular</b>
                                                     </h1>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
@@ -132,6 +183,13 @@
                     }
                 </div>
 
+            }
+            else
+            {
+                <div class="container d-flex flex-column align-items-center">
+                    <h4 class="abrilFont my-4">@noSharedTools</h4>
+                    <a asp-page="/ToolShare" class="btn custom-btn fontColor fw-bold greenBgColor my-4">@shareTool</a>
+                </div>
             }
         </div>
     </div>

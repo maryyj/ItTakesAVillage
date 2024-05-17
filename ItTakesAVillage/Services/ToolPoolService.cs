@@ -28,12 +28,20 @@ public class ToolPoolService(
         await ValidateReturnDate();
         return await GetTools(groupsOfUser);
     }
+    public async Task<bool> Update(int id)
+    {
+        var tool = await _toolPoolRepository.GetAsync(id);
+        if (tool == null)
+            return false;
+        await _toolPoolRepository.UpdateAsync(tool);
+        return true;
+    }
     public async Task<bool> Delete(int toolId, string userId)
     {
         var groupsOfUser = await GetUserGroups(userId);
         var tools = await GetTools(groupsOfUser);
         var tool = tools.Find(x => x.Id == toolId);
-        if(tool.IsBorrowed)
+        if (tool.IsBorrowed)
             return false;
         await _toolPoolRepository.DeleteAsync(tool);
 
@@ -50,7 +58,7 @@ public class ToolPoolService(
         List<ToolPool> sharedTools = [];
         foreach (var group in groupsOfUser)
         {
-            List<ToolPool> toolsForGroup= tools.Where(x => x.GroupId == group.GroupId).ToList();
+            List<ToolPool> toolsForGroup = tools.Where(x => x.GroupId == group.GroupId).ToList();
             sharedTools.AddRange(toolsForGroup);
         }
         return sharedTools;
@@ -67,10 +75,5 @@ public class ToolPoolService(
                 loan.IsReturned = true;
             }
         }
-    }
-
-    public Task<bool> Update(int t)
-    {
-        throw new NotImplementedException();
     }
 }

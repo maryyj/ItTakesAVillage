@@ -22,6 +22,9 @@
 
 	<ItemGroup>
 	  <Folder Include="Pages\GroupPages\" />
+	  <Folder Include="Pages\PlayDatePages\" />
+	  <Folder Include="Pages\DinnerInvitationPages\" />
+	  <Folder Include="Pages\ToolPoolPages\" />
 	  <Folder Include="wwwroot\uploadedImg\" />
 	</ItemGroup>
 

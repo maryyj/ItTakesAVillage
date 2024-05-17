@@ -35,6 +35,7 @@ public class ToolPoolModel(
     {
         if(ModelState.IsValid)
         {
+            CurrentUser = await _userManager.GetUserAsync(User);
             if (UploadedImage != null)
             {
                 var uniqueFileName = Guid.NewGuid().ToString() + "_" + UploadedImage.FileName;
@@ -50,6 +51,7 @@ public class ToolPoolModel(
                 }
                 NewToolPool.Image = uniqueFileName;
             }
+            NewToolPool.Creator = CurrentUser;
             bool success = await _toolPoolService.Create(NewToolPool);
             if (success)
                 await _notificationService.NotifyGroupAsync(NewToolPool);

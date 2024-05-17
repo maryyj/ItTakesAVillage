@@ -1,11 +1,14 @@
 ﻿@page
 @model ItTakesAVillage.Pages.ToolBorrowedModel
+@inject IGroupService _groupService
 @{
     string toolPool = "Prylpool";
     // string sharedOf = "Delad av";
     string returnText = "Återlämna";
     string returnDate = "Återlämnas:";
     string borrowed = "Lånad:";
+    string noBorrowedTools = "Du har inga lånade prylar";
+    string shareTool = "Dela pryl";
 
 }
 @if (Model.CurrentUser != null)
@@ -36,11 +39,12 @@
                                     <div class="fst-italic small">@returnDate @tool.ToDate</div>
                                     <h5 class="card-title pt-2"><b>@tool.ToolPool.Name</b></h5>
                                     <p class="card-text">@tool.ToolPool.Description</p>
+                                    <p>@tool</p>
                                     @* <p class="card-text creator-txt small">
-                                        @sharedOf @(tool.ToolPool.Creator != null ?
-                                  tool.ToolPool.Creator.FirstName + " " + tool.ToolPool.Creator.LastName :
-                                  "")
-                                    </p> *@
+                    @sharedOf @(tool.ToolPool.Creator != null ?
+                    tool.ToolPool.Creator.FirstName + " " + tool.ToolPool.Creator.LastName :
+                    "")
+                    </p> *@
                                     <form method="post" asp-page-handler="ReturnTool">
                                         <input type="hidden" name="toolId" value="@tool.Id" />
                                         <button type="submit" class="btn greenBgColor">@returnText</button>
@@ -48,6 +52,13 @@
                                 </div>
                             </div>
                         }
+                    </div>
+                }
+                else
+                {
+                    <h4 class="mt-2 mb-3 abrilFont text-center">@noBorrowedTools</h4>
+                    <div class="d-flex justify-content-center">
+                        <a href="/ToolShare" class="btn greenBgColor">@shareTool</a>
                     </div>
                 }
             </div>

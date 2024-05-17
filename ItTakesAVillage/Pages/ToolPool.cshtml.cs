@@ -18,6 +18,11 @@ public class ToolLoanModel(
     public ToolPool? Tool { get; set; }
     [BindProperty]
     public ToolLoan NewToolLoan { get; set; } = new();
+
+    [BindProperty]
+    public ToolPool EditTool { get; set; } = new();
+    [BindProperty]
+    public IFormFile? UploadedImage { get; set; }
     public async Task<IActionResult> OnGet()
     {
         CurrentUser = await _userManager.GetUserAsync(User);
@@ -46,6 +51,16 @@ public class ToolLoanModel(
             var tool = Tools.Find(x => x.Id == NewToolLoan.ToolId);
             NewToolLoan.ToolPool = tool;
             bool success = await _toolLoanService.Create(NewToolLoan);
+        }
+        return RedirectToPage("/ToolPool");
+    }
+    public async Task<IActionResult> OnPostEditTool()
+    {
+        if (ModelState.IsValid)
+        {
+            CurrentUser = await _userManager.GetUserAsync(User);
+            EditTool.Creator = CurrentUser;
+            bool success = await _toolPoolService.Update(EditTool.Id);
         }
         return RedirectToPage("/ToolPool");
     }

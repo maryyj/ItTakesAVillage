@@ -20,9 +20,12 @@
             await _dinnerInvitationRepository.AddAsync(invitation);
             return true;
         }
-        public Task<List<DinnerInvitation>> GetAllOfGroup(string id)
+        public async Task<List<DinnerInvitation>> GetAllOfGroup(object id)
         {
-            throw new NotImplementedException();
+            if (id is int groupId)
+                return await _dinnerInvitationRepository.GetByFilterAsync(x => x.GroupId == groupId);
+            else
+                throw new ArgumentException("Parameter must be int");
         }
         public Task<bool> Delete(int eventId, string userId)
         {

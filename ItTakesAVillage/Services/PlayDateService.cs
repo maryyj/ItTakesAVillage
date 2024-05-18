@@ -15,10 +15,14 @@ public class PlayDateService(IRepository<PlayDate> playDateRepository) : IEventS
     {
         return await _playDateRepository.GetOfTypeAsync<BaseEvent>();
     }
-    public Task<List<PlayDate>> GetAllOfGroup(string id)
+    public async Task<List<PlayDate>> GetAllOfGroup(object id)
     {
-        throw new NotImplementedException();
+        if (id is int groupId)
+            return await _playDateRepository.GetByFilterAsync(x => x.GroupId == groupId);
+        else
+            throw new ArgumentException("Parameter must be int");
     }
+
     public Task<bool> Delete(int eventId, string userId)
     {
         throw new NotImplementedException();

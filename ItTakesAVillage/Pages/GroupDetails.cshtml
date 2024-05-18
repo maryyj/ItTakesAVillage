@@ -10,7 +10,6 @@
 
     @if (Model.UsersInGroup != null && Model.UsersInGroup.Any())
     {
-        @* <h4 class="text-center abrilFont">@(Model.CurrentGroup != null ? Model.CurrentGroup.Name : "")</h4> *@
         <h2 class="text-center abrilFont mb-3">@(Model.CurrentGroup != null ? Model.CurrentGroup.Name : "")</h2>
         <div class="text-center abrilFont text-muted mb-5">- Medlemmar -</div>
         await Html.RenderPartialAsync("_MemberPartial", Model.UsersInGroup);
@@ -25,7 +24,7 @@
                 <form method="post" asp-page-handler="AddUserToGroup">
                     <h5 class="abrilFont mt-3">Lägg till medlem i grupp</h5>
                     <div class="d-flex w-50 gap-2">
-                        <input type="hidden" name="groupId" value="@Model.CurrentGroup.Id" />
+                        <input type="hidden" name="groupId" value="@Model.CurrentGroup?.Id" />
                         <select id="selectList2" class="form-control col bg-transparent inline-block" asp-for="NewUserGroup.UserId" asp-items="ViewBag.UserId" required>
                             <option disabled selected>Välj medlem</option>
                         </select>

@@ -22,11 +22,16 @@ public class ToolPoolService(
         return await _toolPoolRepository.GetOfTypeAsync<BaseEvent>();
     }
 
-    public async Task<List<ToolPool>> GetAllOfGroup(string id)
+    public async Task<List<ToolPool>> GetAllOfGroup(object id)
     {
-        var groupsOfUser = await GetUserGroups(id);
-        await ValidateReturnDate();
-        return await GetTools(groupsOfUser);
+        if (id is string userId)
+        {
+            var groupsOfUser = await GetUserGroups(userId);
+            await ValidateReturnDate();
+            return await GetTools(groupsOfUser);
+        }
+        else
+            throw new ArgumentException("Parameter must be string");
     }
     public async Task<bool> Update(int id)
     {
@@ -54,11 +59,10 @@ public class ToolPoolService(
     }
     private async Task<List<ToolPool>> GetTools(List<UserGroup> groupsOfUser)
     {
-        var tools = await _toolPoolRepository.GetOfTypeAsync<BaseEvent>();
         List<ToolPool> sharedTools = [];
         foreach (var group in groupsOfUser)
         {
-            List<ToolPool> toolsForGroup = tools.Where(x => x.GroupId == group.GroupId).ToList();
+            List<ToolPool> toolsForGroup = await _toolPoolRepository.GetByFilterAsync(x => x.GroupId == group.GroupId);
             sharedTools.AddRange(toolsForGroup);
         }
         return sharedTools;

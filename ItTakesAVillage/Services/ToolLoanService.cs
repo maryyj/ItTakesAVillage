@@ -1,4 +1,6 @@
-﻿namespace ItTakesAVillage.Services;
+﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+
+namespace ItTakesAVillage.Services;
 
 public class ToolLoanService(
     IRepository<ToolLoan> toolLoanRepository) : IEventService<ToolLoan>
@@ -16,12 +18,19 @@ public class ToolLoanService(
         await _toolLoanRepository.AddAsync(toolLoan);
         return true;
     }
-    public async Task<List<ToolLoan>> GetAllOfGroup(string id) => await _toolLoanRepository.GetByFilterAsync(x => x.BorrowerId == id && x.IsReturned == false);
+    public async Task<List<ToolLoan>> GetAllOfGroup(object id)
+    {
+        if (id is string userId)
+            return await _toolLoanRepository.GetByFilterAsync(x => x.BorrowerId == userId && x.IsReturned == false);
+        else
+            throw new ArgumentException("Parameter must be string");
+    }
 
     public async Task<bool> Update(int id) //TODO: Change services and interfaces maybe only toolpool services
     {
         var loan = await _toolLoanRepository.GetAsync(id);
-        if (loan == null) return false;
+        if (loan == null) 
+            return false;
         loan.IsReturned = true;
         loan.ToolPool.IsBorrowed = false;
         await _toolLoanRepository.UpdateAsync(loan);

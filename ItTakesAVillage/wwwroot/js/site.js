@@ -63,19 +63,9 @@ let tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
     }
 //#endregion ValidateSelectList
 
-document.addEventListener("DOMContentLoaded", function () {
-    var tabLinks = document.querySelectorAll('.nav-link');
 
-    tabLinks.forEach(function (tabLink) {
-        tabLink.addEventListener('click', function (event) {
-            tabLinks.forEach(function (link) {
-                link.classList.remove('active');
-            });
-            this.classList.add('active');
-        });
-    });
-});
-
+//#region Scroll
 $(document).ready(function () {
     $('.scroll-container').scrollTop($('.scroll-container')[0].scrollHeight);
 });
+//#endregion

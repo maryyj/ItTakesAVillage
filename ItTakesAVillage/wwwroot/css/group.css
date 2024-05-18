@@ -20,27 +20,38 @@
     justify-content: flex-end;
 }
 
-.groupTab:hover {
-    color: rgb(23, 64, 56);
+.groupTab {
+    color: black;
+    text-decoration: none;
 }
-.groupTab:focus {
-    background-color: rgb(221, 172, 172, 0.3);
-}
+
+    .groupTab:hover {
+        color: rgb(23, 64, 56);
+        background-color: rgb(221, 172, 172, 0.3);
+    }
+
+    .groupTab:focus {
+        background-color: rgb(221, 172, 172, 0.3);
+    }
 /*------GROUPCHAT------*/
 .date-separator {
     display: inline-block;
     color: #9c9999;
     border-bottom: 1px solid lightgray;
 }
+
 .message {
-    max-width: 50%; 
+    max-width: 50%;
 }
+
 .user-message .message-body {
     margin-left: auto;
 }
+
 .other-message .message-body {
     margin-right: auto;
 }
-.card{
+
+.card {
     max-height: 30rem;
 }

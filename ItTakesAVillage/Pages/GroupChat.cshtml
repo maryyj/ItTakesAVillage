@@ -13,7 +13,7 @@
     {
         <h2 class="text-center abrilFont mb-3">@(Model.CurrentGroup != null ? Model.CurrentGroup.Name : "")</h2>
         <div class="text-center abrilFont text-muted mb-5">- Gruppchatt -</div>
-        await Html.RenderPartialAsync("_MemberPartial", Model.UsersInGroup);
+        @* await Html.RenderPartialAsync("_MemberPartial", Model.UsersInGroup); *@
         await Html.RenderPartialAsync("_GroupTabPartial", Model.CurrentGroup);
     }
     <div class="greenBgColor py-5">

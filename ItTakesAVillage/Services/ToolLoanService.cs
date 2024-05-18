@@ -21,7 +21,8 @@ public class ToolLoanService(
     public async Task<bool> Update(int id) //TODO: Change services and interfaces maybe only toolpool services
     {
         var loan = await _toolLoanRepository.GetAsync(id);
-        if (loan == null) return false;
+        if (loan == null) 
+            return false;
         loan.IsReturned = true;
         loan.ToolPool.IsBorrowed = false;
         await _toolLoanRepository.UpdateAsync(loan);

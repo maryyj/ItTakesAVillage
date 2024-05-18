@@ -1,11 +1,4 @@
-﻿using ItTakesAVillage.Interfaces;
-using ItTakesAVillage.Data;
-using ItTakesAVillage.Models;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query;
-using System.Linq.Expressions;
-
-namespace ItTakesAVillage.Repository
+﻿namespace ItTakesAVillage.Repository
 {
     public class EFRepository<T> : IRepository<T> where T : class
     {
@@ -50,7 +43,6 @@ namespace ItTakesAVillage.Repository
                 .OfType<T>()
                 .ToListAsync();
         }
-
         public async Task UpdateAsync(T t)
         {
             _context.Entry(t).State = EntityState.Modified;

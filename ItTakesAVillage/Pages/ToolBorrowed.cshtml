@@ -1,14 +1,17 @@
 ﻿@page
 @model ItTakesAVillage.Pages.ToolBorrowedModel
-@inject IGroupService _groupService
+@* @inject IGroupService _groupService *@
+@inject UserManager<ItTakesAVillageUser> _userManager
 @{
     string toolPool = "Prylpool";
-    // string sharedOf = "Delad av";
+    string sharedOf = "Delad av";
     string returnText = "Återlämna";
     string returnDate = "Återlämnas:";
     string borrowed = "Lånad:";
     string noBorrowedTools = "Du har inga lånade prylar";
     string shareTool = "Dela pryl";
+    string message = "Meddelande";
+    string noMessage = "Inget meddelande";
 
 }
 @if (Model.CurrentUser != null)
@@ -27,6 +30,7 @@
                     <div class="row">
                         @foreach (var tool in Model.BorrowedTools)
                         {
+                            var creator = await _userManager.FindByIdAsync(tool.ToolPool.CreatorId);
                             <div class="card ms-2">
                                 <div>
                                     <img src="@(tool.ToolPool.Image != null ?
@@ -39,12 +43,18 @@
                                     <div class="fst-italic small">@returnDate @tool.ToDate</div>
                                     <h5 class="card-title pt-2"><b>@tool.ToolPool.Name</b></h5>
                                     <p class="card-text">@tool.ToolPool.Description</p>
-                                    <p>@tool</p>
-                                    @* <p class="card-text creator-txt small">
-                    @sharedOf @(tool.ToolPool.Creator != null ?
-                    tool.ToolPool.Creator.FirstName + " " + tool.ToolPool.Creator.LastName :
-                    "")
-                    </p> *@
+                                    <div class="card-text small d-flex mb-2">
+                                        <span>@message</span>
+                                        <i class="ps-2 bi bi-patch-question d-flex align-items-center"
+                                           data-bs-toggle="tooltip"
+                                           data-bs-placement="bottom"
+                                           title="@(@tool.ToolPool.Message != null ? @tool.ToolPool.Message : @noMessage)"></i>
+                                    </div>
+                                    <p class="card-text creator-txt small">
+                                        @sharedOf @(tool.ToolPool.Creator != null ?
+                                  tool.ToolPool.Creator.FirstName + " " + tool.ToolPool.Creator.LastName :
+                                  "")
+                                    </p>
                                     <form method="post" asp-page-handler="ReturnTool">
                                         <input type="hidden" name="toolId" value="@tool.Id" />
                                         <button type="submit" class="btn greenBgColor">@returnText</button>

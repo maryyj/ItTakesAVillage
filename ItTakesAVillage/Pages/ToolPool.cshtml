@@ -1,5 +1,6 @@
 ﻿@page
 @model ItTakesAVillage.Pages.ToolLoanModel
+@inject IGroupService _groupService
 @{
     string toolPool = "Prylpool";
     string sharedOf = "Delad av";
@@ -21,6 +22,9 @@
     string close = "Stäng";
     string noSharedTools = "Finns inga delade prylar";
     string shareTool = "Börja dela med dina vänner";
+    string message = "Meddelande";
+    string noMessage = "Inget meddelande";
+    string ofGroup = "i gruppen";
 }
 <link rel="stylesheet" href="~/css/toolPool.css" />
 @if (Model.CurrentUser != null)
@@ -40,6 +44,8 @@
                 <div class="row">
                     @foreach (var tool in Model.Tools)
                     {
+                        var group = await _groupService.Get(tool.GroupId);
+
                         <div class="card ms-2">
                             <div>
                                 <img src="@(tool.Image != null ?
@@ -51,14 +57,23 @@
                                 <h5 class="card-title"><b>@tool.Name</b></h5>
                                 <p class="card-text">@tool.Description</p>
                                 <div class="card-text small d-flex mb-1">
-                                    <span>Meddelande</span>
-                                    <i class="ps-2 bi bi-patch-question d-flex align-items-center" data-bs-toggle="tooltip" data-bs-placement="bottom" title="@tool.Message"></i>
+                                    <span>@message</span>
+                                    <i class="ps-2 bi bi-patch-question d-flex align-items-center"
+                                       data-bs-toggle="tooltip"
+                                       data-bs-placement="bottom"
+                                       title="@(@tool.Message != null ? @tool.Message : @noMessage)"></i>
                                 </div>
                                 <p class="card-text creator-txt small">
-                                    @sharedOf @(tool.Creator != null ?
-                              tool.Creator.FirstName + " " + tool.Creator.LastName :
-                              "")
+                                    <span>
+                                        @sharedOf @(tool.Creator != null ?
+                                  tool.Creator.FirstName + " " + tool.Creator.LastName :
+                                  "")
+                                    </span>
+                                    <span>
+                                        @ofGroup @group.Name
+                                    </span>
                                 </p>
+                                <div class="d-flex align-content-end flex-column-reverse">
                                 @if (tool.CreatorId == Model.CurrentUser?.Id && tool.IsBorrowed == false)
                                 {
                                     <div class="d-flex">
@@ -93,7 +108,7 @@
                                                         <label class="form-label fw-bold mt-2">Vill du ändra beskrivning</label>
                                                         <input asp-for="EditTool.Description"
                                                                value="@tool.Description"
-                                                               class="form-control bg-transparent" />       
+                                                               class="form-control bg-transparent" />
                                                         <label class="form-label fw-bold mt-2">Vill du ändra meddelandet?</label>
                                                         <textarea class="form-control bg-transparent"
                                                                   asp-for="EditTool.Message"
@@ -178,6 +193,7 @@
                                         </div>
                                     </div>
                                 }
+                                </div>
                             </div>
                         </div>
                     }

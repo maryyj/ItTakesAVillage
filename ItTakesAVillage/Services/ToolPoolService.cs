@@ -54,11 +54,10 @@ public class ToolPoolService(
     }
     private async Task<List<ToolPool>> GetTools(List<UserGroup> groupsOfUser)
     {
-        var tools = await _toolPoolRepository.GetOfTypeAsync<BaseEvent>();
         List<ToolPool> sharedTools = [];
         foreach (var group in groupsOfUser)
         {
-            List<ToolPool> toolsForGroup = tools.Where(x => x.GroupId == group.GroupId).ToList();
+            List<ToolPool> toolsForGroup = await _toolPoolRepository.GetByFilterAsync(x => x.GroupId == group.GroupId);
             sharedTools.AddRange(toolsForGroup);
         }
         return sharedTools;

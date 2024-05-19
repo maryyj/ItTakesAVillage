@@ -44,7 +44,7 @@ namespace ItTakesAVillage.Pages
                 await _groupService.RemoveUser(userId, groupId);
             return RedirectToPage("/Group");
         }
-        public async Task<IActionResult> OnPostAddUserToGroupAsync(int groupId)
+        public async Task<IActionResult> OnPostAddUserToGroup(int groupId)
         {
             if (ModelState.IsValid)
             {

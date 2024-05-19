@@ -13,10 +13,10 @@
     {
         <h2 class="text-center abrilFont mb-3">@(Model.CurrentGroup != null ? Model.CurrentGroup.Name : "")</h2>
         <div class="text-center abrilFont text-muted mb-5">- På gång - Medlemmar - </div>
-        @if (Model.EventsOfGroup.Any())
-        {
-            <div class="container w-75 mb-3">
-                <h5 class="abrilFont">På gång</h5>
+        <div class="container w-75 mb-3">
+            <h5 class="abrilFont">På gång</h5>
+            @if (Model.EventsOfGroup.Any())
+            {
                 <div class="accordion w-75" id="groupEvent-accordion">
                     @foreach (var groupEvent in Model.EventsOfGroup)
                     {
@@ -33,16 +33,15 @@
                                 @if (groupEvent is DinnerInvitation)
                                 {
                                     <span class="accordion-title fw-bold">
-                                        Matlag hos @groupEvent.Creator.FirstName
+                                        Matlag hos @groupEvent.Creator?.FirstName
                                     </span>
                                 }
                                 else if (groupEvent is PlayDate)
                                 {
                                     <span class="accordion-title fw-bold">
-                                        Lekträff hos @groupEvent.Creator.FirstName
+                                        Lekträff hos @groupEvent.Creator?.FirstName
                                     </span>
                                 }
-
                             </button>
 
                             <div id="collapse_@groupEvent.Id" class="accordion-collapse collapse" aria-labelledby="heading_@groupEvent.Id" data-bs-parent="#groupEvent-accordion">
@@ -55,13 +54,24 @@
                                     {
                                         await Html.RenderPartialAsync("_PlayDateNotificationPartial", playDate);
                                     }
+                                    @if (groupEvent.CreatorId == Model.CurrentUser.Id)
+                                    {
+                                        <form method="post" asp-page-handler="DeleteEvent">
+                                            <input type="hidden" name="eventId" value="@groupEvent.Id" />
+                                            <button type="submit" class="btn greenBgColor d-flex justify-content-end">Ta bort</button>
+                                        </form>
+                                    }
                                 </div>
                             </div>
                         </div>
                     }
                 </div>
-            </div>
-        }
+            }
+            else
+            {
+                <div class="abrilFont text-muted mb-5">Inga händelser har skapats i din grupp</div>
+            }
+        </div>
 
         await Html.RenderPartialAsync("_GroupTabPartial", Model.CurrentGroup);
     }

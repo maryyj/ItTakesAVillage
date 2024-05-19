@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
+
 namespace ItTakesAVillage.Pages
 {
     public class GroupDetailsModel(
@@ -47,6 +49,14 @@ namespace ItTakesAVillage.Pages
             if (ModelState.IsValid)
             {
                 await _groupService.AddUser(NewUserGroup.UserId, groupId);
+            }
+            return RedirectToPage("/GroupDetails", new {groupId});
+        }
+        public async Task<IActionResult> OnPostDeleteEvent(int groupId)
+        {
+            if(ModelState.IsValid)
+            {
+                
             }
             return RedirectToPage("/GroupDetails", new {groupId});
         }

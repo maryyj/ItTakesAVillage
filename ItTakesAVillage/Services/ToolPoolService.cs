@@ -2,11 +2,11 @@
 
 public class ToolPoolService(
     IRepository<ToolPool> toolPoolRepository,
-    IRepository<ToolLoan> toolLoanRepository,
+    IEventService<ToolLoan> toolLoanService,
     IRepository<UserGroup> userGroupRepository) : IEventService<ToolPool>
 {
     private readonly IRepository<ToolPool> _toolPoolRepository = toolPoolRepository;
-    private readonly IRepository<ToolLoan> _toolLoanRepository = toolLoanRepository;
+    private readonly IEventService<ToolLoan> _toolLoanService = toolLoanService;
     private readonly IRepository<UserGroup> _userGroupRepository = userGroupRepository;
 
     public async Task<bool> Create(ToolPool tool)
@@ -41,13 +41,12 @@ public class ToolPoolService(
         await _toolPoolRepository.UpdateAsync(tool);
         return true;
     }
-    public async Task<bool> Delete(int toolId, string userId)
+    public async Task<bool> Delete(int toolId)
     {
-        var groupsOfUser = await GetUserGroups(userId);
-        var tools = await GetTools(groupsOfUser);
-        var tool = tools.Find(x => x.Id == toolId);
-        if (tool.IsBorrowed)
+        var tool = await _toolPoolRepository.GetAsync(toolId);
+        if (tool == null || tool.IsBorrowed)
             return false;
+        await _toolLoanService.Delete(tool.Id);
         await _toolPoolRepository.DeleteAsync(tool);
 
         return true;
@@ -57,6 +56,7 @@ public class ToolPoolService(
         var groupsAndUsers = await _userGroupRepository.GetAsync();
         return groupsAndUsers.Where(x => x.UserId == id).ToList();
     }
+
     private async Task<List<ToolPool>> GetTools(List<UserGroup> groupsOfUser)
     {
         List<ToolPool> sharedTools = [];
@@ -70,7 +70,7 @@ public class ToolPoolService(
     private async Task ValidateReturnDate()
     {
         DateOnly today = DateOnly.FromDateTime(DateTime.Today);
-        var loans = await _toolLoanRepository.GetAsync();
+        var loans = await _toolLoanService.GetAll();
         foreach (var loan in loans)
         {
             if (loan.ToDate < today && loan.IsReturned == false)

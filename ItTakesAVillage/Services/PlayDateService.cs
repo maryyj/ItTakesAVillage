@@ -23,9 +23,14 @@ public class PlayDateService(IRepository<PlayDate> playDateRepository) : IEventS
             throw new ArgumentException("Parameter must be int");
     }
 
-    public Task<bool> Delete(int eventId, string userId)
+    public async Task<bool> Delete(int eventId)
     {
-        throw new NotImplementedException();
+        var playdate = await _playDateRepository.GetAsync(eventId);
+        if (playdate == null)
+            return false;
+        await _playDateRepository.DeleteAsync(playdate);
+
+        return true;
     }
 
     public Task<bool> Update(int t)

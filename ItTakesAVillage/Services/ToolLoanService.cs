@@ -6,7 +6,7 @@ public class ToolLoanService(
     IRepository<ToolLoan> toolLoanRepository) : IEventService<ToolLoan>
 {
     private readonly IRepository<ToolLoan> _toolLoanRepository = toolLoanRepository;
-
+    public async Task<List<ToolLoan>> GetAll() => await _toolLoanRepository.GetAsync();
     public async Task<bool> Create(ToolLoan toolLoan)
     {
         if (toolLoan.FromDate < DateOnly.FromDateTime(DateTime.Today) || toolLoan.ToDate < DateOnly.FromDateTime(DateTime.Today))
@@ -29,20 +29,22 @@ public class ToolLoanService(
     public async Task<bool> Update(int id) //TODO: Change services and interfaces maybe only toolpool services
     {
         var loan = await _toolLoanRepository.GetAsync(id);
-        if (loan == null) 
+        if (loan == null)
             return false;
         loan.IsReturned = true;
         loan.ToolPool.IsBorrowed = false;
         await _toolLoanRepository.UpdateAsync(loan);
         return true;
     }
-    public Task<bool> Delete(int eventId, string userId)
+    public async Task<bool> Delete(int toolId)
     {
-        throw new NotImplementedException();
-    }
-
-    public Task<List<ToolLoan>> GetAll()
-    {
-        throw new NotImplementedException();
+        List<ToolLoan> toolLoans = await _toolLoanRepository.GetByFilterAsync(x => x.ToolId == toolId);
+        if (toolLoans == null)
+            return false;
+        foreach (var loan in toolLoans)
+        {
+            await _toolLoanRepository.DeleteAsync(loan);
+        }
+        return true;
     }
 }

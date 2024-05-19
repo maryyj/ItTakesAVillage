@@ -52,13 +52,21 @@ namespace ItTakesAVillage.Pages
             }
             return RedirectToPage("/GroupDetails", new {groupId});
         }
-        public async Task<IActionResult> OnPostDeleteEvent(int groupId)
+        public async Task<IActionResult> OnPostDeletePlayDate(int eventId, int groupId)
+        {
+            if(ModelState.IsValid)
+            {                
+                await _playdateService.Delete(eventId);
+            }
+            return RedirectToPage("/GroupDetails", new { groupId });
+        }
+        public async Task<IActionResult> OnPostDeleteDinnerInvitation(int eventId, int groupId)
         {
             if(ModelState.IsValid)
             {
-                
+                await _dinnerInvitationService.Delete(eventId);
             }
-            return RedirectToPage("/GroupDetails", new {groupId});
+            return RedirectToPage("/GroupDetails", new { groupId });
         }
         private List<BaseEvent> SortAndAddLists(List<DinnerInvitation> invitation, List<PlayDate> playdate)
         {

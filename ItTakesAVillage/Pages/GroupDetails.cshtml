@@ -49,17 +49,40 @@
                                     @if (groupEvent is DinnerInvitation dinnerInvitation)
                                     {
                                         await Html.RenderPartialAsync("_DinnerNotificationPartial", dinnerInvitation);
+                                        @if (groupEvent.CreatorId == Model.CurrentUser.Id)
+                                        {
+                                            <div class="d-flex">
+                                                <form method="post" asp-page-handler="UpdatePlayDate">
+                                                    <input type="hidden" name="eventId" value="@groupEvent.Id" />
+                                                    <input type="hidden" name="groupId" value="@groupEvent.GroupId" />
+                                                    <button type="submit" class="btn pinkBgColor d-flex justify-content-end">Ändra</button>
+                                                </form>
+                                                <form method="post" asp-page-handler="DeleteDinnerInvitation">
+                                                    <input type="hidden" name="eventId" value="@groupEvent.Id" />
+                                                    <input type="hidden" name="groupId" value="@groupEvent.GroupId" />
+                                                    <button type="submit" class="btn greenBgColor d-flex justify-content-end">Ta bort</button>
+                                                </form>
+                                            </div>
+                                        }
                                     }
                                     @if (groupEvent is PlayDate playDate)
                                     {
                                         await Html.RenderPartialAsync("_PlayDateNotificationPartial", playDate);
-                                    }
-                                    @if (groupEvent.CreatorId == Model.CurrentUser.Id)
-                                    {
-                                        <form method="post" asp-page-handler="DeleteEvent">
-                                            <input type="hidden" name="eventId" value="@groupEvent.Id" />
-                                            <button type="submit" class="btn greenBgColor d-flex justify-content-end">Ta bort</button>
-                                        </form>
+                                        @if (groupEvent.CreatorId == Model.CurrentUser.Id)
+                                        {
+                                            <div class="d-flex">
+                                                <form method="post" asp-page-handler="UpdatePlayDate">
+                                                    <input type="hidden" name="eventId" value="@groupEvent.Id" />
+                                                    <input type="hidden" name="groupId" value="@groupEvent.GroupId" />
+                                                    <button type="submit" class="btn pinkBgColor d-flex justify-content-end">Ändra</button>
+                                                </form>
+                                                <form method="post" asp-page-handler="DeletePlayDate">
+                                                    <input type="hidden" name="eventId" value="@groupEvent.Id" />
+                                                    <input type="hidden" name="groupId" value="@groupEvent.GroupId" />
+                                                    <button type="submit" class="btn pinkBgColor d-flex justify-content-end">Ta bort</button>
+                                                </form>
+                                            </div>
+                                        }
                                     }
                                 </div>
                             </div>

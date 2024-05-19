@@ -39,7 +39,7 @@ public class ToolLoanModel(
         CurrentUser = await _userManager.GetUserAsync(User);
         if (CurrentUser != null)
         {
-            bool success = await _toolPoolService.Delete(toolId, CurrentUser.Id);
+            bool success = await _toolPoolService.Delete(toolId);
         }
         return RedirectToPage("/ToolPool");
     }

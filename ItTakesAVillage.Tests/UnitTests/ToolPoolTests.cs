@@ -65,5 +65,19 @@
             Assert.False(result);
             _toolPoolRepositoryMock.Verify(x => x.DeleteAsync(It.IsAny<ToolPool>()), Times.Never);
         }
+        [Fact]
+        public async Task Delete_ToolIsNotBorrowed_ShouldReturnTrue()
+        {
+            int toolId = 123;
+            var borrowedTool = new ToolPool { Id = toolId, IsBorrowed = false };
+            _toolPoolRepositoryMock.Setup(x => x.GetAsync(toolId)).ReturnsAsync(borrowedTool);
+
+            // Act
+            var result = await _sut.Delete(toolId);
+
+            // Assert
+            Assert.True(result);
+            _toolPoolRepositoryMock.Verify(x => x.DeleteAsync(It.IsAny<ToolPool>()), Times.Once);
+        }
     }
 }

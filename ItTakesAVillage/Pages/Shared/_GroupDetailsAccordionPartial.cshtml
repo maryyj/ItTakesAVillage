@@ -73,5 +73,42 @@
                 </div>
             </div>
         </div>
+  @*       <!-- Modal -->
+        <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">
+                            <b>@editTitleFormular</b>
+                        </h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form method="post" asp-page-handler="EditTool">
+                        <div class="modal-body">
+                            <input type="hidden" asp-for="EditTool.DateTime" value="@DateTime.Now.ToString("yyyy-MM-dd HH:mm", new System.Globalization.CultureInfo("sv-SE"))" />
+                            <input type="hidden" asp-for="EditTool.CreatorId" value="@Model.CurrentUser.Id" />
+                            <input type="hidden" asp-for="EditTool.Id" value="@tool.Id" />
+                            <input type="hidden" asp-for="EditTool.Image" value="@tool.Image" />
+                            <label class="form-label fw-bold mt-2">Vill du ändra namn</label>
+                            <input asp-for="EditTool.Name"
+                                   value="@tool.Name"
+                                   class="form-control bg-transparent" />
+                            <label class="form-label fw-bold mt-2">Vill du ändra beskrivning</label>
+                            <input asp-for="EditTool.Description"
+                                   value="@tool.Description"
+                                   class="form-control bg-transparent" />
+                            <label class="form-label fw-bold mt-2">Vill du ändra meddelandet?</label>
+                            <textarea class="form-control bg-transparent"
+                                      asp-for="EditTool.Message"
+                                      value="@tool.Message">@tool.Message</textarea>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@close</button>
+                            <button type="submit" class="btn pinkBgColor">@save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div> *@
     }
 </div>

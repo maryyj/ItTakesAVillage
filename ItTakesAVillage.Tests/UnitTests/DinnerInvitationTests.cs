@@ -47,5 +47,21 @@
             Assert.False(actual);
             _dinnerInvitationRepositoryMock.Verify(x => x.AddAsync(It.IsAny<DinnerInvitation>()), Times.Never);
         }
+        [Theory]
+        [InlineData(-1)]
+        [InlineData(-100)]
+        public async Task Update_InvitationInPast_ShouldReturnFalse(int days)
+        {
+            // Arrange
+            var pastDate = DateTime.Now.AddDays(days);
+            var dinnerInvitation = new DinnerInvitation { DateTime = pastDate };
+
+            // Act
+            var actual = await _sut.Update(dinnerInvitation);
+
+            // Assert
+            Assert.False(actual);
+            _dinnerInvitationRepositoryMock.Verify(x => x.AddAsync(It.IsAny<DinnerInvitation>()), Times.Never);
+        }
     }
 }

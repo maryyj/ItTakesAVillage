@@ -98,7 +98,8 @@
                                                 <form method="post" asp-page-handler="EditTool">
                                                     <div class="modal-body">
                                                         <input type="hidden" asp-for="EditTool.DateTime" value="@DateTime.Now.ToString("yyyy-MM-dd HH:mm", new System.Globalization.CultureInfo("sv-SE"))" />
-                                                        <input type="hidden" asp-for="EditTool.CreatorId" value="@Model.CurrentUser.Id" />
+                                                        <input type="hidden" asp-for="EditTool.CreatorId" value="@tool.CreatorId" />
+                                                        <input type="hidden" asp-for="EditTool.GroupId" value="@tool.GroupId" />
                                                         <input type="hidden" asp-for="EditTool.Id" value="@tool.Id" />
                                                         <input type="hidden" asp-for="EditTool.Image" value="@tool.Image" />
                                                         <label class="form-label fw-bold mt-2">Vill du ändra namn</label>
@@ -112,7 +113,7 @@
                                                         <label class="form-label fw-bold mt-2">Vill du ändra meddelandet?</label>
                                                         <textarea class="form-control bg-transparent"
                                                                   asp-for="EditTool.Message"
-                                                                  value="@tool.Message">@tool.Message</textarea>
+                                                                  value="@tool.Message"></textarea>
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@close</button>

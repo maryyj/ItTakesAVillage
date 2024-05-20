@@ -31,7 +31,6 @@
             //Assert
             Assert.False(actual);
             _toolPoolRepositoryMock.Verify(x => x.AddAsync(It.IsAny<ToolPool>()), Times.Never);
-
         }
         [Theory]
         [InlineData(0)]
@@ -80,26 +79,26 @@
             _toolPoolRepositoryMock.Verify(x => x.DeleteAsync(It.IsAny<ToolPool>()), Times.Once);
         }
         [Fact]
-        public void ValidateReturnDate_LoanOverdue_SetsIsBorrowedToFalseAndIsReturnedToTrue()
+        public void ValidateReturnDate_LoanExpired_SetsIsBorrowedToFalseAndIsReturnedToTrue()
         {
             // Arrange
             var today = DateOnly.FromDateTime(DateTime.Today);
 
-            var overdueLoan = new ToolLoan
+            var expiredLoan = new ToolLoan
             {
                 ToDate = today.AddDays(-1),
                 IsReturned = false,
                 ToolPool = new ToolPool { IsBorrowed = true }
             };
 
-            var loans = new List<ToolLoan> { overdueLoan };
+            var loans = new List<ToolLoan> { expiredLoan };
 
             // Act
             Helper.Validate.ValidateReturnDate(loans);
 
             // Assert
-            Assert.False(overdueLoan.ToolPool.IsBorrowed);
-            Assert.True(overdueLoan.IsReturned);
+            Assert.False(expiredLoan.ToolPool.IsBorrowed);
+            Assert.True(expiredLoan.IsReturned);
         }
     }
 }

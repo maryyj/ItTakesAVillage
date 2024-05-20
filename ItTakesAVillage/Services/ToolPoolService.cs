@@ -1,12 +1,12 @@
 ﻿namespace ItTakesAVillage.Services;
 
 public class ToolPoolService(
-    IRepository<ToolPool> toolPoolRepository,
-    IRepository<ToolLoan> toolLoanRepository,
-    IRepository<UserGroup> userGroupRepository) : IEventService<ToolPool>
+    IRepository<ToolPool> toolPoolRepository,    
+    IRepository<UserGroup> userGroupRepository, 
+    IEventService<ToolLoan> toolLoanService) : IEventService<ToolPool>
 {
     private readonly IRepository<ToolPool> _toolPoolRepository = toolPoolRepository;
-    private readonly IRepository<ToolLoan> _toolLoanRepository = toolLoanRepository;
+    private readonly IEventService<ToolLoan> _toolLoanService = toolLoanService;
     private readonly IRepository<UserGroup> _userGroupRepository = userGroupRepository;
 
     public async Task<bool> Create(ToolPool tool)
@@ -43,8 +43,9 @@ public class ToolPoolService(
     public async Task<bool> Delete(int toolId)
     {
         var tool = await _toolPoolRepository.GetAsync(toolId);
-        if (tool != null || tool.IsBorrowed == true)
+        if (tool == null || tool.IsBorrowed == true)
             return false;
+        await _toolLoanService.Delete(toolId);
         await _toolPoolRepository.DeleteAsync(tool);
 
         return true;
@@ -67,7 +68,7 @@ public class ToolPoolService(
     private async Task ValidateReturnDate()
     {
         DateOnly today = DateOnly.FromDateTime(DateTime.Today);
-        var loans = await _toolLoanRepository.GetAsync();
+        var loans = await _toolLoanService.GetAll();
         foreach (var loan in loans)
         {
             if (loan.ToDate < today && loan.IsReturned == false)

@@ -26,9 +26,8 @@ public class ToolLoanService(
             throw new ArgumentException("Parameter must be string");
     }
 
-    public async Task<bool> Update(ToolLoan loan) //TODO: Change services and interfaces maybe only toolpool services
+    public async Task<bool> Update(ToolLoan loan)
     {
-        //var loan = await _toolLoanRepository.GetAsync(id);
         if (loan == null)
             return false;
         loan.IsReturned = true;

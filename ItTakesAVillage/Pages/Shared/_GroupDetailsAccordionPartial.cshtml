@@ -1,0 +1,141 @@
+﻿@model dynamic
+@inject UserManager<ItTakesAVillageUser> _userManager
+@{
+    var currentUser = await _userManager.GetUserAsync(User);
+    var Events = Model.Events as List<BaseEvent>;
+    var editDinnerInvitation = Model.EditDinnerInvitation as DinnerInvitation;
+    var editPlayDate = Model.EditPlayDate as PlayDate;
+}
+<div class="accordion w-75" id="groupEvent-accordion">
+    @foreach (var groupEvent in Events)
+    {
+        <div class="accordion-item  border-0">
+            <button class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#collapse_@groupEvent.Id"
+                    aria-expanded="false"
+                    aria-controls="collapse_@groupEvent.Id"
+                    onclick="handleAccordionClick(@groupEvent.Id)">
+                <i class="bi bi-circle-fill pinkFontColor p-2"></i>
+
+                @if (groupEvent is DinnerInvitation)
+                {
+                    <span class="accordion-title">
+                        Matlag hos @groupEvent.Creator?.FirstName
+                    </span>
+                }
+                else if (groupEvent is PlayDate)
+                {
+                    <span class="accordion-title">
+                        Lekträff hos @groupEvent.Creator?.FirstName
+                    </span>
+                }
+            </button>
+
+            <div id="collapse_@groupEvent.Id" class="accordion-collapse collapse" aria-labelledby="heading_@groupEvent.Id" data-bs-parent="#groupEvent-accordion">
+                <div class="accordion-body p-4">
+
+                    @if (groupEvent is DinnerInvitation dinnerInvitation)
+                    {
+                        await Html.RenderPartialAsync("_DinnerNotificationPartial", dinnerInvitation);
+                        <div class="d-flex">
+                            @if (dinnerInvitation.CreatorId == currentUser?.Id)
+                            {
+                                <button class="btn pinkBgColor me-2" data-bs-toggle="modal" data-bs-target="#editDinnerModal">
+                                    Ändra
+                                </button>
+                                <div class="modal fade" id="editDinnerModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="exampleModalLabel">
+                                                    <b>Redigera din inbjudan</b>
+                                                </h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <form method="post" asp-page-handler="EditDinnerInvitation">
+                                                <div class="modal-body">
+                                                    <input type="hidden" asp-for="@editDinnerInvitation.GroupId" value="@dinnerInvitation?.GroupId" />
+                                                    <input type="hidden" asp-for="@editDinnerInvitation.CreatorId" value="@dinnerInvitation?.CreatorId" />
+                                                    <input type="hidden" asp-for="@editDinnerInvitation.Id" value="@dinnerInvitation?.Id" />
+                                                    <label class="form-label fw-bold mt-2">Vilket datum och tid?*</label>
+                                                    <input required class="form-control bg-transparent" asp-for="@editDinnerInvitation.DateTime" value="@dinnerInvitation.DateTime" />
+                                                    <label class="form-label fw-bold mt-2">Vad ska du bjuda på?</label>
+                                                    <input class="form-control bg-transparent" asp-for="@editDinnerInvitation.Course" value="@dinnerInvitation?.Course" />
+                                                    <label class="form-label fw-bold mt-2">Var ska ni vara?</label>
+                                                    <input class="form-control bg-transparent" asp-for="@editDinnerInvitation.Location" value="@dinnerInvitation?.Location" />
+                                                    <label class="form-label fw-bold mt-2">Övrig information</label>
+                                                    <textarea class="form-control bg-transparent" asp-for="@editDinnerInvitation.Message" value="@dinnerInvitation?.Message"></textarea>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Stäng</button>
+                                                    <button type="submit" class="btn pinkBgColor">Spara</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <form method="post" asp-page-handler="DeleteDinnerInvitation">
+                                    <input type="hidden" name="eventId" value="@groupEvent.Id" />
+                                    <input type="hidden" name="groupId" value="@groupEvent.GroupId" />
+                                    <button type="submit" class="btn greenBgColor">Ta bort</button>
+                                </form>
+                            }
+                        </div>
+                    }
+                    @if (groupEvent is PlayDate playDate)
+                    {
+                        await Html.RenderPartialAsync("_PlayDateNotificationPartial", playDate);
+                        <div class="d-flex">
+                            @if (playDate.CreatorId == currentUser?.Id)
+                            {
+                                <button class="btn pinkBgColor me-2" data-bs-toggle="modal" data-bs-target="#editPlayDateModal">
+                                    Ändra
+                                </button>
+                                <div class="modal fade" id="editPlayDateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="exampleModalLabel">
+                                                    <b>Redigera din inbjudan</b>
+                                                </h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <form method="post" asp-page-handler="EditPlayDate">
+                                                <div class="modal-body">
+                                                    <input type="hidden" asp-for="@editPlayDate.GroupId" value="@playDate?.GroupId" />
+                                                    <input type="hidden" asp-for="@editPlayDate.CreatorId" value="@playDate?.CreatorId" />
+                                                    <input type="hidden" asp-for="@editPlayDate.Id" value="@playDate?.Id" />
+                                                    <label class="form-label fw-bold mt-2">Vilket datum och tid?*</label>
+                                                    <input required class="form-control bg-transparent" asp-for="@editPlayDate.DateTime" value="@playDate.DateTime" />
+                                                    <label class="form-label fw-bold mt-2">Vem vill leka?</label>
+                                                    <input class="form-control bg-transparent" asp-for="@editPlayDate.ChildName" value="@playDate?.ChildName" />
+                                                    <label class="form-label fw-bold mt-2">Vem vill barnet leka med?</label>
+                                                    <input class="form-control bg-transparent" asp-for="@editPlayDate.InvitedChildName" value="@playDate?.InvitedChildName" />
+                                                    <label class="form-label fw-bold mt-2">Var ska ni vara?</label>
+                                                    <input class="form-control bg-transparent" asp-for="@editPlayDate.Location" value="@playDate?.Location" />
+                                                    <label class="form-label fw-bold mt-2">Övrig information</label>
+                                                    <textarea class="form-control bg-transparent" asp-for="@editPlayDate.Message" value="@playDate?.Message"></textarea>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Stäng</button>
+                                                    <button type="submit" class="btn pinkBgColor">Spara</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <form method="post" asp-page-handler="DeletePlayDate">
+                                    <input type="hidden" name="eventId" value="@groupEvent.Id" />
+                                    <input type="hidden" name="groupId" value="@groupEvent.GroupId" />
+                                    <button type="submit" class="btn greenBgColor">Ta bort</button>
+                                </form>
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>

@@ -27,14 +27,22 @@
             else
                 throw new ArgumentException("Parameter must be int");
         }
-        public Task<bool> Delete(int eventId, string userId)
+        public async Task<bool> Delete(int eventId)
         {
-            throw new NotImplementedException();
-        }
+            var invitation = await _dinnerInvitationRepository.GetAsync(eventId);
+            if (invitation == null)
+                return false;
+            await _dinnerInvitationRepository.DeleteAsync(invitation);
 
-        public Task<bool> Update(int t)
+            return true;
+        }
+        public async Task<bool> Update(DinnerInvitation invitation)
         {
-            throw new NotImplementedException();
+            if (invitation == null || invitation.DateTime < DateTime.Now)
+                return false;
+
+            await _dinnerInvitationRepository.UpdateAsync(invitation);
+            return true;
         }
     }
 }

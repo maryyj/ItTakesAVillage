@@ -21,7 +21,7 @@
             @if (Model.GroupMessages != null && Model.GroupMessages.Any())
             {
                 <div class="card">
-                    <h5 class="card-header abrilFont">Gruppchatt för @Model.CurrentGroup.Name</h5>
+                    <h5 class="card-header abrilFont">Gruppchatt för @Model.CurrentGroup?.Name</h5>
                     <div class="card-body scroll-container overflow-auto">
                         @{
                             DateTime? lastDate = null;
@@ -52,7 +52,7 @@
                                 <div class="d-flex justify-content-end mb-2">
                                     <div class="message user-message">
                                         <div class="small text-muted">
-                                            @message.Date.ToString("hh:mm") - Jag
+                                            @message.Date.ToString("HH:mm", new System.Globalization.CultureInfo("sv-SE")) - Jag
                                         </div>
                                         <div class="message-body rounded blueBgColor p-2">
                                             @message.Message
@@ -65,7 +65,7 @@
                                 <div class="d-flex justify-content-start mb-2">
                                     <div class="message other-message">
                                         <div class="small text-muted">
-                                            @message.Date.ToString("hh:mm") - @sender.FirstName @sender.LastName
+                                            @message.Date.ToString("HH:mm", new System.Globalization.CultureInfo("sv-SE")) - @sender?.FirstName @sender?.LastName
                                         </div>
                                         <div class="message-body rounded pinkBgColor p-2">
                                             @message.Message

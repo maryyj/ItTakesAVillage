@@ -1,5 +1,4 @@
 ﻿@page
-@using ItTakesAVillage.Models
 @model ItTakesAVillage.Pages.GroupDetailsModel
 @{
 }
@@ -13,55 +12,17 @@
     {
         <h2 class="text-center abrilFont mb-3">@(Model.CurrentGroup != null ? Model.CurrentGroup.Name : "")</h2>
         <div class="text-center abrilFont text-muted mb-5">- På gång - Medlemmar - </div>
-        @if (Model.EventsOfGroup.Any())
-        {
-            <div class="container w-75 mb-3">
-                <h5 class="abrilFont">På gång</h5>
-                <div class="accordion w-75" id="groupEvent-accordion">
-                    @foreach (var groupEvent in Model.EventsOfGroup)
-                    {
-                        <div class="accordion-item  border-0">
-                            <button class="accordion-button collapsed"
-                                    type="button"
-                                    data-bs-toggle="collapse"
-                                    data-bs-target="#collapse_@groupEvent.Id"
-                                    aria-expanded="false"
-                                    aria-controls="collapse_@groupEvent.Id"
-                                    onclick="handleAccordionClick(@groupEvent.Id)">
-                                <i class="bi bi-circle-fill pinkFontColor p-2"></i>
-
-                                @if (groupEvent is DinnerInvitation)
-                                {
-                                    <span class="accordion-title fw-bold">
-                                        Matlag hos @groupEvent.Creator.FirstName
-                                    </span>
-                                }
-                                else if (groupEvent is PlayDate)
-                                {
-                                    <span class="accordion-title fw-bold">
-                                        Lekträff hos @groupEvent.Creator.FirstName
-                                    </span>
-                                }
-
-                            </button>
-
-                            <div id="collapse_@groupEvent.Id" class="accordion-collapse collapse" aria-labelledby="heading_@groupEvent.Id" data-bs-parent="#groupEvent-accordion">
-                                <div class="accordion-body p-4">
-                                    @if (groupEvent is DinnerInvitation dinnerInvitation)
-                                    {
-                                        await Html.RenderPartialAsync("_DinnerNotificationPartial", dinnerInvitation);
-                                    }
-                                    @if (groupEvent is PlayDate playDate)
-                                    {
-                                        await Html.RenderPartialAsync("_PlayDateNotificationPartial", playDate);
-                                    }
-                                </div>
-                            </div>
-                        </div>
-                    }
-                </div>
-            </div>
-        }
+        <div class="container w-75 mb-3">
+            <h5 class="abrilFont">På gång</h5>
+            @if (Model.EventsOfGroup.Any())
+            {
+                await Html.RenderPartialAsync("_GroupDetailsAccordionPartial", new { Events = Model.EventsOfGroup, EditDinnerInvitation = Model.EditDinnerInvitation, EditPlayDate = Model.EditPlayDate});
+            }
+            else
+            {
+                <div class="abrilFont text-muted mb-5">Inga händelser har skapats i din grupp</div>
+            }
+        </div>
 
         await Html.RenderPartialAsync("_GroupTabPartial", Model.CurrentGroup);
     }

@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
+
 namespace ItTakesAVillage.Pages
 {
     public class GroupDetailsModel(
@@ -13,6 +15,10 @@ namespace ItTakesAVillage.Pages
         public Group? CurrentGroup { get; set; }
         [BindProperty]
         public UserGroup NewUserGroup { get; set; } = new();
+        [BindProperty]
+        public DinnerInvitation EditDinnerInvitation { get; set; } = new();
+        [BindProperty]
+        public PlayDate EditPlayDate { get; set; } = new();
         public List<UserGroup?> UsersInGroup { get; set; } = [];
         public List<BaseEvent> EventsOfGroup { get; set; } = [];
         public async Task<IActionResult> OnGet(int groupId)
@@ -42,13 +48,47 @@ namespace ItTakesAVillage.Pages
                 await _groupService.RemoveUser(userId, groupId);
             return RedirectToPage("/Group");
         }
-        public async Task<IActionResult> OnPostAddUserToGroupAsync(int groupId)
+        public async Task<IActionResult> OnPostAddUserToGroup(int groupId)
         {
             if (ModelState.IsValid)
             {
                 await _groupService.AddUser(NewUserGroup.UserId, groupId);
             }
             return RedirectToPage("/GroupDetails", new {groupId});
+        }
+        public async Task<IActionResult> OnPostEditDinnerInvitation()
+        {
+            if (ModelState.IsValid)
+            {
+                EditDinnerInvitation.Creator = await _userManager.GetUserAsync(User);
+                await _dinnerInvitationService.Update(EditDinnerInvitation);
+            }
+            return RedirectToPage("GroupDetails", new {EditDinnerInvitation.GroupId});
+        }
+        public async Task<IActionResult> OnPostEditPlayDate()
+        {
+            if (ModelState.IsValid)
+            {
+                EditPlayDate.Creator = await _userManager.GetUserAsync(User);
+                await _playdateService.Update(EditPlayDate);
+            }
+            return RedirectToPage("GroupDetails", new {EditPlayDate.GroupId});
+        }
+        public async Task<IActionResult> OnPostDeletePlayDate(int eventId, int groupId)
+        {
+            if(ModelState.IsValid)
+            {                
+                await _playdateService.Delete(eventId);
+            }
+            return RedirectToPage("/GroupDetails", new { groupId });
+        }
+        public async Task<IActionResult> OnPostDeleteDinnerInvitation(int eventId, int groupId)
+        {
+            if(ModelState.IsValid)
+            {
+                await _dinnerInvitationService.Delete(eventId);
+            }
+            return RedirectToPage("/GroupDetails", new { groupId });
         }
         private List<BaseEvent> SortAndAddLists(List<DinnerInvitation> invitation, List<PlayDate> playdate)
         {

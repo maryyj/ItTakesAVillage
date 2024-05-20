@@ -16,7 +16,7 @@
             <h5 class="abrilFont">På gång</h5>
             @if (Model.EventsOfGroup.Any())
             {
-                await Html.RenderPartialAsync("_GroupDetailsAccordionPartial", Model.EventsOfGroup);
+                await Html.RenderPartialAsync("_GroupDetailsAccordionPartial", new { Events = Model.EventsOfGroup, EditDinnerInvitation = Model.EditDinnerInvitation, EditPlayDate = Model.EditPlayDate});
             }
             else
             {

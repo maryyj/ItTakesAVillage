@@ -33,8 +33,11 @@ public class PlayDateService(IRepository<PlayDate> playDateRepository) : IEventS
         return true;
     }
 
-    public Task<bool> Update(int t)
+    public async Task<bool> Update(PlayDate playDate)
     {
-        throw new NotImplementedException();
+        if (playDate == null | playDate.DateTime < DateTime.Now)
+            return false;
+        await _playDateRepository.UpdateAsync(playDate);
+        return true;
     }
 }

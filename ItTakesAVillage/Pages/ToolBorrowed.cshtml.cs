@@ -1,7 +1,7 @@
 namespace ItTakesAVillage.Pages;
 
 public class ToolBorrowedModel(
-    UserManager<ItTakesAVillageUser> userManager, 
+    UserManager<ItTakesAVillageUser> userManager,
     IGroupService groupService,
     IEventService<ToolLoan> toolLoanService) : PageModel
 {
@@ -26,7 +26,12 @@ public class ToolBorrowedModel(
     }
     public async Task<IActionResult> OnPostReturnTool(int toolId)
     {
-        await _toolLoanService.Update(toolId);
+        BorrowedTools = await _toolLoanService.GetAllOfGroup(CurrentUser.Id);
+        var loan = BorrowedTools.Find(x => x.ToolId == toolId);
+        if (loan != null)
+        {
+            await _toolLoanService.Update(loan);
+        }
         return RedirectToPage("/ToolBorrowed");
     }
 }

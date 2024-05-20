@@ -36,10 +36,13 @@
 
             return true;
         }
-
-        public Task<bool> Update(int t)
+        public async Task<bool> Update(DinnerInvitation invitation)
         {
-            throw new NotImplementedException();
+            if (invitation == null || invitation.DateTime < DateTime.Now)
+                return false;
+
+            await _dinnerInvitationRepository.UpdateAsync(invitation);
+            return true;
         }
     }
 }

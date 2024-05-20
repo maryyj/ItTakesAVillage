@@ -26,6 +26,7 @@ public class ToolBorrowedModel(
     }
     public async Task<IActionResult> OnPostReturnTool(int toolId)
     {
+        CurrentUser = await _userManager.GetUserAsync(User);
         BorrowedTools = await _toolLoanService.GetAllOfGroup(CurrentUser.Id);
         var loan = BorrowedTools.Find(x => x.ToolId == toolId);
         if (loan != null)

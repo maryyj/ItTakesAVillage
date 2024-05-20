@@ -79,5 +79,30 @@
             Assert.True(result);
             _toolPoolRepositoryMock.Verify(x => x.DeleteAsync(It.IsAny<ToolPool>()), Times.Once);
         }
+        [Fact]
+        public async Task ValidateReturnDate_LoanOverdue_SetsIsBorrowedToFalseAndIsReturnedToTrue()
+        {
+            // Arrange
+            var today = DateOnly.FromDateTime(DateTime.Today);
+
+            var overdueLoan = new ToolLoan
+            {
+                ToDate = today.AddDays(-1),
+                IsReturned = false
+            };
+
+            // Skapa en ToolPool för lånet
+            var toolPool = new ToolPool { IsBorrowed = true };
+
+            _toolLoanServiceMock.Setup(x => x.GetAll()).ReturnsAsync(new List<ToolLoan> { overdueLoan });
+
+            // Utför metoden ValidateReturnDate
+            //await _sut.ValidateReturnDate();
+
+            // Kontrollera
+            Assert.False(overdueLoan.ToolPool.IsBorrowed); // Se till att IsBorrowed är inställt på false
+            Assert.True(overdueLoan.IsReturned); // Se till att IsReturned är inställt på true
+        }
+
     }
 }

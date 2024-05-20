@@ -27,7 +27,8 @@ public class ToolPoolService(
         if (id is string userId)
         {
             var groupsOfUser = await GetUserGroups(userId);
-            await ValidateReturnDate();
+            var toolLoans = await _toolLoanService.GetAll();
+            Validate.ValidateReturnDate(toolLoans);
             return await GetTools(groupsOfUser);
         }
         else
@@ -64,18 +65,5 @@ public class ToolPoolService(
             sharedTools.AddRange(toolsForGroup);
         }
         return sharedTools;
-    }
-    private async Task ValidateReturnDate()
-    {
-        DateOnly today = DateOnly.FromDateTime(DateTime.Today);
-        var loans = await _toolLoanService.GetAll();
-        foreach (var loan in loans)
-        {
-            if (loan.ToDate < today && loan.IsReturned == false)
-            {
-                loan.ToolPool.IsBorrowed = false;
-                loan.IsReturned = true;
-            }
-        }
     }
 }

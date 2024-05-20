@@ -13,4 +13,16 @@ public static class Validate
 
         return normalizedName;
     }
+    public static void ValidateReturnDate(List<ToolLoan> loans)
+    {
+        DateOnly today = DateOnly.FromDateTime(DateTime.Today);
+        foreach (var loan in loans)
+        {
+            if (loan.ToDate < today && loan.IsReturned == false)
+            {
+                loan.ToolPool.IsBorrowed = false;
+                loan.IsReturned = true;
+            }
+        }
+    }
 }

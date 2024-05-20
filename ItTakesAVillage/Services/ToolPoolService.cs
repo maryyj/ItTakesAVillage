@@ -1,9 +1,9 @@
 ﻿namespace ItTakesAVillage.Services;
 
 public class ToolPoolService(
-    IRepository<ToolPool> toolPoolRepository,
-    IEventService<ToolLoan> toolLoanService,
-    IRepository<UserGroup> userGroupRepository) : IEventService<ToolPool>
+    IRepository<ToolPool> toolPoolRepository,    
+    IRepository<UserGroup> userGroupRepository, 
+    IEventService<ToolLoan> toolLoanService) : IEventService<ToolPool>
 {
     private readonly IRepository<ToolPool> _toolPoolRepository = toolPoolRepository;
     private readonly IEventService<ToolLoan> _toolLoanService = toolLoanService;

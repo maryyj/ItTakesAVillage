@@ -1,15 +1,4 @@
-﻿using ItTakesAVillage.Interfaces;
-using ItTakesAVillage.Models;
-using ItTakesAVillage.Services;
-using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ItTakesAVillage.Tests.UnitTests
+﻿namespace ItTakesAVillage.Tests.UnitTests
 {
     public class NotificationTests
     {

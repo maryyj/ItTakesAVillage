@@ -117,6 +117,18 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AddDescription" xml:space="preserve">
+    <value>Vill du ange en beskrvning?</value>
+    <comment>ToolShare</comment>
+  </data>
+  <data name="AddImage" xml:space="preserve">
+    <value>Vill du lägga till en bild?</value>
+    <comment>ToolShare</comment>
+  </data>
+  <data name="AddTool" xml:space="preserve">
+    <value>Lägg upp en pryl</value>
+    <comment>ToolShare</comment>
+  </data>
   <data name="Borrow" xml:space="preserve">
     <value>Låna</value>
     <comment>ToolPool</comment>
@@ -124,6 +136,10 @@
   <data name="Borrowed" xml:space="preserve">
     <value>Utlånad</value>
     <comment>ToolPool</comment>
+  </data>
+  <data name="BorrowedDateText" xml:space="preserve">
+    <value>Lånad:</value>
+    <comment>ToolBorrowed</comment>
   </data>
   <data name="BorrowTitleFormular" xml:space="preserve">
     <value>Fyll i formuläret för att låna</value>
@@ -141,20 +157,24 @@
     <value>Vill du ändra namn?</value>
     <comment>ToolPool</comment>
   </data>
+  <data name="ChooseGroup" xml:space="preserve">
+    <value>Välj grupp</value>
+    <comment>ToolShare</comment>
+  </data>
   <data name="Close" xml:space="preserve">
     <value>Stäng</value>
     <comment>ToolPool</comment>
   </data>
   <data name="CreateGroup" xml:space="preserve">
     <value>Skapa ny grupp</value>
-    <comment>ToolPool</comment>
+    <comment>ToolPool/ToolShare</comment>
   </data>
   <data name="CreateGroupText" xml:space="preserve">
     <value>Skapa en grupp för att dela prylar!</value>
-    <comment>ToolPool</comment>
+    <comment>ToolPool/ToolShare</comment>
   </data>
   <data name="DescriptionText" xml:space="preserve">
-    <value>Beskrivning: </value>
+    <value>Beskrivning</value>
     <comment>ToolPool</comment>
   </data>
   <data name="Edit" xml:space="preserve">
@@ -173,13 +193,13 @@
     <value>Meddelande</value>
     <comment>ToolPool</comment>
   </data>
-  <data name="MessageText" xml:space="preserve">
-    <value>Meddelande:</value>
-    <comment>ToolPool</comment>
+  <data name="NoBorrowedTools" xml:space="preserve">
+    <value>Du har inga lånade prylar</value>
+    <comment>ToolBorrowed</comment>
   </data>
   <data name="NoMessage" xml:space="preserve">
     <value>Inget meddelande</value>
-    <comment>ToolPool</comment>
+    <comment>ToolPool/ToolShare</comment>
   </data>
   <data name="NoSharedTools" xml:space="preserve">
     <value>Finns inga delade prylar</value>
@@ -189,9 +209,29 @@
     <value>i gruppen</value>
     <comment>ToolPool</comment>
   </data>
+  <data name="OnGoing" xml:space="preserve">
+    <value>På gång</value>
+    <comment>ToolShare</comment>
+  </data>
+  <data name="OtherInfo" xml:space="preserve">
+    <value>Övrig information</value>
+    <comment>ToolShare</comment>
+  </data>
   <data name="Remove" xml:space="preserve">
     <value>Ta bort</value>
     <comment>ToolPool</comment>
+  </data>
+  <data name="RequiredFields" xml:space="preserve">
+    <value>Obligatorigska fält</value>
+    <comment>ToolShare</comment>
+  </data>
+  <data name="ReturnDate" xml:space="preserve">
+    <value>Återlämnas:</value>
+    <comment>ToolBorrowed</comment>
+  </data>
+  <data name="ReturnText" xml:space="preserve">
+    <value>Återlämna</value>
+    <comment>ToolBorrowed</comment>
   </data>
   <data name="Save" xml:space="preserve">
     <value>Spara</value>
@@ -199,11 +239,14 @@
   </data>
   <data name="SharedOf" xml:space="preserve">
     <value>Delad av</value>
-    <comment>ToolPool</comment>
+    <comment>ToolPool/ToolBorrowed</comment>
   </data>
-  <data name="SharedOfText" xml:space="preserve">
-    <value>Delad av:</value>
-    <comment>ToolPool</comment>
+  <data name="SharedTools" xml:space="preserve">
+    <value>Delade prylar</value>
+    <comment>ToolShare</comment>
+  </data>
+  <data name="ShareTool" xml:space="preserve">
+    <value>Dela pryl</value>
   </data>
   <data name="ShareToolText" xml:space="preserve">
     <value>Börja dela med dina vänner</value>
@@ -215,10 +258,18 @@
   </data>
   <data name="ToolPool" xml:space="preserve">
     <value>Prylpool</value>
-    <comment>ToolPool</comment>
+    <comment>ToolPool/ToolShare/ToolBorrowed</comment>
   </data>
   <data name="ToolText" xml:space="preserve">
-    <value>Prylnamn:</value>
+    <value>Prylnamn</value>
     <comment>ToolPool</comment>
+  </data>
+  <data name="WhichGroup" xml:space="preserve">
+    <value>Vilken grupp?*</value>
+    <comment>ToolShare</comment>
+  </data>
+  <data name="WhichTool" xml:space="preserve">
+    <value>Vilken pryl?*</value>
+    <comment>ToolShare</comment>
   </data>
 </root>

@@ -51,7 +51,7 @@
                         </label>
                         <textarea class="form-control bg-transparent"
                                   asp-for="NewToolPool.Message">
-                                                    </textarea>
+                                                                    </textarea>
                         <input type="submit"
                                class="btn blueBgColor fw-bold mt-2"
                                value="Spara" />
@@ -97,10 +97,15 @@
                                     aria-controls="collapse_@notification.Id"
                                     onclick="handleAccordionClick(@notification.Id)">
                                 <i class="bi bi-circle-fill pinkFontColor p-2"></i>
-                                <span class="">@notification.RelatedEvent.DateTime.ToShortDateString() - @notification.Title</span>
+                                <span class="">
+                                    @notification.RelatedEvent.DateTime.ToShortDateString() - @notification.Title
+                                </span>
                             </button>
 
-                            <div id="collapse_@notification.Id" class="accordion-collapse collapse" aria-labelledby="heading_@notification.Id" data-bs-parent="#notification-accordion">
+                            <div id="collapse_@notification.Id"
+                                 class="accordion-collapse collapse"
+                                 aria-labelledby="heading_@notification.Id"
+                                 data-bs-parent="#notification-accordion">
                                 <div class="accordion-body p-4">
                                     @if (notification.RelatedEvent is Models.ToolPool toolPool)
                                     {

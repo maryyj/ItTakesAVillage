@@ -97,11 +97,29 @@ namespace ItTakesAVillage {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Låna något från prylpoolen.
+        /// </summary>
+        public static string BorrowATool {
+            get {
+                return ResourceManager.GetString("BorrowATool", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Utlånad.
         /// </summary>
         public static string Borrowed {
             get {
                 return ResourceManager.GetString("Borrowed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lånad:.
+        /// </summary>
+        public static string BorrowedDateText {
+            get {
+                return ResourceManager.GetString("BorrowedDateText", resourceCulture);
             }
         }
         
@@ -178,7 +196,7 @@ namespace ItTakesAVillage {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Beskrivning: .
+        ///   Looks up a localized string similar to Beskrivning.
         /// </summary>
         public static string DescriptionText {
             get {
@@ -214,6 +232,33 @@ namespace ItTakesAVillage {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Samla dina vänner och börja hjälpas åt!.
+        /// </summary>
+        public static string GatherFriends {
+            get {
+                return ResourceManager.GetString("GatherFriends", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Boka in lekträff.
+        /// </summary>
+        public static string InvitePlayDate {
+            get {
+                return ResourceManager.GetString("InvitePlayDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bjud in din grupp till matlag.
+        /// </summary>
+        public static string InviteToDinner {
+            get {
+                return ResourceManager.GetString("InviteToDinner", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Meddelande.
         /// </summary>
         public static string Message {
@@ -223,11 +268,20 @@ namespace ItTakesAVillage {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Meddelande:.
+        ///   Looks up a localized string similar to Mina grupper.
         /// </summary>
-        public static string MessageText {
+        public static string MyGroups {
             get {
-                return ResourceManager.GetString("MessageText", resourceCulture);
+                return ResourceManager.GetString("MyGroups", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Du har inga lånade prylar.
+        /// </summary>
+        public static string NoBorrowedTools {
+            get {
+                return ResourceManager.GetString("NoBorrowedTools", resourceCulture);
             }
         }
         
@@ -295,6 +349,24 @@ namespace ItTakesAVillage {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Återlämnas:.
+        /// </summary>
+        public static string ReturnDate {
+            get {
+                return ResourceManager.GetString("ReturnDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Återlämna.
+        /// </summary>
+        public static string ReturnText {
+            get {
+                return ResourceManager.GetString("ReturnText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Spara.
         /// </summary>
         public static string Save {
@@ -313,20 +385,20 @@ namespace ItTakesAVillage {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Delad av:.
-        /// </summary>
-        public static string SharedOfText {
-            get {
-                return ResourceManager.GetString("SharedOfText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Delade prylar.
         /// </summary>
         public static string SharedTools {
             get {
                 return ResourceManager.GetString("SharedTools", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dela pryl.
+        /// </summary>
+        public static string ShareTool {
+            get {
+                return ResourceManager.GetString("ShareTool", resourceCulture);
             }
         }
         
@@ -358,7 +430,7 @@ namespace ItTakesAVillage {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Prylnamn:.
+        ///   Looks up a localized string similar to Prylnamn.
         /// </summary>
         public static string ToolText {
             get {

@@ -7,13 +7,12 @@
 @if (Model.CurrentUser != null)
 {
     <div class="container w-75">
-        <a asp-page="/Group" class="btn abrilFont p-2 blueBgColor border-0">Tillbaka till dina grupper</a>
+        <a asp-page="/Group" class="btn abrilFont p-2 blueBgColor border-0">@Resources.BackToGroup</a>
     </div>
     @if (Model.UsersInGroup != null && Model.UsersInGroup.Any())
     {
         <h2 class="text-center abrilFont mb-3">@(Model.CurrentGroup != null ? Model.CurrentGroup.Name : "")</h2>
-        <div class="text-center abrilFont text-muted mb-5">- Gruppchatt -</div>
-        @* await Html.RenderPartialAsync("_MemberPartial", Model.UsersInGroup); *@
+        <div class="text-center abrilFont text-muted mb-5">- @Resources.GroupChat -</div>
         await Html.RenderPartialAsync("_GroupTabPartial", Model.CurrentGroup);
     }
     <div class="greenBgColor py-5">
@@ -21,7 +20,7 @@
             @if (Model.GroupMessages != null && Model.GroupMessages.Any())
             {
                 <div class="card">
-                    <h5 class="card-header abrilFont">Gruppchatt för @Model.CurrentGroup?.Name</h5>
+                    <h5 class="card-header abrilFont">@Resources.GroupChat @Resources.For @Model.CurrentGroup?.Name</h5>
                     <div class="card-body scroll-container overflow-auto">
                         @{
                             DateTime? lastDate = null;
@@ -36,7 +35,7 @@
                                 <div class="d-flex justify-content-center mb-2">
                                     @if (message.Date.Day == DateTime.Now.Day)
                                     {
-                                        <span class="date-separator small">Idag</span>
+                                        <span class="date-separator small">@Resources.Today</span>
 
                                     }
                                     else
@@ -52,7 +51,7 @@
                                 <div class="d-flex justify-content-end mb-2">
                                     <div class="message user-message">
                                         <div class="small text-muted">
-                                            @message.Date.ToString("HH:mm", new System.Globalization.CultureInfo("sv-SE")) - Jag
+                                            @message.Date.ToString("HH:mm", new System.Globalization.CultureInfo("sv-SE")) - @Resources.Me
                                         </div>
                                         <div class="message-body rounded blueBgColor p-2">
                                             @message.Message
@@ -79,11 +78,11 @@
             }
             else
             {
-                <h2 class="text-center abrilFont">Skriv ett meddelande och börja kommunicera med dina vänner</h2>
-                <div class="text-center abrilFont text-muted mb-5">- Inga meddelanden -</div>
+                <h2 class="text-center abrilFont">@Resources.StartChat</h2>
+                <div class="text-center abrilFont text-muted mb-5">- @Resources.NoMessage -</div>
             }
             <form method="post" asp-page-handler="AddMessage">
-                <input type="hidden" name="groupId" value="@Model.CurrentGroup.Id" />
+                <input type="hidden" name="groupId" value="@Model.CurrentGroup?.Id" />
                 <input type="hidden" asp-for="@Model.NewMessage.SenderId" value="@Model.CurrentUser.Id" />
                 <input type="hidden" asp-for="@Model.NewMessage.Date" value="@DateTime.Now.ToString()" />
                 <div class="d-flex mt-2">
@@ -91,7 +90,7 @@
                               class="bg-lightrounded form-control me-2"
                               placeholder="Skriv in ditt meddelande...">
                                                                     </textarea>
-                    <button type="submit" class="pinkBgColor border-0 rounded">Skicka</button>
+                    <button type="submit" class="pinkBgColor border-0 rounded">@Resources.Send</button>
                 </div>
             </form>
         </div>

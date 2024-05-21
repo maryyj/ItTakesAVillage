@@ -61,6 +61,33 @@ namespace ItTakesAVillage {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Vill du ange en beskrvning?.
+        /// </summary>
+        public static string AddDescription {
+            get {
+                return ResourceManager.GetString("AddDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vill du lägga till en bild?.
+        /// </summary>
+        public static string AddImage {
+            get {
+                return ResourceManager.GetString("AddImage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lägg upp en pryl.
+        /// </summary>
+        public static string AddTool {
+            get {
+                return ResourceManager.GetString("AddTool", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Låna.
         /// </summary>
         public static string Borrow {
@@ -111,6 +138,15 @@ namespace ItTakesAVillage {
         public static string ChangeName {
             get {
                 return ResourceManager.GetString("ChangeName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Välj grupp.
+        /// </summary>
+        public static string ChooseGroup {
+            get {
+                return ResourceManager.GetString("ChooseGroup", resourceCulture);
             }
         }
         
@@ -223,11 +259,38 @@ namespace ItTakesAVillage {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to På gång.
+        /// </summary>
+        public static string OnGoing {
+            get {
+                return ResourceManager.GetString("OnGoing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Övrig information.
+        /// </summary>
+        public static string OtherInfo {
+            get {
+                return ResourceManager.GetString("OtherInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ta bort.
         /// </summary>
         public static string Remove {
             get {
                 return ResourceManager.GetString("Remove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Obligatorigska fält.
+        /// </summary>
+        public static string RequiredFields {
+            get {
+                return ResourceManager.GetString("RequiredFields", resourceCulture);
             }
         }
         
@@ -255,6 +318,15 @@ namespace ItTakesAVillage {
         public static string SharedOfText {
             get {
                 return ResourceManager.GetString("SharedOfText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delade prylar.
+        /// </summary>
+        public static string SharedTools {
+            get {
+                return ResourceManager.GetString("SharedTools", resourceCulture);
             }
         }
         
@@ -291,6 +363,24 @@ namespace ItTakesAVillage {
         public static string ToolText {
             get {
                 return ResourceManager.GetString("ToolText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vilken grupp?*.
+        /// </summary>
+        public static string WhichGroup {
+            get {
+                return ResourceManager.GetString("WhichGroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vilken pryl?*.
+        /// </summary>
+        public static string WhichTool {
+            get {
+                return ResourceManager.GetString("WhichTool", resourceCulture);
             }
         }
     }

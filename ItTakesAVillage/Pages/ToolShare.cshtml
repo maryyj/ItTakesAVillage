@@ -1,5 +1,6 @@
 ﻿@page
 @model ItTakesAVillage.Pages.ToolPoolModel
+@using static ItTakesAVillage.Resources
 @{
 }
 @if (Model.CurrentUser != null)
@@ -7,32 +8,56 @@
 
     <div class="d-flex align-items-center flex-column">
         <img class="mx-auto eventImg" alt="wrench with pink background" src="img/tool.png" />
-        <h2 class="abrilFont text-center mt-2 mb-5">Prylpool</h2>
+        <h2 class="abrilFont text-center mt-2 mb-5">@Resources.ToolPool</h2>
     </div>
     @if (Model.GroupsOfCurrentUser != null && Model.GroupsOfCurrentUser.Any())
     {
         await Html.RenderPartialAsync("_ToolPoolTabPartial");
         <div class="pinkBgColor py-4">
             <div class="container w-75">
-                <h4 class="abrilFont mt-4 mb-3">Lägg upp en pryl</h4>
+                <h4 class="abrilFont mt-4 mb-3">@Resources.AddTool</h4>
                 <div class="w-50">
                     <form method="post" asp-page-handler="AddToolToPool" enctype="multipart/form-data">
-                        <label class="form-label fw-bold mt-2">Vilken grupp?*</label>
+                        <label class="form-label fw-bold mt-2">@Resources.WhichGroup</label>
                         <select class="form-control w-25 bg-transparent" asp-for="NewToolPool.GroupId" asp-items="ViewBag.GroupId">
-                            <option disabled selected>Välj grupp</option>
+                            <option disabled selected>@Resources.ChooseGroup</option>
                         </select>
-                        <input type="hidden" asp-for="NewToolPool.DateTime" value="@DateTime.Now.ToString("yyyy-MM-dd HH:mm", new System.Globalization.CultureInfo("sv-SE"))" />
-                        <input type="hidden" asp-for="NewToolPool.CreatorId" value="@Model.CurrentUser.Id" />
-                        <label class="form-label fw-bold mt-2">Vilken pryl?*</label>
-                        <input class="form-control bg-transparent" asp-for="NewToolPool.Name" />
-                        <label class="form-label fw-bold mt-2">Vill du ange en beskrvning?</label>
-                        <input class="form-control bg-transparent" asp-for="NewToolPool.Description" />
-                        <label class="form-label fw-bold mt-2">Vill du lägga till en bild?</label>
-                        <input class="form-control bg-transparent" type="file" name="UploadedImage" asp-for="NewToolPool.Image" accept="image/*" />
-                        <label class="form-label fw-bold mt-2">Övrig information</label>
-                        <textarea class="form-control bg-transparent" asp-for="NewToolPool.Message"></textarea>
-                        <input type="submit" class="btn blueBgColor fw-bold mt-2" value="Spara" />
-                        <span class="ms-2 "><b> * </b> - Obligatorigskt fält</span>
+                        <input type="hidden"
+                               asp-for="NewToolPool.DateTime"
+                               value="@DateTime.Now.ToString("yyyy-MM-dd HH:mm", new System.Globalization.CultureInfo("sv-SE"))" />
+                        <input type="hidden"
+                               asp-for="NewToolPool.CreatorId"
+                               value="@Model.CurrentUser.Id" />
+                        <label class="form-label fw-bold mt-2">
+                            @Resources.WhichTool
+                        </label>
+                        <input class="form-control bg-transparent"
+                               asp-for="NewToolPool.Name" />
+                        <label class="form-label fw-bold mt-2">
+                            @Resources.AddDescription
+                        </label>
+                        <input class="form-control bg-transparent"
+                               asp-for="NewToolPool.Description" />
+                        <label class="form-label fw-bold mt-2">
+                            @Resources.AddImage
+                        </label>
+                        <input class="form-control bg-transparent"
+                               type="file"
+                               name="UploadedImage"
+                               asp-for="NewToolPool.Image"
+                               accept="image/*" />
+                        <label class="form-label fw-bold mt-2">
+                            @Resources.OtherInfo
+                        </label>
+                        <textarea class="form-control bg-transparent"
+                                  asp-for="NewToolPool.Message">
+                                                    </textarea>
+                        <input type="submit"
+                               class="btn blueBgColor fw-bold mt-2"
+                               value="Spara" />
+                        <span class="ms-2 ">
+                            <b> * </b> - @Resources.RequiredFields
+                        </span>
                     </form>
                 </div>
             </div>
@@ -42,8 +67,12 @@
     {
         <div class="pinkBgColor py-4 customColouredContainer d-flex align-items-center justify-content-center">
             <div class="container d-flex flex-column align-items-center">
-                <h4 class="abrilFont my-4">Skapa en grupp för att dela prylar!</h4>
-                <a asp-page="/Group" class="btn custom-btn fontColor fw-bold greenBgColor my-4">Skapa ny grupp</a>
+                <h4 class="abrilFont my-4">
+                    @Resources.CreateGroupText
+                </h4>
+                <a asp-page="/Group" class="btn custom-btn fontColor fw-bold greenBgColor my-4">
+                    @Resources.CreateGroup
+                </a>
             </div>
         </div>
     }
@@ -54,7 +83,7 @@
         <div class="border border-start-0 border-end-0 border-top-0 py-4">
 
             <div class="container w-75 pt-5 pb-4">
-                <h4 class="abrilFont mb-3">På gång - Delade prylar</h4>
+                <h4 class="abrilFont mb-3">@Resources.OnGoing - @Resources.SharedTools</h4>
                 <div class="accordion" id="notification-accordion">
                     @foreach (var notification in ToolPoolNotifications.OrderBy(x => x.RelatedEvent.DateTime).Take(5))
                     {

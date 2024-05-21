@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="~/css/group.css" />
 <div class="container w-75  mb-4">
 
-    <h4 class="abrilFont mb-4">Mina grupper</h4>
+    <h4 class="abrilFont mb-4">@Resources.MyGroups</h4>
     <div class="accordion" id="notification-accordion">
         @foreach (var group in Model)
         {
@@ -24,7 +24,10 @@
                     </button>
                 </h2>
 
-                <div id="collapse_@group.Id" class="accordion-collapse collapse " aria-labelledby="heading_@group.Id" data-bs-parent="#notification-accordion">
+                <div id="collapse_@group.Id"
+                     class="accordion-collapse collapse"
+                     aria-labelledby="heading_@group.Id"
+                     data-bs-parent="#notification-accordion">
                     <div class="accordion-body">
                         @{
                             var members = await _groupService.GetMembers(group.Id);

@@ -1,5 +1,6 @@
 ﻿@page
 @using ItTakesAVillage.Models
+@using static ItTakesAVillage.Resources
 @model ItTakesAVillage.Pages.NotificationModel
 @{
     @Html.AntiForgeryToken()
@@ -7,7 +8,7 @@
 
 @if (Model.CurrentUser != null)
 {
-    <h2 class="abrilFont text-center m-5">På gång</h2>
+    <h2 class="abrilFont text-center m-5">@Resources.OnGoing</h2>
     @if (Model.Notifications.Any())
     {
         <div class="greenBgColor py-5">
@@ -55,8 +56,8 @@
     {
         <div class="greenBgColor py-4 customColouredContainer d-flex align-items-center justify-content-center">
             <div class="container d-flex flex-column align-items-center">
-                <h4 class="abrilFont my-4">Ingenting på gång just nu..</h4>
-                <a asp-page="/Group" class="btn custom-btn fontColor fw-bold pinkBgColor my-4">Behöver du skapa en ny grupp?</a>
+                <h4 class="abrilFont my-4">@Resources.NothingOnGoing</h4>
+                <a asp-page="/Group" class="btn custom-btn fontColor fw-bold pinkBgColor my-4">@Resources.NeedCreateGroup</a>
             </div>
         </div>
     }

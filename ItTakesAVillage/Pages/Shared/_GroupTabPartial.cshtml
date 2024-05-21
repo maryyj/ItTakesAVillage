@@ -5,10 +5,10 @@
         <li class="nav-itemgroupTab">
             <a class="nav-link groupTab"
                asp-page="/GroupDetails"
-               asp-route-groupId="@Model.Id">Medlemmar</a>
+               asp-route-groupId="@Model.Id">@Resources.Members</a>
         </li>
         <li class="nav-item groupTab">
-            <a class="nav-link groupTab" asp-page="/GroupChat" asp-route-groupId="@Model.Id">Gruppchatt</a>
+            <a class="nav-link groupTab" asp-page="/GroupChat" asp-route-groupId="@Model.Id">@Resources.GroupChat</a>
         </li>
     </ul>
 </div>

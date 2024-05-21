@@ -133,6 +133,10 @@
     <value>Låna</value>
     <comment>ToolPool</comment>
   </data>
+  <data name="BorrowATool" xml:space="preserve">
+    <value>Låna något från prylpoolen</value>
+    <comment>Index</comment>
+  </data>
   <data name="Borrowed" xml:space="preserve">
     <value>Utlånad</value>
     <comment>ToolPool</comment>
@@ -159,23 +163,43 @@
   </data>
   <data name="ChooseGroup" xml:space="preserve">
     <value>Välj grupp</value>
-    <comment>ToolShare</comment>
+    <comment>ToolShare / PlayDate / DinnerInvitation</comment>
   </data>
   <data name="Close" xml:space="preserve">
     <value>Stäng</value>
     <comment>ToolPool</comment>
   </data>
+  <data name="CreateDinnerInvitation" xml:space="preserve">
+    <value>Skapa ny matlagsinbjudan</value>
+    <comment>DinnerInvitation</comment>
+  </data>
   <data name="CreateGroup" xml:space="preserve">
     <value>Skapa ny grupp</value>
-    <comment>ToolPool/ToolShare</comment>
+    <comment>ToolPool / ToolShare / PlayDate / DinnerInvitation</comment>
+  </data>
+  <data name="CreateGroupDinner" xml:space="preserve">
+    <value>Skapa en grupp för att bjuda in till matlag!</value>
+    <comment>DinnerInvitation</comment>
+  </data>
+  <data name="CreateGroupPlayDate" xml:space="preserve">
+    <value>Skapa en grupp för att bjuda in till lekträff!</value>
+    <comment>PlayDate</comment>
   </data>
   <data name="CreateGroupText" xml:space="preserve">
     <value>Skapa en grupp för att dela prylar!</value>
-    <comment>ToolPool/ToolShare</comment>
+    <comment>ToolPool / ToolShare</comment>
+  </data>
+  <data name="CreatePlayDate" xml:space="preserve">
+    <value>Skapa ny lekträffsinbjudan</value>
+    <comment>PlayDate</comment>
   </data>
   <data name="DescriptionText" xml:space="preserve">
     <value>Beskrivning</value>
     <comment>ToolPool</comment>
+  </data>
+  <data name="DinnerInvitation" xml:space="preserve">
+    <value>Matlag</value>
+    <comment>DinnerInvitation</comment>
   </data>
   <data name="Edit" xml:space="preserve">
     <value>Ändra</value>
@@ -189,9 +213,25 @@
     <value>Från vilket datum?</value>
     <comment>ToolPool</comment>
   </data>
+  <data name="GatherFriends" xml:space="preserve">
+    <value>Samla dina vänner och börja hjälpas åt!</value>
+    <comment>Index</comment>
+  </data>
+  <data name="InvitePlayDate" xml:space="preserve">
+    <value>Boka in lekträff</value>
+    <comment>Index</comment>
+  </data>
+  <data name="InviteToDinner" xml:space="preserve">
+    <value>Bjud in din grupp till matlag</value>
+    <comment>Index</comment>
+  </data>
   <data name="Message" xml:space="preserve">
     <value>Meddelande</value>
-    <comment>ToolPool</comment>
+    <comment>ToolPool / ToolBorrowed</comment>
+  </data>
+  <data name="MyGroups" xml:space="preserve">
+    <value>Mina grupper</value>
+    <comment>Index</comment>
   </data>
   <data name="NoBorrowedTools" xml:space="preserve">
     <value>Du har inga lånade prylar</value>
@@ -211,11 +251,15 @@
   </data>
   <data name="OnGoing" xml:space="preserve">
     <value>På gång</value>
-    <comment>ToolShare</comment>
+    <comment>ToolShare / Index / PlayDate / DinnerInvitation</comment>
   </data>
   <data name="OtherInfo" xml:space="preserve">
     <value>Övrig information</value>
-    <comment>ToolShare</comment>
+    <comment>ToolShare / PlayDate / DinnerInvitation</comment>
+  </data>
+  <data name="PlayDate" xml:space="preserve">
+    <value>Lekträff</value>
+    <comment>PlayDate</comment>
   </data>
   <data name="Remove" xml:space="preserve">
     <value>Ta bort</value>
@@ -235,7 +279,7 @@
   </data>
   <data name="Save" xml:space="preserve">
     <value>Spara</value>
-    <comment>ToolPool</comment>
+    <comment>ToolPool / PlayDate / DinnerInvitation</comment>
   </data>
   <data name="SharedOf" xml:space="preserve">
     <value>Delad av</value>
@@ -247,6 +291,7 @@
   </data>
   <data name="ShareTool" xml:space="preserve">
     <value>Dela pryl</value>
+    <comment>ToolBorrowed</comment>
   </data>
   <data name="ShareToolText" xml:space="preserve">
     <value>Börja dela med dina vänner</value>
@@ -264,12 +309,32 @@
     <value>Prylnamn</value>
     <comment>ToolPool</comment>
   </data>
+  <data name="WhatInvite" xml:space="preserve">
+    <value>Vad ska du bjuda på?</value>
+    <comment>DinnerInvitation</comment>
+  </data>
+  <data name="Where" xml:space="preserve">
+    <value>Var ska ni vara?</value>
+    <comment>PlayDate / DinnerInvitation</comment>
+  </data>
+  <data name="WhichDateTime" xml:space="preserve">
+    <value>Vilket datum och tid?*</value>
+    <comment>PlayDate / DinnerInvitation</comment>
+  </data>
   <data name="WhichGroup" xml:space="preserve">
     <value>Vilken grupp?*</value>
-    <comment>ToolShare</comment>
+    <comment>ToolShare / PlayDate / DinnerInvitation</comment>
   </data>
   <data name="WhichTool" xml:space="preserve">
     <value>Vilken pryl?*</value>
     <comment>ToolShare</comment>
+  </data>
+  <data name="WhoPlay" xml:space="preserve">
+    <value>Vem vill leka?</value>
+    <comment>PlayDate</comment>
+  </data>
+  <data name="WithPlay" xml:space="preserve">
+    <value>Vem vill barnet leka med?</value>
+    <comment>PlayDate</comment>
   </data>
 </root>

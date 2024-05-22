@@ -2,7 +2,7 @@
 
 namespace ItTakesAVillage.Services
 {
-    public class HttpService
+    public class HttpService : IHttpService
     {
         private readonly HttpClient _httpClient;
         private const string _baseAddress = "https://localhost:7233/api/";

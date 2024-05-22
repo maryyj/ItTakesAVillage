@@ -3,11 +3,11 @@
     public class NotificationService(
         IRepository<ItTakesAVillageUser> userRepository,
         IRepository<Notification> notificationRepository,
-        HttpService httpService) : INotificationService
+        IHttpService httpService) : INotificationService
     {
         private readonly IRepository<ItTakesAVillageUser> _userRepository = userRepository;
         private readonly IRepository<Notification> _notificationRepository = notificationRepository;
-        private readonly HttpService _httpService = httpService;
+        private readonly IHttpService _httpService = httpService;
 
         public async Task<List<Notification>> GetAsync(string userId)
             => await _notificationRepository.GetByFilterAsync(x => x.UserId == userId && x.RelatedEvent.DateTime.Date >= DateTime.Now.Date);

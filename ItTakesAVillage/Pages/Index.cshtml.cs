@@ -1,20 +1,13 @@
 namespace ItTakesAVillage.Pages
 {
-    public class IndexModel : PageModel
+    public class IndexModel(UserManager<ItTakesAVillageUser> userManager,
+        INotificationService notificationService) : PageModel
     {
-        private readonly UserManager<ItTakesAVillageUser> _userManager;
-        private readonly INotificationService _notificationService;
+        private readonly UserManager<ItTakesAVillageUser> _userManager = userManager;
+        private readonly INotificationService _notificationService = notificationService;
 
         public ItTakesAVillageUser? CurrentUser { get; set; }
         public List<Notification> Notifications { get; set; } = new();
-
-
-        public IndexModel(UserManager<ItTakesAVillageUser> userManager, 
-            INotificationService notificationService)
-        {
-            _userManager = userManager;
-            _notificationService = notificationService;
-        }
 
         public async Task<IActionResult> OnGetAsync()
         {

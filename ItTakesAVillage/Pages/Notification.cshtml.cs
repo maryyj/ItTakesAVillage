@@ -1,34 +1,27 @@
-using ItTakesAVillage.Interfaces;
-using ItTakesAVillage.Models;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.EntityFrameworkCore;
-
 namespace ItTakesAVillage.Pages
 {
-    public class NotificationModel : PageModel
+    public class NotificationModel(UserManager<ItTakesAVillageUser> userManager,
+        INotificationService notificationService,
+        IHttpService httpService) : PageModel
     {
-        private readonly UserManager<ItTakesAVillageUser> _userManager;
-        private readonly INotificationService _notificationService;
+        private readonly UserManager<ItTakesAVillageUser> _userManager = userManager;
+        private readonly INotificationService _notificationService = notificationService;
+        private readonly IHttpService _httpService = httpService;
 
         public ItTakesAVillageUser? CurrentUser { get; set; }
         [BindProperty]
         public int NotificationId { get; set; }
-        public List<Notification> Notifications { get; set; } = new();
-        public NotificationModel(UserManager<ItTakesAVillageUser> userManager,
-            INotificationService notificationService)
-        {
-            _userManager = userManager;
-            _notificationService = notificationService;
-        }
+        public List<Notification>? Notifications { get; set; } = [];
+
         public async Task<IActionResult> OnGetAsync()
         {
             CurrentUser = await _userManager.GetUserAsync(User);
 
             if (CurrentUser != null)
+            {
                 Notifications = await _notificationService.GetAsync(CurrentUser.Id);
+                //Notifications = await _httpService.HttpGetRequest<List<Notification>>($"Notification/{CurrentUser.Id}");
+            }
 
             return Page();
         }

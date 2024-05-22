@@ -2,11 +2,11 @@ namespace ItTakesAVillage.Pages;
 
 public class PlayDateModel(UserManager<ItTakesAVillageUser> userManager,
     INotificationService notificationService,
-    HttpService httpService) : PageModel
+    IHttpService httpService) : PageModel
 {
     private readonly UserManager<ItTakesAVillageUser> _userManager = userManager;
     private readonly INotificationService _notificationService = notificationService;
-    private readonly HttpService _httpService = httpService;
+    private readonly IHttpService _httpService = httpService;
 
     public ItTakesAVillageUser? CurrentUser { get; set; }
     [BindProperty]

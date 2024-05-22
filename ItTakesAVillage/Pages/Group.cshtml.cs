@@ -2,10 +2,10 @@ namespace ItTakesAVillage.Pages
 {
     public class GroupModel(
         UserManager<ItTakesAVillageUser> userManager,
-        HttpService httpService) : PageModel
+        IHttpService httpService) : PageModel
     {
         private readonly UserManager<ItTakesAVillageUser> _userManager = userManager;
-        private readonly HttpService _httpService = httpService;
+        private readonly IHttpService _httpService = httpService;
 
         public ItTakesAVillageUser? CurrentUser { get; set; }
         [BindProperty]

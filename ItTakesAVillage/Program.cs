@@ -10,7 +10,7 @@ public class Program
         builder.Services.AddScoped<INotificationService, NotificationService>();
         builder.Services.AddScoped<IRepository<ItTakesAVillageUser>,EFRepository <ItTakesAVillageUser>>();
         builder.Services.AddScoped<IRepository<Notification>,EFRepository <Notification>>();
-        builder.Services.AddScoped<HttpService>();
+        builder.Services.AddScoped<IHttpService, HttpService>();
 
         builder.Services.AddDbContext<ItTakesAVillageContext>(options => options.UseSqlServer(connectionString));
 

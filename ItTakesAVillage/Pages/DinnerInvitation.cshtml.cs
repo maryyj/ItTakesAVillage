@@ -3,11 +3,11 @@ namespace ItTakesAVillage.Pages
     public class DinnerInvitationModel(
         UserManager<ItTakesAVillageUser> userManager,
         INotificationService notificationService,
-        HttpService httpService) : PageModel
+        IHttpService httpService) : PageModel
     {
         private readonly UserManager<ItTakesAVillageUser> _userManager = userManager;
         private readonly INotificationService _notificationService = notificationService;
-        private readonly HttpService _httpService = httpService;
+        private readonly IHttpService _httpService = httpService;
 
         [BindProperty]
         public DinnerInvitation NewInvitation { get; set; } = new();

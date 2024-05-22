@@ -45,15 +45,15 @@
                         <div class="d-flex">
                             @if (dinnerInvitation.CreatorId == currentUser?.Id)
                             {
-                                <button class="btn pinkBgColor me-2" data-bs-toggle="modal" data-bs-target="#editDinnerModal">
+                                <button class="btn pinkBgColor me-2" data-bs-toggle="modal" data-bs-target="#editDinnerModal-@dinnerInvitation.Id">
                                     @Resources.Change
                                 </button>
                                 /*-----Modal-----*/
-                                <div class="modal fade" id="editDinnerModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal fade" id="editDinnerModal-@dinnerInvitation.Id" tabindex="-1" aria-labelledby="modalLabel-@dinnerInvitation.Id" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h1 class="modal-title fs-5" id="exampleModalLabel">
+                                                <h1 class="modal-title fs-5" id="modalLabel-@dinnerInvitation.Id">
                                                     <b>@Resources.Edit @Resources.Your @Resources.Invite</b>
                                                 </h1>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -101,14 +101,14 @@
                         <div class="d-flex">
                             @if (playDate.CreatorId == currentUser?.Id)
                             {
-                                <button class="btn pinkBgColor me-2" data-bs-toggle="modal" data-bs-target="#editPlayDateModal">
+                                <button class="btn pinkBgColor me-2" data-bs-toggle="modal" data-bs-target="#editPlayDateModal-@playDate.Id">
                                     Ändra
                                 </button>
-                                <div class="modal fade" id="editPlayDateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal fade" id="editPlayDateModal-@playDate.Id" tabindex="-1" aria-labelledby="modalLabel-@playDate.Id" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h1 class="modal-title fs-5" id="exampleModalLabel">
+                                                <h1 class="modal-title fs-5" id="modalLabel-@playDate.Id">
                                                     <b>
                                                         @Resources.Edit @Resources.Your @Resources.Invite
                                                     </b>

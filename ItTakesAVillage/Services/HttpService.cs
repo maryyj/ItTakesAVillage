@@ -19,12 +19,10 @@ namespace ItTakesAVillage.Services
         {
             var response = await _httpClient.GetAsync(requestUri);
             var content = await response.Content.ReadAsStringAsync();
-            //return JsonSerializer.Deserialize<T>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
             return JsonConvert.DeserializeObject<T>(content);
         }
         public async Task<bool> HttpPostRequest<T>(string requestUri, T entity)
         {
-            //var jsonString = JsonSerializer.Serialize<T>(entity);
             var jsonString = JsonConvert.SerializeObject(entity);
             var content = new StringContent(jsonString, System.Text.Encoding.UTF8, "application/json");
 

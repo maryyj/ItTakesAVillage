@@ -22,13 +22,13 @@
                 @if (groupEvent is DinnerInvitation)
                 {
                     <span class="accordion-title">
-                        @Resources.DinnerInvitation @Resources.At @groupEvent.Creator?.FirstName
+                        @Resources.DinnerInvitation @Resources.At @groupEvent.Creator?.FirstName @groupEvent.Creator?.LastName
                     </span>
                 }
                 else if (groupEvent is PlayDate)
                 {
                     <span class="accordion-title">
-                        @Resources.PlayDate @Resources.At @groupEvent.Creator?.FirstName
+                        @Resources.PlayDate @Resources.At @groupEvent.Creator?.FirstName @groupEvent.Creator?.LastName
                     </span>
                 }
             </button>

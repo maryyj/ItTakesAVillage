@@ -1,28 +1,25 @@
 namespace ItTakesAVillage.Pages;
 
 public class PlayDateModel(UserManager<ItTakesAVillageUser> userManager,
-    IGroupService groupService,
     INotificationService notificationService,
-    IEventService<PlayDate> playDateService) : PageModel
+    HttpService httpService) : PageModel
 {
     private readonly UserManager<ItTakesAVillageUser> _userManager = userManager;
-    private readonly IGroupService _groupService = groupService;
     private readonly INotificationService _notificationService = notificationService;
-    private readonly IEventService<PlayDate> _playDateService = playDateService;
+    private readonly HttpService _httpService = httpService;
 
     public ItTakesAVillageUser? CurrentUser { get; set; }
     [BindProperty]
     public PlayDate NewPlayDate { get; set; } = new();
     public List<Notification> Notifications { get; set; } = [];
-    public List<Models.Group?> GroupsOfCurrentUser { get; set; } = [];
+    public List<Group>? GroupsOfCurrentUser { get; set; } = [];
 
     public async Task<IActionResult> OnGet()
     {
         CurrentUser = await _userManager.GetUserAsync(User);
         if (CurrentUser != null)
         {
-            ViewData["GroupId"] = new SelectList(await _groupService.GetGroupsByUserId(CurrentUser.Id), "Id", "Name");
-            GroupsOfCurrentUser = await _groupService.GetGroupsByUserId(CurrentUser.Id);
+            GroupsOfCurrentUser = await _httpService.HttpGetRequest<List<Group>>($"Group/GroupsOfUser/{CurrentUser.Id}");
             ViewData["GroupId"] = new SelectList(GroupsOfCurrentUser, "Id", "Name");
             Notifications = await _notificationService.GetAsync(CurrentUser.Id);
         }
@@ -32,14 +29,9 @@ public class PlayDateModel(UserManager<ItTakesAVillageUser> userManager,
     {
         if (ModelState.IsValid)
         {
-            CurrentUser = await _userManager.GetUserAsync(User);
-            if (CurrentUser != null)
-            {
-                NewPlayDate.CreatorId = CurrentUser.Id;
-                bool success = await _playDateService.Create(NewPlayDate);
-                if (success)
-                    await _notificationService.NotifyGroupAsync(NewPlayDate);
-            }
+            bool success = await _httpService.HttpPostRequest("PlayDate" , NewPlayDate);
+            if (success)
+                await _notificationService.NotifyGroupAsync(NewPlayDate);
         }
         return RedirectToPage("/PlayDate");
     }

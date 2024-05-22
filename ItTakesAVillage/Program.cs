@@ -7,14 +7,9 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
         var connectionString = builder.Configuration.GetConnectionString("ItTakesAVillageContextConnection") ?? throw new InvalidOperationException("Connection string 'ItTakesAVillageContextConnection' not found.");
         
-        builder.Services.AddScoped<IGroupService, GroupService>();
-        builder.Services.AddScoped<IGroupChatService, GroupChatService>();
         builder.Services.AddScoped<INotificationService, NotificationService>();
-        builder.Services.AddScoped<IRepository<Group>,EFRepository <Group>>();
-        builder.Services.AddScoped<IRepository<UserGroup>,EFRepository <UserGroup>>();
         builder.Services.AddScoped<IRepository<ItTakesAVillageUser>,EFRepository <ItTakesAVillageUser>>();
         builder.Services.AddScoped<IRepository<Notification>,EFRepository <Notification>>();
-        builder.Services.AddScoped<IRepository<GroupChat>,EFRepository <GroupChat>>();
         builder.Services.AddScoped<HttpService>();
 
         builder.Services.AddDbContext<ItTakesAVillageContext>(options => options.UseSqlServer(connectionString));

@@ -1,27 +1,13 @@
-﻿using ItTakesAVillage.Interfaces;
-using ItTakesAVillage.Data;
-using ItTakesAVillage.Models;
-using ItTakesAVillage.Repository;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using System.Text.RegularExpressions;
-
-namespace ItTakesAVillage.Services
+﻿namespace ItTakesAVillage.Services
 {
-    public class NotificationService : INotificationService
+    public class NotificationService(
+        IRepository<ItTakesAVillageUser> userRepository,
+        IRepository<Notification> notificationRepository,
+        HttpService httpService) : INotificationService
     {
-        private readonly IGroupService _groupService;
-        private readonly IRepository<ItTakesAVillageUser> _userRepository;
-        private readonly IRepository<Notification> _notificationRepository;
-
-        public NotificationService(IGroupService groupService,
-            IRepository<ItTakesAVillageUser> userRepository,
-            IRepository<Notification> notificationRepository)
-        {
-            _groupService = groupService;
-            _userRepository = userRepository;
-            _notificationRepository = notificationRepository;
-        }
+        private readonly IRepository<ItTakesAVillageUser> _userRepository = userRepository;
+        private readonly IRepository<Notification> _notificationRepository = notificationRepository;
+        private readonly HttpService _httpService = httpService;
 
         public async Task<List<Notification>> GetAsync(string userId)
             => await _notificationRepository.GetByFilterAsync(x => x.UserId == userId && x.RelatedEvent.DateTime.Date >= DateTime.Now.Date);
@@ -33,7 +19,8 @@ namespace ItTakesAVillage.Services
         }
         public async Task NotifyGroupAsync<TEvent>(TEvent invitation) where TEvent : BaseEvent
         {
-            var groupMembers = await _groupService.GetMembers(invitation.GroupId);
+            //var groupMembers = await _groupService.GetMembers(invitation.GroupId);
+            var groupMembers = await _httpService.HttpGetRequest<List<ItTakesAVillageUser>>($"Group/Members/{invitation.GroupId}");
 
             if (!groupMembers.IsNullOrEmpty())
             {

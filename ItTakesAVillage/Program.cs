@@ -23,7 +23,7 @@ public class Program
         builder.Services.AddScoped<IRepository<ToolPool>,EFRepository <ToolPool>>();
         builder.Services.AddScoped<IRepository<ToolLoan>,EFRepository <ToolLoan>>();
         builder.Services.AddScoped<IRepository<GroupChat>,EFRepository <GroupChat>>();
-
+        builder.Services.AddScoped<HttpService>();
 
         builder.Services.AddDbContext<ItTakesAVillageContext>(options => options.UseSqlServer(connectionString));
 

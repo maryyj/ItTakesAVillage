@@ -2,11 +2,9 @@ namespace ItTakesAVillage.Pages;
 
 public class ToolBorrowedModel(
     UserManager<ItTakesAVillageUser> userManager,
-    IGroupService groupService,
     HttpService httpService) : PageModel
 {
     private readonly UserManager<ItTakesAVillageUser> _userManager = userManager;
-    private readonly IGroupService _groupService = groupService;
     private readonly HttpService _httpService = httpService;
 
     public ItTakesAVillageUser? CurrentUser { get; set; }
@@ -19,7 +17,6 @@ public class ToolBorrowedModel(
         CurrentUser = await _userManager.GetUserAsync(User);
         if (CurrentUser != null)
         {
-            //GroupsOfCurrentUser = await _groupService.GetGroupsByUserId(CurrentUser.Id);
             GroupsOfCurrentUser = await _httpService.HttpGetRequest<List<Group>>($"Group/GroupsOfUser/{CurrentUser.Id}");
             BorrowedTools = await _httpService.HttpGetRequest<List<ToolLoan>>($"ToolLoan/AllForUserGroup/" + CurrentUser.Id);
 
@@ -30,9 +27,7 @@ public class ToolBorrowedModel(
     }
     public async Task<IActionResult> OnPostReturnTool(int toolId)
     {
-        //CurrentUser = await _userManager.GetUserAsync(User);
         BorrowedTool = await _httpService.HttpGetRequest<ToolLoan>($"ToolLoan/" + toolId);
-        //var loan = BorrowedTools?.Find(x => x.ToolId == toolId);
         if (BorrowedTool != null)
         {
             await _httpService.HttpPutRequest<ToolLoan>("ToolLoan", BorrowedTool);

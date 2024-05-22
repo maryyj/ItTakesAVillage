@@ -2,17 +2,17 @@ namespace ItTakesAVillage.Pages;
 
 public class ToolPoolModel(
     UserManager<ItTakesAVillageUser> userManager,
-    IGroupService groupService,
     INotificationService notificationService,
-    IEventService<ToolPool> toolPoolService) : PageModel
+    IEventService<ToolPool> toolPoolService,
+    HttpService httpService) : PageModel
 {
     private readonly UserManager<ItTakesAVillageUser> _userManager = userManager;
-    private readonly IGroupService _groupService = groupService;
     private readonly INotificationService _notificationService = notificationService;
     private readonly IEventService<ToolPool> _toolPoolService = toolPoolService;
+    private readonly HttpService _httpService = httpService;
 
     public ItTakesAVillageUser? CurrentUser { get; set; }
-    public List<Models.Group?> GroupsOfCurrentUser { get; set; } = [];
+    public List<Group>? GroupsOfCurrentUser { get; set; } = [];
     public List<Notification> Notifications { get; set; } = [];
 
     [BindProperty]
@@ -24,7 +24,7 @@ public class ToolPoolModel(
         CurrentUser = await _userManager.GetUserAsync(User);
         if (CurrentUser != null)
         {
-            GroupsOfCurrentUser = await _groupService.GetGroupsByUserId(CurrentUser.Id);
+            GroupsOfCurrentUser = await _httpService.HttpGetRequest<List<Group>>($"Group/GroupsOfUser/{CurrentUser.Id}");
             Notifications = await _notificationService.GetAsync(CurrentUser.Id);
             ViewData["GroupId"] = new SelectList(GroupsOfCurrentUser, "Id", "Name");
 
@@ -38,17 +38,7 @@ public class ToolPoolModel(
             CurrentUser = await _userManager.GetUserAsync(User);
             if (UploadedImage != null)
             {
-                var uniqueFileName = Guid.NewGuid().ToString() + "_" + UploadedImage.FileName;
-                var uploads = Path.Combine("wwwroot/uploadedImg", uniqueFileName);
-                if (!Directory.Exists(uploads))
-                {
-                    Directory.CreateDirectory(uploads);
-                }
-                var filePath = Path.Combine(uploads, uniqueFileName);
-                using (var fileStream = new FileStream(filePath, FileMode.Create))
-                {
-                    await UploadedImage.CopyToAsync(fileStream);
-                }
+                var uniqueFileName = await SetUniqueFileName(UploadedImage);
                 NewToolPool.Image = uniqueFileName;
             }
             NewToolPool.Creator = CurrentUser;
@@ -57,5 +47,20 @@ public class ToolPoolModel(
                 await _notificationService.NotifyGroupAsync(NewToolPool);
         }
         return RedirectToPage("/ToolPool");
+    }
+    private static async Task<string> SetUniqueFileName(IFormFile uploadedImage)
+    {
+        var uniqueFileName = Guid.NewGuid().ToString() + "_" + uploadedImage.FileName;
+        var uploads = Path.Combine("wwwroot/uploadedImg", uniqueFileName);
+        if (!Directory.Exists(uploads))
+        {
+            Directory.CreateDirectory(uploads);
+        }
+        var filePath = Path.Combine(uploads, uniqueFileName);
+        using (var fileStream = new FileStream(filePath, FileMode.Create))
+        {
+            await uploadedImage.CopyToAsync(fileStream);
+        }
+        return uniqueFileName;
     }
 }

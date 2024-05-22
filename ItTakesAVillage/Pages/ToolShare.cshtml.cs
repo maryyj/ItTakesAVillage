@@ -3,12 +3,10 @@ namespace ItTakesAVillage.Pages;
 public class ToolPoolModel(
     UserManager<ItTakesAVillageUser> userManager,
     INotificationService notificationService,
-    IEventService<ToolPool> toolPoolService,
     HttpService httpService) : PageModel
 {
     private readonly UserManager<ItTakesAVillageUser> _userManager = userManager;
     private readonly INotificationService _notificationService = notificationService;
-    private readonly IEventService<ToolPool> _toolPoolService = toolPoolService;
     private readonly HttpService _httpService = httpService;
 
     public ItTakesAVillageUser? CurrentUser { get; set; }
@@ -41,8 +39,9 @@ public class ToolPoolModel(
                 var uniqueFileName = await SetUniqueFileName(UploadedImage);
                 NewToolPool.Image = uniqueFileName;
             }
-            NewToolPool.Creator = CurrentUser;
-            bool success = await _toolPoolService.Create(NewToolPool);
+            //NewToolPool.Creator = CurrentUser;
+            //bool success = await _toolPoolService.Create(NewToolPool);
+            bool success = await _httpService.HttpPostRequest("ToolPool", NewToolPool);
             if (success)
                 await _notificationService.NotifyGroupAsync(NewToolPool);
         }

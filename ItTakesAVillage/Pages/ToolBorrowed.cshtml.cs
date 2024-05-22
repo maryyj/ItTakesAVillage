@@ -17,6 +17,7 @@ public class ToolBorrowedModel(
         CurrentUser = await _userManager.GetUserAsync(User);
         if (CurrentUser != null)
         {
+
             GroupsOfCurrentUser = await _httpService.HttpGetRequest<List<Group>>($"Group/GroupsOfUser/{CurrentUser.Id}");
             BorrowedTools = await _httpService.HttpGetRequest<List<ToolLoan>>($"ToolLoan/AllForUserGroup/" + CurrentUser.Id);
 

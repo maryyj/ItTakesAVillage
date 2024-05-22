@@ -11,8 +11,6 @@ public class Program
         builder.Services.AddScoped<IGroupChatService, GroupChatService>();
         builder.Services.AddScoped<IEventService<DinnerInvitation>, DinnerInvitationService>();
         builder.Services.AddScoped<IEventService<PlayDate>, PlayDateService>();
-        builder.Services.AddScoped<IEventService<ToolPool>, ToolPoolService>();
-        builder.Services.AddScoped<IEventService<ToolLoan>, ToolLoanService>();
         builder.Services.AddScoped<INotificationService, NotificationService>();
         builder.Services.AddScoped<IRepository<Group>,EFRepository <Group>>();
         builder.Services.AddScoped<IRepository<UserGroup>,EFRepository <UserGroup>>();
@@ -20,8 +18,6 @@ public class Program
         builder.Services.AddScoped<IRepository<Notification>,EFRepository <Notification>>();
         builder.Services.AddScoped<IRepository<DinnerInvitation>,EFRepository <DinnerInvitation>>();
         builder.Services.AddScoped<IRepository<PlayDate>,EFRepository <PlayDate>>();
-        builder.Services.AddScoped<IRepository<ToolPool>,EFRepository <ToolPool>>();
-        builder.Services.AddScoped<IRepository<ToolLoan>,EFRepository <ToolLoan>>();
         builder.Services.AddScoped<IRepository<GroupChat>,EFRepository <GroupChat>>();
         builder.Services.AddScoped<HttpService>();
 

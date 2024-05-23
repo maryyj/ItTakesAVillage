@@ -1,4 +1,4 @@
-﻿namespace ItTakesAVillage.Interfaces
+﻿namespace ItTakesAVillage.Frontend.Interfaces
 {
     public interface IHttpService
     {

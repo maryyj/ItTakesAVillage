@@ -1,4 +1,4 @@
-namespace ItTakesAVillage;
+namespace ItTakesAVillage.Frontend;
 
 public class Program
 {

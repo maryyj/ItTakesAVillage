@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-
-namespace ItTakesAVillage.Services
+﻿namespace ItTakesAVillage.Frontend.Services
 {
     public class HttpService : IHttpService
     {

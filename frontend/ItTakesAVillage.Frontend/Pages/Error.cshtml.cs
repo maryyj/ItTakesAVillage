@@ -1,4 +1,4 @@
-namespace ItTakesAVillage.Pages
+namespace ItTakesAVillage.Frontend.Pages
 {
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     [IgnoreAntiforgeryToken]

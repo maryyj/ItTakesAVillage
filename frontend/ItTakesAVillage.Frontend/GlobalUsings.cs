@@ -1,17 +1,19 @@
-﻿global using ItTakesAVillage.Models;
-global using ItTakesAVillage.Data;
+﻿global using ItTakesAVillage.Frontend.Models;
+global using ItTakesAVillage.Frontend.Data;
+global using ItTakesAVillage.Frontend.Interfaces;
 global using Microsoft.EntityFrameworkCore;
 global using System.Linq.Expressions;
-global using ItTakesAVillage.Interfaces;
 global using Microsoft.EntityFrameworkCore.Migrations;
 global using Microsoft.AspNetCore.Identity;
 global using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-
-global using ItTakesAVillage.Services;
-global using ItTakesAVillage.Repository;
+global using Newtonsoft.Json;
+global using ItTakesAVillage.Frontend.Services;
+global using ItTakesAVillage.Frontend.Repository;
+global using Microsoft.EntityFrameworkCore.Infrastructure;
 /*------------PAGES------------------------*/
 global using Microsoft.AspNetCore.Mvc;
 global using Microsoft.AspNetCore.Mvc.RazorPages;
 global using Microsoft.AspNetCore.Mvc.Rendering;
 global using System.Diagnostics;
 global using ItTakesAVillage.Frontend;
+global using System.ComponentModel.DataAnnotations;

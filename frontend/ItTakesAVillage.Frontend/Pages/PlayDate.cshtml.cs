@@ -1,4 +1,4 @@
-namespace ItTakesAVillage.Pages;
+namespace ItTakesAVillage.Frontend.Pages;
 
 public class PlayDateModel(UserManager<ItTakesAVillageUser> userManager,
     IHttpService httpService) : PageModel

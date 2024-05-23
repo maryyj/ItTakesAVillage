@@ -1,4 +1,4 @@
-﻿namespace ItTakesAVillage.Models;
+﻿namespace ItTakesAVillage.Frontend.Models;
 
 public class DinnerInvitation : BaseEvent 
 {

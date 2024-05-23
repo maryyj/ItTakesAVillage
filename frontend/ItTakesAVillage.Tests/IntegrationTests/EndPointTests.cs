@@ -1,15 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc.Testing;
-
-namespace ItTakesAVillage.Frontend.Tests.IntegrationTests
+﻿namespace ItTakesAVillage.Frontend.Tests.IntegrationTests
 {
-    public class EndPointTests : IClassFixture<WebApplicationFactory<Program>>
+    public class EndPointTests(WebApplicationFactory<Program> factory) : IClassFixture<WebApplicationFactory<Program>>
     {
-        private readonly HttpClient _httpClient;
-
-        public EndPointTests(WebApplicationFactory<Program> factory)
-        {
-            _httpClient = factory.CreateDefaultClient();
-        }
+        private readonly HttpClient _httpClient = factory.CreateDefaultClient();
 
         [Theory]
         [InlineData("/Identity/Account/Register")]

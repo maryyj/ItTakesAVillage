@@ -13,9 +13,9 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
-using ItTakesAVillage.Models;
+using ItTakesAVillage.Frontend.Models;
 
-namespace ItTakesAVillage.Areas.Identity.Pages.Account
+namespace ItTakesAVillage.Frontend.Areas.Identity.Pages.Account
 {
     public class ForgotPasswordModel : PageModel
     {

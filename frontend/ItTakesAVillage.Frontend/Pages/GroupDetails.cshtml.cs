@@ -1,4 +1,4 @@
-namespace ItTakesAVillage.Pages
+namespace ItTakesAVillage.Frontend.Pages
 {
     public class GroupDetailsModel(
         UserManager<ItTakesAVillageUser> userManager,

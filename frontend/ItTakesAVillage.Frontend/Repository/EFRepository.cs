@@ -1,4 +1,4 @@
-﻿namespace ItTakesAVillage.Repository
+﻿namespace ItTakesAVillage.Frontend.Repository
 {
     public class EFRepository<T> : IRepository<T> where T : class
     {

@@ -1,7 +1,6 @@
-﻿
-#nullable disable
+﻿#nullable disable
 
-namespace ItTakesAVillage.Migrations;
+namespace ItTakesAVillage.Frontend.Migrations;
 
 /// <inheritdoc />
 public partial class AddBoolPropToToolLoan : Migration

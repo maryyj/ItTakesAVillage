@@ -2,32 +2,16 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
-using System;
-using System.ComponentModel.DataAnnotations;
-using System.Threading.Tasks;
-using ItTakesAVillage.Models;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
-
-namespace ItTakesAVillage.Areas.Identity.Pages.Account.Manage
+namespace ItTakesAVillage.Frontend.Areas.Identity.Pages.Account.Manage
 {
-    public class ChangePasswordModel : PageModel
+    public class ChangePasswordModel(
+        UserManager<ItTakesAVillageUser> userManager,
+        SignInManager<ItTakesAVillageUser> signInManager,
+        ILogger<ChangePasswordModel> logger) : PageModel
     {
-        private readonly UserManager<ItTakesAVillageUser> _userManager;
-        private readonly SignInManager<ItTakesAVillageUser> _signInManager;
-        private readonly ILogger<ChangePasswordModel> _logger;
-
-        public ChangePasswordModel(
-            UserManager<ItTakesAVillageUser> userManager,
-            SignInManager<ItTakesAVillageUser> signInManager,
-            ILogger<ChangePasswordModel> logger)
-        {
-            _userManager = userManager;
-            _signInManager = signInManager;
-            _logger = logger;
-        }
+        private readonly UserManager<ItTakesAVillageUser> _userManager = userManager;
+        private readonly SignInManager<ItTakesAVillageUser> _signInManager = signInManager;
+        private readonly ILogger<ChangePasswordModel> _logger = logger;
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used

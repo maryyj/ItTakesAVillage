@@ -1,9 +1,6 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿#nullable disable
 
-#nullable disable
-
-namespace ItTakesAVillage.Migrations
+namespace ItTakesAVillage.Frontend.Migrations
 {
     /// <inheritdoc />
     public partial class AddGroupChatTable : Migration

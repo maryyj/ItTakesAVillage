@@ -1,0 +1,161 @@
+﻿@model dynamic
+@inject UserManager<ItTakesAVillageUser> _userManager
+@using ItTakesAVillage.Frontend
+@{
+    var currentUser = await _userManager.GetUserAsync(User);
+    var Events = Model.Events as List<BaseEvent>;
+    var editDinnerInvitation = Model.EditDinnerInvitation as DinnerInvitation;
+    var editPlayDate = Model.EditPlayDate as PlayDate;
+}
+<div class="accordion w-75" id="groupEvent-accordion">
+    @foreach (var groupEvent in Events)
+    {
+        <div class="accordion-item  border-0">
+            <button class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#collapse_@groupEvent.Id"
+                    aria-expanded="false"
+                    aria-controls="collapse_@groupEvent.Id"
+                    onclick="handleAccordionClick(@groupEvent.Id)">
+                <i class="bi bi-circle-fill pinkFontColor p-2"></i>
+
+                @if (groupEvent is DinnerInvitation)
+                {
+                    <span class="accordion-title">
+                        @Resources.DinnerInvitation @Resources.At @groupEvent.Creator?.FirstName @groupEvent.Creator?.LastName
+                    </span>
+                }
+                else if (groupEvent is PlayDate)
+                {
+                    <span class="accordion-title">
+                        @Resources.PlayDate @Resources.At @groupEvent.Creator?.FirstName @groupEvent.Creator?.LastName
+                    </span>
+                }
+            </button>
+
+            <div id="collapse_@groupEvent.Id"
+                 class="accordion-collapse collapse"
+                 aria-labelledby="heading_@groupEvent.Id"
+                 data-bs-parent="#groupEvent-accordion">
+                <div class="accordion-body p-4">
+
+                    @if (groupEvent is DinnerInvitation dinnerInvitation)
+                    {
+                        await Html.RenderPartialAsync("_DinnerNotificationPartial", dinnerInvitation);
+                        <div class="d-flex">
+                            @if (dinnerInvitation.CreatorId == currentUser?.Id)
+                            {
+                                <button class="btn pinkBgColor me-2" data-bs-toggle="modal" data-bs-target="#editDinnerModal-@dinnerInvitation.Id">
+                                    @Resources.Change
+                                </button>
+                                /*-----Modal-----*/
+                                <div class="modal fade" id="editDinnerModal-@dinnerInvitation.Id" tabindex="-1" aria-labelledby="modalLabel-@dinnerInvitation.Id" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="modalLabel-@dinnerInvitation.Id">
+                                                    <b>@Resources.Edit @Resources.Your @Resources.Invite</b>
+                                                </h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <form method="post" asp-page-handler="EditDinnerInvitation">
+                                                <div class="modal-body">
+                                                    <input type="hidden" asp-for="@editDinnerInvitation.GroupId" value="@dinnerInvitation?.GroupId" />
+                                                    <input type="hidden" asp-for="@editDinnerInvitation.CreatorId" value="@dinnerInvitation?.CreatorId" />
+                                                    <input type="hidden" asp-for="@editDinnerInvitation.Id" value="@dinnerInvitation?.Id" />
+                                                    <label class="form-label fw-bold mt-2">@Resources.WhichDateTime</label>
+                                                    <input required class="form-control bg-transparent" asp-for="@editDinnerInvitation.DateTime" value="@dinnerInvitation.DateTime" />
+                                                    <label class="form-label fw-bold mt-2">@Resources.WhatInvite</label>
+                                                    <input class="form-control bg-transparent" asp-for="@editDinnerInvitation.Course" value="@dinnerInvitation?.Course" />
+                                                    <label class="form-label fw-bold mt-2">@Resources.WhereBe</label>
+                                                    <input class="form-control bg-transparent" asp-for="@editDinnerInvitation.Location" value="@dinnerInvitation?.Location" />
+                                                    <label class="form-label fw-bold mt-2">@Resources.OtherInfo</label>
+                                                    <textarea class="form-control bg-transparent" asp-for="@editDinnerInvitation.Message" value="@dinnerInvitation?.Message"></textarea>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button"
+                                                            class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">
+                                                        @Resources.Close
+                                                    </button>
+                                                    <button type="submit"
+                                                            class="btn pinkBgColor">
+                                                        @Resources.Save
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <form method="post" asp-page-handler="DeleteDinnerInvitation">
+                                    <input type="hidden" name="eventId" value="@groupEvent.Id" />
+                                    <input type="hidden" name="groupId" value="@groupEvent.GroupId" />
+                                    <button type="submit" class="btn greenBgColor">@Resources.Delete</button>
+                                </form>
+                            }
+                        </div>
+                    }
+                    @if (groupEvent is PlayDate playDate)
+                    {
+                        await Html.RenderPartialAsync("_PlayDateNotificationPartial", playDate);
+                        <div class="d-flex">
+                            @if (playDate.CreatorId == currentUser?.Id)
+                            {
+                                <button class="btn pinkBgColor me-2" data-bs-toggle="modal" data-bs-target="#editPlayDateModal-@playDate.Id">
+                                    Ändra
+                                </button>
+                                <div class="modal fade" id="editPlayDateModal-@playDate.Id" tabindex="-1" aria-labelledby="modalLabel-@playDate.Id" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="modalLabel-@playDate.Id">
+                                                    <b>
+                                                        @Resources.Edit @Resources.Your @Resources.Invite
+                                                    </b>
+                                                </h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <form method="post" asp-page-handler="EditPlayDate">
+                                                <div class="modal-body">
+                                                    <input type="hidden" asp-for="@editPlayDate.GroupId" value="@playDate?.GroupId" />
+                                                    <input type="hidden" asp-for="@editPlayDate.CreatorId" value="@playDate?.CreatorId" />
+                                                    <input type="hidden" asp-for="@editPlayDate.Id" value="@playDate?.Id" />
+                                                    <label class="form-label fw-bold mt-2">@Resources.WhichDateTime</label>
+                                                    <input required class="form-control bg-transparent" asp-for="@editPlayDate.DateTime" value="@playDate.DateTime" />
+                                                    <label class="form-label fw-bold mt-2">@Resources.WhoPlay</label>
+                                                    <input class="form-control bg-transparent" asp-for="@editPlayDate.ChildName" value="@playDate?.ChildName" />
+                                                    <label class="form-label fw-bold mt-2">@Resources.WithPlay</label>
+                                                    <input class="form-control bg-transparent" asp-for="@editPlayDate.InvitedChildName" value="@playDate?.InvitedChildName" />
+                                                    <label class="form-label fw-bold mt-2">@Resources.WhereBe</label>
+                                                    <input class="form-control bg-transparent" asp-for="@editPlayDate.Location" value="@playDate?.Location" />
+                                                    <label class="form-label fw-bold mt-2">@Resources.OtherInfo</label>
+                                                    <textarea class="form-control bg-transparent" asp-for="@editPlayDate.Message" value="@playDate?.Message"></textarea>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" 
+                                                        class="btn btn-secondary" 
+                                                        data-bs-dismiss="modal">
+                                                        @Resources.Close
+                                                        </button>
+                                                    <button type="submit" class="btn pinkBgColor">
+                                                        @Resources.Save
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <form method="post" asp-page-handler="DeletePlayDate">
+                                    <input type="hidden" name="eventId" value="@groupEvent.Id" />
+                                    <input type="hidden" name="groupId" value="@groupEvent.GroupId" />
+                                    <button type="submit" class="btn greenBgColor">@Resources.Delete</button>
+                                </form>
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>

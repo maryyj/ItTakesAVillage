@@ -1,0 +1,10 @@
+﻿global using ItTakesAVillage.Core.Interfaces;
+global using ItTakesAVillage.Infrastructure.Services;
+global using ItTakesAVillage.Core.Models;
+global using System.Text.Json.Serialization;
+global using ItTakesAVillage.Infrastructure.Repository;
+global using ItTakesAVillage.Infrastructure.DAL;
+global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.EntityFrameworkCore;
+global using Microsoft.AspNetCore.Http;
+global using System.Text.Json;

@@ -1,0 +1,68 @@
+﻿@page
+@model ItTakesAVillage.Frontend.Pages.ToolBorrowedModel
+@using ItTakesAVillage.Frontend
+
+@if (Model.CurrentUser != null)
+{
+    <div class="d-flex align-items-center flex-column">
+        <img class="mx-auto eventImg" alt="wrench with pink background" src="img/tool.png" />
+        <h2 class="abrilFont text-center mt-2 mb-5">
+            @Resources.ToolPool
+        </h2>
+    </div>
+    @if (Model.GroupsOfCurrentUser != null && Model.GroupsOfCurrentUser.Any())
+    {
+        await Html.RenderPartialAsync("_ToolPoolTabPartial");
+        <div class="pinkBgColor py-4">
+            <div class="container w-75 pt-5 pb-4">
+                @if (Model.BorrowedTools != null && Model.BorrowedTools.Any())
+                {
+                    <div class="row">
+                        @foreach (var tool in Model.BorrowedTools)
+                        {
+                            <div class="card ms-2">
+                                <div>
+                                    <img src="@(tool.ToolPool.Image != null ?
+                                    $"/uploadedImg/{tool.ToolPool.Image}/{tool.ToolPool.Image}" :
+                                    $"/img/defaultImg.svg")"
+                                         alt="Beskrivning" />
+                                </div>
+                                <div class="card-body">
+                                    <div class="fst-italic small">@Resources.BorrowedDateText @tool.FromDate</div>
+                                    <div class="fst-italic small">@Resources.ReturnDate @tool.ToDate</div>
+                                    <h5 class="card-title pt-2"><b>@tool.ToolPool.Name</b></h5>
+                                    <p class="card-text">@tool.ToolPool.Description</p>
+                                    <div class="card-text small d-flex mb-2">
+                                        <span>@Resources.Message</span>
+                                        <i class="ps-2 bi bi-patch-question d-flex align-items-center"
+                                           data-bs-toggle="tooltip"
+                                           data-bs-placement="bottom"
+                                           title="@(@tool.ToolPool.Message != null ? @tool.ToolPool.Message : @Resources.NoMessage)"></i>
+                                    </div>
+                                    <p class="card-text creator-txt small">
+                                        @Resources.SharedOf @(tool.ToolPool.Creator != null ?
+                                  tool.ToolPool.Creator.FirstName + " " + tool.ToolPool.Creator.LastName :
+                                  "")
+                                    </p>
+                                    <form method="post" asp-page-handler="ReturnTool">
+                                        <input type="hidden" name="toolId" value="@tool.ToolId" />
+                                        <button type="submit" class="btn greenBgColor">@Resources.ReturnText</button>
+                                    </form>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <h4 class="mt-2 mb-3 abrilFont text-center">@Resources.NoBorrowedTools</h4>
+                    <div class="d-flex justify-content-center">
+                        <a href="/ToolShare" class="btn greenBgColor">@Resources.ShareTool</a>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+
+    <partial name="Shared/_FooterQuote" />
+}

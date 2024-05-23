@@ -1,0 +1,6 @@
+@ItTakesAVillage.API_HostAddress = http://localhost:5022
+
+GET {{ItTakesAVillage.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

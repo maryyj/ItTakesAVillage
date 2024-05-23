@@ -1,0 +1,49 @@
+﻿@page
+@model ItTakesAVillage.Frontend.Pages.GroupDetailsModel
+@using ItTakesAVillage.Frontend
+@{
+}
+@if (Model.CurrentUser != null)
+{
+    <div class="container w-75">
+        <a asp-page="/Group" class="btn abrilFont p-2 blueBgColor border-0">@Resources.BackToGroup</a>
+    </div>
+
+    @if (Model.UsersInGroup != null && Model.UsersInGroup.Any())
+    {
+        <h2 class="text-center abrilFont mb-3">@(Model.CurrentGroup != null ? Model.CurrentGroup.Name : "")</h2>
+        <div class="text-center abrilFont text-muted mb-5">- @Resources.OnGoing - @Resources.Members - </div>
+        <div class="container w-75 mb-3">
+            <h5 class="abrilFont">@Resources.OnGoing</h5>
+            @if (Model.EventsOfGroup.Any())
+            {
+                await Html.RenderPartialAsync("_GroupDetailsAccordionPartial", new { Events = Model.EventsOfGroup, EditDinnerInvitation = Model.EditDinnerInvitation, EditPlayDate = Model.EditPlayDate});
+            }
+            else
+            {
+                <div class="abrilFont text-muted mb-5">@Resources.NoEvents</div>
+            }
+        </div>
+
+        await Html.RenderPartialAsync("_GroupTabPartial", Model.CurrentGroup);
+    }
+    <div class="greenBgColor pb-5 pt-3">
+        <div class="container w-75">
+            @if (Model.UsersInGroup != null && Model.UsersInGroup.Any())
+            {
+                await Html.RenderPartialAsync("_MemberPartial", Model.UsersInGroup);
+                <form method="post" asp-page-handler="AddUserToGroup">
+                    <h5 class="abrilFont mt-3">@Resources.AddMember</h5>
+                    <div class="d-flex w-50 gap-2">
+                        <input type="hidden" name="groupId" value="@Model.CurrentGroup?.Id" />
+                        <select id="selectList2" class="form-control col bg-transparent inline-block" asp-for="NewUserGroup.UserId" asp-items="ViewBag.UserId" required>
+                            <option disabled selected>@Resources.ChooseGroup</option>
+                        </select>
+                    </div>
+                    <input type="submit" class="btn pinkBgColor my-2 fw-bold" value="@Resources.Save" />
+                </form>
+            }
+        </div>
+    </div>
+    <partial name="Shared/_FooterQuote" />
+}

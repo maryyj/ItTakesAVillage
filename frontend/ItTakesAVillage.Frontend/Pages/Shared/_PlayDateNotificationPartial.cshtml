@@ -1,0 +1,22 @@
+﻿@model ItTakesAVillage.Frontend.Models.PlayDate
+@using ItTakesAVillage.Frontend
+
+<p class="fw-bold">
+    @Resources.When@Resources.QuestionMark
+    <span class="fw-light"> @Model.DateTime.ToString("g")</span>
+</p>
+<p class="fw-bold">
+    @Resources.Where@Resources.QuestionMark
+    <span class="fw-light"> @Model.Location</span>
+</p>
+<p class="fw-bold">
+    @Resources.WhoPlays@Resources.QuestionMark
+    <span class="fw-light"> @Model.ChildName & @Model.InvitedChildName</span>
+</p>
+@if (@Model.Message != null)
+{
+    <p class="fw-bold">
+        @Resources.Message@Resources.ColonSign
+        <span class="fw-light"> @Model.Message</span>
+    </p>
+}

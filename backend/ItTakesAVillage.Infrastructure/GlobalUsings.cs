@@ -1,0 +1,11 @@
+﻿global using ItTakesAVillage.Core.Models;
+global using ItTakesAVillage.Infrastructure.DAL;
+global using Microsoft.EntityFrameworkCore;
+global using System.Linq.Expressions;
+global using ItTakesAVillage.Core.Interfaces;
+global using System;
+global using Microsoft.EntityFrameworkCore.Migrations;
+global using Microsoft.AspNetCore.Identity;
+global using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+global using Microsoft.EntityFrameworkCore.Infrastructure;
+global using Microsoft.IdentityModel.Tokens;

@@ -1,0 +1,99 @@
+﻿@page
+@model ItTakesAVillage.Pages.GroupChatModel
+@using ItTakesAVillage.Frontend
+@inject UserManager<ItTakesAVillageUser> _userManager
+@{
+}
+<link rel="stylesheet" href="~/css/group.css" />
+@if (Model.CurrentUser != null)
+{
+    <div class="container w-75">
+        <a asp-page="/Group" class="btn abrilFont p-2 blueBgColor border-0">@Resources.BackToGroup</a>
+    </div>
+    @if (Model.UsersInGroup != null && Model.UsersInGroup.Any())
+    {
+        <h2 class="text-center abrilFont mb-3">@(Model.CurrentGroup != null ? Model.CurrentGroup.Name : "")</h2>
+        <div class="text-center abrilFont text-muted mb-5">- @Resources.GroupChat -</div>
+        await Html.RenderPartialAsync("_GroupTabPartial", Model.CurrentGroup);
+    }
+    <div class="greenBgColor py-5">
+        <div class="container w-75">
+            @if (Model.GroupMessages != null && Model.GroupMessages.Any())
+            {
+                <div class="card">
+                    <h5 class="card-header abrilFont">@Resources.GroupChat @Resources.For @Model.CurrentGroup?.Name</h5>
+                    <div class="card-body scroll-container overflow-auto">
+                        @{
+                            DateTime? lastDate = null;
+                        }
+                        @foreach (var message in Model.GroupMessages)
+                        {
+                            var sender = await _userManager.FindByIdAsync(message.SenderId);
+                            if (lastDate == null || lastDate.Value.Date != message.Date.Date)
+                            {
+                                lastDate = message.Date;
+
+                                <div class="d-flex justify-content-center mb-2">
+                                    @if (message.Date.Day == DateTime.Now.Day)
+                                    {
+                                        <span class="date-separator small">@Resources.Today</span>
+
+                                    }
+                                    else
+                                    {
+                                        <span class="date-separator small">
+                                            @message.Date.ToString("yyyy-MM-dd")
+                                        </span>
+                                    }
+                                </div>
+                            }
+                            @if (Model.CurrentUser.Id == message.SenderId)
+                            {
+                                <div class="d-flex justify-content-end mb-2">
+                                    <div class="message user-message">
+                                        <div class="small text-muted">
+                                            @message.Date.ToString("HH:mm", new System.Globalization.CultureInfo("sv-SE")) - @Resources.Me
+                                        </div>
+                                        <div class="message-body rounded blueBgColor p-2">
+                                            @message.Message
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="d-flex justify-content-start mb-2">
+                                    <div class="message other-message">
+                                        <div class="small text-muted">
+                                            @message.Date.ToString("HH:mm", new System.Globalization.CultureInfo("sv-SE")) - @sender?.FirstName @sender?.LastName
+                                        </div>
+                                        <div class="message-body rounded pinkBgColor p-2">
+                                            @message.Message
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            }
+            else
+            {
+                <h2 class="text-center abrilFont">@Resources.StartChat</h2>
+                <div class="text-center abrilFont text-muted mb-5">- @Resources.NoMessage -</div>
+            }
+            <form method="post" asp-page-handler="AddMessage">
+                <input type="hidden" name="groupId" value="@Model.CurrentGroup?.Id" />
+                <input type="hidden" asp-for="@Model.NewMessage.SenderId" value="@Model.CurrentUser.Id" />
+                <input type="hidden" asp-for="@Model.NewMessage.Date" value="@DateTime.Now.ToString()" />
+                <div class="d-flex mt-2">
+                    <textarea asp-for="@Model.NewMessage.Message"
+                              class="bg-lightrounded form-control me-2"
+                              placeholder="Skriv in ditt meddelande...">
+                                                                    </textarea>
+                    <button type="submit" class="pinkBgColor border-0 rounded">@Resources.Send</button>
+                </div>
+            </form>
+        </div>
+    </div>
+}

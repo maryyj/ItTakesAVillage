@@ -1,0 +1,33 @@
+﻿@page
+@model ItTakesAVillage.Pages.GroupModel
+@using ItTakesAVillage.Frontend
+<link rel="stylesheet" href="~/css/group.css" />
+@if (Model.CurrentUser != null)
+{
+    <h2 class="text-center abrilFont m-5">@Resources.GatherFriends</h2>
+
+    @if (Model.GroupsOfCurrentUser != null && Model.GroupsOfCurrentUser.Any())
+    {
+        await Html.RenderPartialAsync("_GroupsPartial", Model.GroupsOfCurrentUser);
+    }
+    <div class="greenBgColor py-5">
+        <div class="container w-75">
+            @if (Model.GroupsOfCurrentUser != null && !Model.GroupsOfCurrentUser.Any())
+            {
+                <h4 class="mt-2 mb-5 abrilFont">@Resources.GroupToday</h4>
+            }
+            <h4 class="mt-2 mb-5 abrilFont">@Resources.CreateGroup</h4>
+            <form method="post" asp-page-handler="NewGroup">
+                @* TODO: Toast eller alert när det inte går att spara eller har sparats *@
+                <h5 class="abrilFont d-block">@Resources.GroupName</h5>
+                <input required
+                       class="form-control bg-transparent w-50"
+                       placeholder="Ange gruppnamn"
+                       asp-for="NewGroup.Name" />
+                <input type="hidden" asp-for="NewGroup.CreatorId" value="@Model.CurrentUser.Id" />
+                <input type="submit" class="btn my-2 pinkBgColor fw-bold" value="@Resources.Save" />
+            </form>
+        </div>
+    </div>
+    <partial name="Shared/_FooterQuote" />
+}

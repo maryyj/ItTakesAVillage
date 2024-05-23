@@ -1,0 +1,83 @@
+﻿@page
+@using ItTakesAVillage.Models
+@using ItTakesAVillage.Frontend
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<h2 class="text-center abrilFont m-5">@Resources.GatherFriends</h2>
+
+<div class="d-flex justify-content-center custom-margin">
+    <div class="col text-center">
+        <a asp-page="/DinnerInvitation">
+            <img class="eventImg" alt="cutleries with blue background" src="~/img/dinner.png" />
+            <p class="mt-3">@Resources.InviteToDinner</p>
+        </a>
+    </div>
+    <div class="col text-center">
+        <a asp-page="/ToolPool">
+            <img class="eventImg" alt="wrench with pink background" src="~/img/tool.png" />
+            <p class="mt-3">@Resources.BorrowATool</p>
+        </a>
+    </div>
+    <div class="col text-center">
+        <a asp-page="/PlayDate">
+            <img class="eventImg" alt="kids with green background" src="~/img/playdate.png" />
+            <p class="mt-3">@Resources.InvitePlayDate</p>
+        </a>
+    </div>
+</div>
+<div class="text-center m-5">
+    <a asp-page="/Group" class="btn custom-btn fontColor fw-bold blueBgColor">@Resources.MyGroups</a>
+</div>
+
+@if (Model.Notifications != null && Model.Notifications.Any())
+{
+    <div class="border border-start-0 border-end-0 py-5">
+        <div class="container">
+            <h4 class="abrilFont px-4">@Resources.OnGoing</h4>
+            <div class="mx-auto d-flex justify-content-center">
+                <div class="accordion w-100" id="notification-accordion">
+                    @foreach (var notification in Model.Notifications.OrderBy(x => x.RelatedEvent.DateTime).Take(5))
+                    {
+                        var textstyle = notification.IsRead ? "" : "fw-bold";
+                        <div class="accordion-item border-0">
+                            <button class=" accordion-button collapsed @textstyle"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#collapse_@notification.Id"
+                                    aria-expanded="false"
+                                    aria-controls="collapse_@notification.Id"
+                                    onclick="handleAccordionClick(@notification.Id)">
+                                <i class="bi bi-circle-fill pinkFontColor p-2"></i>
+                                <span class="">@notification.RelatedEvent.DateTime.ToShortDateString() - @notification.Title</span>
+                            </button>
+
+                            <div id="collapse_@notification.Id" class="accordion-collapse collapse" aria-labelledby="heading_@notification.Id" data-bs-parent="#notification-accordion">
+                                <div class="accordion-body p-4">
+                                    @if (notification.RelatedEvent is DinnerInvitation dinnerInvitation)
+                                    {
+                                        await Html.RenderPartialAsync("_DinnerNotificationPartial", dinnerInvitation);
+                                    }
+                                    @if (notification.RelatedEvent is PlayDate playdate)
+                                    {
+                                        await Html.RenderPartialAsync("_PlayDateNotificationPartial", playdate);
+                                    }
+                                    @if (notification.RelatedEvent is ToolPool toolPool)
+                                    {
+                                        await Html.RenderPartialAsync("_ToolPoolNotificationPartial", toolPool);
+                                    }
+
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<partial name="_FooterQuote" />
+
+

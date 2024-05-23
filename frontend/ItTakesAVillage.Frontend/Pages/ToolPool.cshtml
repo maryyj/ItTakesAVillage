@@ -1,0 +1,203 @@
+﻿@page
+@model ItTakesAVillage.Pages.ToolLoanModel
+@using  ItTakesAVillage.Frontend
+@{
+}
+<link rel="stylesheet" href="~/css/toolPool.css" />
+@if (Model.CurrentUser != null)
+{
+    <div class="d-flex align-items-center flex-column">
+        <img class="mx-auto eventImg" alt="wrench with pink background" src="img/tool.png" />
+        <h2 class="abrilFont text-center mt-2 mb-5">@Resources.ToolPool</h2>
+    </div>
+}
+@if (Model.GroupsOfCurrentUser != null && Model.GroupsOfCurrentUser.Any())
+{
+    await Html.RenderPartialAsync("_ToolPoolTabPartial");
+    <div class="pinkBgColor py-4">
+        <div class="container w-75 pt-5 pb-4">
+            @if (Model.Tools != null && Model.Tools.Any())
+            {
+                <div class="row">
+                    @foreach (var tool in Model.Tools)
+                    {
+                        var group = Model.GroupsOfCurrentUser.Where(x => x.Id == tool.GroupId).FirstOrDefault();
+
+                        <div class="card ms-2">
+                            <div>
+                                <img src="@(tool.Image != null ?
+                                    $"/uploadedImg/{tool.Image}/{tool.Image}" :
+                                    $"/img/defaultImg.svg")"
+                                     alt="image of tool" />
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title"><b>@tool.Name</b></h5>
+                                <p class="card-text">@tool.Description</p>
+                                <div class="card-text small d-flex mb-1">
+                                    <span>@Resources.Message</span>
+                                    <i class="ps-2 bi bi-patch-question d-flex align-items-center"
+                                       data-bs-toggle="tooltip"
+                                       data-bs-placement="bottom"
+                                       title="@(@tool.Message != null ? @tool.Message : @Resources.NoMessage)"></i>
+                                </div>
+                                <p class="card-text creator-txt small">
+                                    <span>
+                                        @Resources.SharedOf @(tool.Creator != null ?
+                            tool.Creator.FirstName + " " + tool.Creator.LastName :
+                            "")
+                                    </span>
+                                    <span>
+                                        @Resources.OfGroup @group?.Name
+                                    </span>
+                                </p>
+                                <div class="d-flex align-content-end flex-column-reverse">
+                                    @if (tool.CreatorId == Model.CurrentUser?.Id && tool.IsBorrowed == false)
+                                    {
+                                        <div class="d-flex">
+                                            <button type="submit" class="btn pinkBgColor me-2" data-bs-toggle="modal" data-bs-target="#editModal-@tool.Id">
+                                                @Resources.Change
+                                            </button>
+                                            <form method="post" asp-page-handler="RemoveToolFromPool">
+                                                <input type="hidden" name="toolId" value="@tool.Id" />
+                                                <button type="submit" class="btn greenBgColor">@Resources.Remove</button>
+                                            </form>
+                                        </div>
+                                        <!-- EditModal -->
+                                        <div class="modal fade" id="editModal-@tool.Id" tabindex="-1" aria-labelledby="modalLabel-@tool.Id" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h1 class="modal-title fs-5" id="modalLabel-@tool.Id">
+                                                            <b>@Resources.EditTitleFormular</b>
+                                                        </h1>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <form method="post" asp-page-handler="EditTool">
+                                                        <div class="modal-body">
+                                                            <input type="hidden" asp-for="EditTool.DateTime" value="@DateTime.Now.ToString("yyyy-MM-dd HH:mm", new System.Globalization.CultureInfo("sv-SE"))" />
+                                                            <input type="hidden" asp-for="EditTool.CreatorId" value="@tool.CreatorId" />
+                                                            <input type="hidden" asp-for="EditTool.GroupId" value="@tool.GroupId" />
+                                                            <input type="hidden" asp-for="EditTool.Id" value="@tool.Id" />
+                                                            <input type="hidden" asp-for="EditTool.Image" value="@tool.Image" />
+                                                            <label class="form-label fw-bold mt-2">@Resources.ChangeName</label>
+                                                            <input asp-for="EditTool.Name"
+                                                                   value="@tool.Name"
+                                                                   class="form-control bg-transparent" />
+                                                            <label class="form-label fw-bold mt-2">@Resources.ChangeDescription</label>
+                                                            <input asp-for="EditTool.Description"
+                                                                   value="@tool.Description"
+                                                                   class="form-control bg-transparent" />
+                                                            <label class="form-label fw-bold mt-2">@Resources.ChangeMessage</label>
+                                                            <textarea class="form-control bg-transparent"
+                                                                      asp-for="EditTool.Message"
+                                                                      value="@tool.Message"></textarea>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@Resources.Close</button>
+                                                            <button type="submit" class="btn pinkBgColor">@Resources.Save</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    }
+                                    else if (tool.CreatorId == Model.CurrentUser?.Id && tool.IsBorrowed)
+                                    {
+                                        <button disabled type="button" class="btn greenBgColor">@Resources.Remove</button>
+                                    }
+                                    else if (tool.IsBorrowed)
+                                    {
+                                        <button disabled type="button" class="btn pinkBgColor">
+                                            @Resources.Borrowed
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        <button type="button" class="btn pinkBgColor" data-bs-toggle="modal" data-bs-target="#borrowModal-@tool.Id">
+                                            @Resources.Borrow
+                                        </button>
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="borrowModal-@tool.Id" tabindex="-1" aria-labelledby="modalLabel-@tool.Id" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h1 class="modal-title fs-5" id="modalLabel-@tool.Id">
+                                                            <b>@Resources.BorrowTitleFormular</b>
+                                                        </h1>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <form method="post" asp-page-handler="BorrowTool">
+                                                        <div class="modal-body">
+                                                            <label class="form-label fw-bold mt-2">@Resources.FromDateText</label>
+                                                            <input type="date"
+                                                                   asp-for="NewToolLoan.FromDate"
+                                                                   value="@DateTime.Now.ToString("yyyy-MM-dd")"
+                                                                   class="form-control bg-transparent"
+                                                                   min="@DateTime.Now.ToString("yyyy-MM-dd")"
+                                                                   required />
+                                                            <label class="form-label fw-bold mt-2">@Resources.ToDateText</label>
+                                                            <input type="date"
+                                                                   asp-for="NewToolLoan.ToDate"
+                                                                   value="@DateTime.Now.ToString("yyyy-MM-dd")"
+                                                                   class="form-control bg-transparent"
+                                                                   min="@DateTime.Now.ToString("yyyy-MM-dd")"
+                                                                   required />
+                                                            <input type="hidden" asp-for="NewToolLoan.BorrowerId" value="@Model.CurrentUser?.Id" />
+                                                            <input type="hidden" asp-for="NewToolLoan.ToolId" value="@tool.Id" />
+                                                            <hr />
+                                                            <div class="p-1 small">
+                                                                <div><b>@Resources.ToolText:</b> @tool.Name</div>
+                                                                <div>
+                                                                    @(tool.Description != null ?
+                                                                        Html.Raw(
+                                                                        "<b>" + Resources.DescriptionText + ":" + "</b>" + tool.Description) :
+                                                                        "")
+                                                                </div>
+                                                                @(tool.Message != null ?
+                                                                    Html.Raw("<b>" + Resources.Message + ":" + "</b>" + tool.Message) : "")
+                                                                <div>
+                                                                    <b>@Resources.SharedOf:</b>
+                                                                    @(tool.Creator != null ?
+                                                                        tool.Creator.FirstName + " " + tool.Creator.LastName :
+                                                                        "")
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@Resources.Close</button>
+                                                            <button type="submit" class="btn pinkBgColor">@Resources.Save</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+            }
+            else
+            {
+                <div class="container d-flex flex-column align-items-center">
+                    <h4 class="abrilFont my-4">@Resources.NoSharedTools</h4>
+                    <a asp-page="/ToolShare" class="btn custom-btn fontColor fw-bold greenBgColor my-4">@Resources.ShareToolText</a>
+                </div>
+            }
+        </div>
+    </div>
+
+}
+else
+{
+    <div class="pinkBgColor py-4 customColouredContainer d-flex align-items-center justify-content-center">
+        <div class="container d-flex flex-column align-items-center">
+            <h4 class="abrilFont my-4">@Resources.CreateGroupText</h4>
+            <a asp-page="/Group" class="btn custom-btn fontColor fw-bold greenBgColor my-4">@Resources.CreateGroup</a>
+        </div>
+    </div>
+}
+<partial name="Shared/_FooterQuote" />

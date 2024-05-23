@@ -7,9 +7,7 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
         var connectionString = builder.Configuration.GetConnectionString("ItTakesAVillageContextConnection") ?? throw new InvalidOperationException("Connection string 'ItTakesAVillageContextConnection' not found.");
         
-        builder.Services.AddScoped<INotificationService, NotificationService>();
         builder.Services.AddScoped<IRepository<ItTakesAVillageUser>,EFRepository <ItTakesAVillageUser>>();
-        builder.Services.AddScoped<IRepository<Notification>,EFRepository <Notification>>();
         builder.Services.AddScoped<IHttpService, HttpService>();
 
         builder.Services.AddDbContext<ItTakesAVillageContext>(options => options.UseSqlServer(connectionString));

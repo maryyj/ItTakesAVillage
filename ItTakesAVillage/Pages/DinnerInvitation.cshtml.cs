@@ -2,11 +2,9 @@ namespace ItTakesAVillage.Pages
 {
     public class DinnerInvitationModel(
         UserManager<ItTakesAVillageUser> userManager,
-        INotificationService notificationService,
         IHttpService httpService) : PageModel
     {
         private readonly UserManager<ItTakesAVillageUser> _userManager = userManager;
-        private readonly INotificationService _notificationService = notificationService;
         private readonly IHttpService _httpService = httpService;
 
         [BindProperty]
@@ -22,8 +20,10 @@ namespace ItTakesAVillage.Pages
             {
                 GroupsOfCurrentUser = await _httpService.HttpGetRequest<List<Group>>($"Group/GroupsOfUser/{CurrentUser.Id}");
                 ViewData["GroupId"] = new SelectList(GroupsOfCurrentUser, "Id", "Name");
-                //Notifications = await _httpService.HttpGetRequest<List<Notification>>($"Notification/All/{CurrentUser.Id}");
-                Notifications = await _notificationService.GetAsync(CurrentUser.Id);
+                Notifications = await _httpService.HttpGetRequest<List<Notification>>($"Notification/All/{CurrentUser.Id}");
+
+                if (Notifications != null)
+                    await SetRelatedevent(Notifications);
             }
 
             return Page();
@@ -37,6 +37,17 @@ namespace ItTakesAVillage.Pages
                     await _httpService.HttpPostRequest("Notification", NewInvitation);
             }
             return RedirectToPage("/DinnerInvitation");
+        }
+        private async Task SetRelatedevent(List<Notification> notifications)
+        {
+            foreach (var notification in notifications)
+            {
+                var baseEvent = await _httpService.HttpGetRequest<DinnerInvitation>($"DinnerInvitation/{notification.RelatedEvent.Id}");
+                if (baseEvent != null)
+                {
+                    notification.RelatedEvent = baseEvent;
+                }
+            }
         }
     }
 }

@@ -2,16 +2,14 @@ namespace ItTakesAVillage.Pages;
 
 public class ToolPoolModel(
     UserManager<ItTakesAVillageUser> userManager,
-    INotificationService notificationService,
     IHttpService httpService) : PageModel
 {
     private readonly UserManager<ItTakesAVillageUser> _userManager = userManager;
-    private readonly INotificationService _notificationService = notificationService;
     private readonly IHttpService _httpService = httpService;
 
     public ItTakesAVillageUser? CurrentUser { get; set; }
     public List<Group>? GroupsOfCurrentUser { get; set; } = [];
-    public List<Notification> Notifications { get; set; } = [];
+    public List<Notification>? Notifications { get; set; } = [];
 
     [BindProperty]
     public ToolPool NewToolPool { get; set; } = new();
@@ -23,11 +21,27 @@ public class ToolPoolModel(
         if (CurrentUser != null)
         {
             GroupsOfCurrentUser = await _httpService.HttpGetRequest<List<Group>>($"Group/GroupsOfUser/{CurrentUser.Id}");
-            Notifications = await _notificationService.GetAsync(CurrentUser.Id);
+            Notifications = await _httpService.HttpGetRequest<List<Notification>>($"Notification/All/{CurrentUser.Id}");
+
+            if (Notifications != null)
+                await SetRelatedevent(Notifications);
+
             ViewData["GroupId"] = new SelectList(GroupsOfCurrentUser, "Id", "Name");
 
         }
         return Page();
+    }
+    private async Task SetRelatedevent(List<Notification> notifications)
+    {
+        foreach (var notification in notifications)
+        {
+            var baseEvent = await _httpService.HttpGetRequest<ToolPool>($"ToolPool/{notification.RelatedEvent.Id}");
+            if (baseEvent != null)
+            {
+                notification.RelatedEvent = baseEvent;
+            }
+
+        }
     }
     public async Task<IActionResult> OnPostAddToolToPool()
     {
@@ -41,7 +55,6 @@ public class ToolPoolModel(
             bool success = await _httpService.HttpPostRequest("ToolPool", NewToolPool);
             if (success)
                 await _httpService.HttpPostRequest("Notification", NewToolPool);
-            //await _notificationService.NotifyGroupAsync(NewToolPool);
         }
         return RedirectToPage("/ToolPool");
     }

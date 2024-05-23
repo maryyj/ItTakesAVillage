@@ -1,11 +1,9 @@
 namespace ItTakesAVillage.Pages
 {
     public class NotificationModel(UserManager<ItTakesAVillageUser> userManager,
-        INotificationService notificationService,
         IHttpService httpService) : PageModel
     {
         private readonly UserManager<ItTakesAVillageUser> _userManager = userManager;
-        private readonly INotificationService _notificationService = notificationService;
         private readonly IHttpService _httpService = httpService;
 
         public ItTakesAVillageUser? CurrentUser { get; set; }
@@ -19,8 +17,9 @@ namespace ItTakesAVillage.Pages
 
             if (CurrentUser != null)
             {
-                Notifications = await _notificationService.GetAsync(CurrentUser.Id);
-                //Notifications = await _httpService.HttpGetRequest<List<Notification>>($"Notification/All/{CurrentUser.Id}");
+                Notifications = await _httpService.HttpGetRequest<List<Notification>>($"Notification/All/{CurrentUser.Id}");
+                if (Notifications != null)
+                    await SetRelatedevent(Notifications);
             }
 
             return Page();
@@ -39,6 +38,27 @@ namespace ItTakesAVillage.Pages
                 return new JsonResult(new { success = true, unreadCount = unreadNotificationCount });
             }
             return new JsonResult(new { success = false });
+        }
+        private async Task SetRelatedevent(List<Notification> notifications)
+        {
+            foreach (var notification in notifications)
+            {
+                var playDateEvent = await _httpService.HttpGetRequest<PlayDate>($"PlayDate/{notification.RelatedEvent.Id}");
+                var dinnerEvent = await _httpService.HttpGetRequest<DinnerInvitation>($"DinnerInvitation/{notification.RelatedEvent.Id}");
+                var toolPoolEvent = await _httpService.HttpGetRequest<ToolPool>($"ToolPool/{notification.RelatedEvent.Id}");
+                if (playDateEvent != null)
+                {
+                    notification.RelatedEvent = playDateEvent;
+                }
+                if (dinnerEvent != null)
+                {
+                    notification.RelatedEvent = dinnerEvent;
+                }
+                if (toolPoolEvent != null)
+                {
+                    notification.RelatedEvent = toolPoolEvent;
+                }
+            }
         }
     }
 }

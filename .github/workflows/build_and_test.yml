@@ -15,8 +15,11 @@ jobs:
       with:
         dotnet-version: 8.0.x
         
+    - name: Change working directory
+      run: cd backend
+      
     - name: Restore dependencies
-      run: dotnet restore --source backend/ItTakesAVillage.Backend.sln
+      run: dotnet restore --source ItTakesAVillage.Backend.sln
     
     - name: Build
       run: dotnet build --no-restore

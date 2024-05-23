@@ -184,7 +184,11 @@ public partial class FirstInit : Migration
                 Location = table.Column<string>(type: "nvarchar(max)", nullable: true),
                 ChildName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                 InvitedChildName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                PlayDate_Location = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                PlayDate_Location = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                IsBorrowed = table.Column<bool>(type: "bit", nullable: true)
             },
             constraints: table =>
             {
@@ -193,6 +197,34 @@ public partial class FirstInit : Migration
                     name: "FK_Events_AspNetUsers_CreatorId",
                     column: x => x.CreatorId,
                     principalTable: "AspNetUsers",
+                    principalColumn: "Id",
+                    onDelete: ReferentialAction.Cascade);
+            });
+
+        migrationBuilder.CreateTable(
+            name: "GroupChats",
+            columns: table => new
+            {
+                Id = table.Column<int>(type: "int", nullable: false)
+                    .Annotation("SqlServer:Identity", "1, 1"),
+                Message = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                GroupId = table.Column<int>(type: "int", nullable: false),
+                SenderId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                UserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+            },
+            constraints: table =>
+            {
+                table.PrimaryKey("PK_GroupChats", x => x.Id);
+                table.ForeignKey(
+                    name: "FK_GroupChats_AspNetUsers_UserId",
+                    column: x => x.UserId,
+                    principalTable: "AspNetUsers",
+                    principalColumn: "Id");
+                table.ForeignKey(
+                    name: "FK_GroupChats_Groups_GroupId",
+                    column: x => x.GroupId,
+                    principalTable: "Groups",
                     principalColumn: "Id",
                     onDelete: ReferentialAction.Cascade);
             });
@@ -245,6 +277,34 @@ public partial class FirstInit : Migration
                     onDelete: ReferentialAction.Cascade);
             });
 
+        migrationBuilder.CreateTable(
+            name: "ToolLoans",
+            columns: table => new
+            {
+                Id = table.Column<int>(type: "int", nullable: false)
+                    .Annotation("SqlServer:Identity", "1, 1"),
+                FromDate = table.Column<DateOnly>(type: "date", nullable: false),
+                ToDate = table.Column<DateOnly>(type: "date", nullable: false),
+                BorrowerId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                ToolId = table.Column<int>(type: "int", nullable: false),
+                IsReturned = table.Column<bool>(type: "bit", nullable: false),
+                ToolPoolId = table.Column<int>(type: "int", nullable: true)
+            },
+            constraints: table =>
+            {
+                table.PrimaryKey("PK_ToolLoans", x => x.Id);
+                table.ForeignKey(
+                    name: "FK_ToolLoans_AspNetUsers_BorrowerId",
+                    column: x => x.BorrowerId,
+                    principalTable: "AspNetUsers",
+                    principalColumn: "Id");
+                table.ForeignKey(
+                    name: "FK_ToolLoans_Events_ToolPoolId",
+                    column: x => x.ToolPoolId,
+                    principalTable: "Events",
+                    principalColumn: "Id");
+            });
+
         migrationBuilder.CreateIndex(
             name: "IX_AspNetRoleClaims_RoleId",
             table: "AspNetRoleClaims",
@@ -290,9 +350,29 @@ public partial class FirstInit : Migration
             column: "CreatorId");
 
         migrationBuilder.CreateIndex(
+            name: "IX_GroupChats_GroupId",
+            table: "GroupChats",
+            column: "GroupId");
+
+        migrationBuilder.CreateIndex(
+            name: "IX_GroupChats_UserId",
+            table: "GroupChats",
+            column: "UserId");
+
+        migrationBuilder.CreateIndex(
             name: "IX_Notifications_RelatedEventId",
             table: "Notifications",
             column: "RelatedEventId");
+
+        migrationBuilder.CreateIndex(
+            name: "IX_ToolLoans_BorrowerId",
+            table: "ToolLoans",
+            column: "BorrowerId");
+
+        migrationBuilder.CreateIndex(
+            name: "IX_ToolLoans_ToolPoolId",
+            table: "ToolLoans",
+            column: "ToolPoolId");
 
         migrationBuilder.CreateIndex(
             name: "IX_UserGroups_GroupId",
@@ -324,7 +404,13 @@ public partial class FirstInit : Migration
             name: "AspNetUserTokens");
 
         migrationBuilder.DropTable(
+            name: "GroupChats");
+
+        migrationBuilder.DropTable(
             name: "Notifications");
+
+        migrationBuilder.DropTable(
+            name: "ToolLoans");
 
         migrationBuilder.DropTable(
             name: "UserGroups");

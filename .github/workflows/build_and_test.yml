@@ -19,7 +19,7 @@ jobs:
       run: cd backend
       
     - name: Restore dependencies
-      run: dotnet restore --source ItTakesAVillage.Backend.sln
+      run: dotnet restore
     
     - name: Build
       run: dotnet build --no-restore

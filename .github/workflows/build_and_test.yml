@@ -14,15 +14,15 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 8.0.x
-        
-    - name: Change working directory
-      run: cd backend
       
     - name: Restore dependencies
       run: dotnet restore
+      working-directory: ./backend
     
     - name: Build
       run: dotnet build --no-restore
-    
+      working-directory: ./Backend
+      
     - name: Test
       run: dotnet test --no-build --verbosity normal
+      working-directory: ./Backend

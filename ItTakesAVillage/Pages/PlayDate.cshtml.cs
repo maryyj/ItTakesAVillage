@@ -29,9 +29,10 @@ public class PlayDateModel(UserManager<ItTakesAVillageUser> userManager,
     {
         if (ModelState.IsValid)
         {
-            bool success = await _httpService.HttpPostRequest("PlayDate" , NewPlayDate);
+            bool success = await _httpService.HttpPostRequest("PlayDate", NewPlayDate);
             if (success)
-                await _notificationService.NotifyGroupAsync(NewPlayDate);
+                await _httpService.HttpPostRequest("Notification", NewPlayDate);
+            //await _notificationService.NotifyGroupAsync(NewPlayDate);
         }
         return RedirectToPage("/PlayDate");
     }

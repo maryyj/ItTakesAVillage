@@ -31,19 +31,17 @@ public class ToolPoolModel(
     }
     public async Task<IActionResult> OnPostAddToolToPool()
     {
-        if(ModelState.IsValid)
+        if (ModelState.IsValid)
         {
-            CurrentUser = await _userManager.GetUserAsync(User);
             if (UploadedImage != null)
             {
                 var uniqueFileName = await SetUniqueFileName(UploadedImage);
                 NewToolPool.Image = uniqueFileName;
             }
-            //NewToolPool.Creator = CurrentUser;
-            //bool success = await _toolPoolService.Create(NewToolPool);
             bool success = await _httpService.HttpPostRequest("ToolPool", NewToolPool);
             if (success)
-                await _notificationService.NotifyGroupAsync(NewToolPool);
+                await _httpService.HttpPostRequest("Notification", NewToolPool);
+            //await _notificationService.NotifyGroupAsync(NewToolPool);
         }
         return RedirectToPage("/ToolPool");
     }

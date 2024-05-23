@@ -20,7 +20,7 @@ namespace ItTakesAVillage.Pages
             if (CurrentUser != null)
             {
                 Notifications = await _notificationService.GetAsync(CurrentUser.Id);
-                //Notifications = await _httpService.HttpGetRequest<List<Notification>>($"Notification/{CurrentUser.Id}");
+                //Notifications = await _httpService.HttpGetRequest<List<Notification>>($"Notification/All/{CurrentUser.Id}");
             }
 
             return Page();
@@ -30,12 +30,14 @@ namespace ItTakesAVillage.Pages
             CurrentUser = await _userManager.GetUserAsync(User);
             if (notificationId != 0 && CurrentUser != null)
             {
-                await _notificationService.UpdateIsReadAsync(notificationId);
-                int unreadNotificationCount = await _notificationService.CountAsync(CurrentUser.Id);
+                var notification = await _httpService.HttpGetRequest<Notification>($"Notification/{notificationId}");
+                if (notification != null)
+                    await _httpService.HttpPutRequest($"Notification", notification);
+
+                int unreadNotificationCount = await _httpService.HttpGetRequest<int>($"Notification/Count/{CurrentUser.Id}");
 
                 return new JsonResult(new { success = true, unreadCount = unreadNotificationCount });
             }
-
             return new JsonResult(new { success = false });
         }
     }

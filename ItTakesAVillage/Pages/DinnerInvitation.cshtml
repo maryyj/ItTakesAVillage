@@ -19,6 +19,7 @@
                 <h4 class="abrilFont mt-4 mb-3">@Resources.CreateDinnerInvitation</h4>
                 <div class="w-50">
                     <form method="post">
+                        <input type="hidden" asp-for="NewInvitation.CreatorId" value="@Model.CurrentUser.Id" />
                         <label class="form-label fw-bold mt-2">@Resources.WhichGroup</label>
                         <select class="form-control w-25 bg-transparent" asp-for="NewInvitation.GroupId" asp-items="ViewBag.GroupId">
                             <option disabled selected>@Resources.ChooseGroup</option>

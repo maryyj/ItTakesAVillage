@@ -2,17 +2,15 @@ namespace ItTakesAVillage.Pages;
 
 public class GroupChatModel(
     UserManager<ItTakesAVillageUser> userManager,
-    IGroupService groupService,
-    IGroupChatService groupChatService) : PageModel
+    IHttpService httpService) : PageModel
 {
     private readonly UserManager<ItTakesAVillageUser> _userManager = userManager;
-    private readonly IGroupService _groupService = groupService;
-    private readonly IGroupChatService _groupChatService = groupChatService;
+    private readonly IHttpService _httpService = httpService;
 
     public ItTakesAVillageUser? CurrentUser { get; set; }
     public Group? CurrentGroup { get; set; }
-    public List<UserGroup?> UsersInGroup { get; set; } = [];
-    public List<GroupChat> GroupMessages { get; set; } = [];
+    public List<UserGroup>? UsersInGroup { get; set; } = [];
+    public List<GroupChat>? GroupMessages { get; set; } = [];
     [BindProperty]
     public GroupChat NewMessage { get; set; } = new();
     public async Task<IActionResult> OnGet(int groupId)
@@ -23,9 +21,9 @@ public class GroupChatModel(
         CurrentUser = await _userManager.GetUserAsync(User);
         if (CurrentUser != null)
         {
-            CurrentGroup = await _groupService.Get(groupId);
-            UsersInGroup = await _groupService.GetUsersAndGroups(groupId);
-            GroupMessages = await _groupChatService.Get(groupId);
+            CurrentGroup = await _httpService.HttpGetRequest<Group>($"Group/{groupId}");
+            UsersInGroup = await _httpService.HttpGetRequest<List<UserGroup>>($"Group/UsersGroup/{groupId}");
+            GroupMessages = await _httpService.HttpGetRequest<List<GroupChat>>($"GroupChat/{groupId}");
         }
         return Page();
     }
@@ -34,7 +32,7 @@ public class GroupChatModel(
         if (ModelState.IsValid)
         {
             NewMessage.GroupId = groupId;
-            bool success = await _groupChatService.Add(NewMessage);
+            bool success = await _httpService.HttpPostRequest("GroupChat",NewMessage);
         }
 
         return RedirectToPage("/GroupChat", new { groupId });

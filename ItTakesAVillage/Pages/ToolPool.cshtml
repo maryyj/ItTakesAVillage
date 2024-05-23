@@ -1,7 +1,6 @@
 ﻿@page
 @model ItTakesAVillage.Pages.ToolLoanModel
 @using static ItTakesAVillage.Resources
-@inject IGroupService _groupService
 @{
 }
 <link rel="stylesheet" href="~/css/toolPool.css" />
@@ -22,7 +21,7 @@
                 <div class="row">
                     @foreach (var tool in Model.Tools)
                     {
-                        var group = await _groupService.Get(tool.GroupId);
+                        var group = Model.GroupsOfCurrentUser.Where(x => x.Id == tool.GroupId).FirstOrDefault();
 
                         <div class="card ms-2">
                             <div>
@@ -48,14 +47,14 @@
                             "")
                                     </span>
                                     <span>
-                                        @Resources.OfGroup @group.Name
+                                        @Resources.OfGroup @group?.Name
                                     </span>
                                 </p>
                                 <div class="d-flex align-content-end flex-column-reverse">
                                     @if (tool.CreatorId == Model.CurrentUser?.Id && tool.IsBorrowed == false)
                                     {
                                         <div class="d-flex">
-                                            <button type="submit" class="btn pinkBgColor me-2" data-bs-toggle="modal" data-bs-target="#editModal">
+                                            <button type="submit" class="btn pinkBgColor me-2" data-bs-toggle="modal" data-bs-target="#editModal-@tool.Id">
                                                 @Resources.Change
                                             </button>
                                             <form method="post" asp-page-handler="RemoveToolFromPool">
@@ -64,11 +63,11 @@
                                             </form>
                                         </div>
                                         <!-- EditModal -->
-                                        <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal fade" id="editModal-@tool.Id" tabindex="-1" aria-labelledby="modalLabel-@tool.Id" aria-hidden="true">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h1 class="modal-title fs-5" id="exampleModalLabel">
+                                                        <h1 class="modal-title fs-5" id="modalLabel-@tool.Id">
                                                             <b>@Resources.EditTitleFormular</b>
                                                         </h1>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -115,15 +114,15 @@
                                     }
                                     else
                                     {
-                                        <button type="button" class="btn pinkBgColor" data-bs-toggle="modal" data-bs-target="#borrowModal">
+                                        <button type="button" class="btn pinkBgColor" data-bs-toggle="modal" data-bs-target="#borrowModal-@tool.Id">
                                             @Resources.Borrow
                                         </button>
                                         <!-- Modal -->
-                                        <div class="modal fade" id="borrowModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal fade" id="borrowModal-@tool.Id" tabindex="-1" aria-labelledby="modalLabel-@tool.Id" aria-hidden="true">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h1 class="modal-title fs-5" id="exampleModalLabel">
+                                                        <h1 class="modal-title fs-5" id="modalLabel-@tool.Id">
                                                             <b>@Resources.BorrowTitleFormular</b>
                                                         </h1>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

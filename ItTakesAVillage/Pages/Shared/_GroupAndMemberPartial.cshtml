@@ -1,7 +1,7 @@
 ﻿@model List<ItTakesAVillage.Models.Group>
 @using ItTakesAVillage.Interfaces
 @using Microsoft.AspNetCore.Identity
-@inject IGroupService _groupService
+@inject IHttpService _httpService
 @inject UserManager<ItTakesAVillageUser> _userManager
 
 <link rel="stylesheet" href="~/css/group.css" />
@@ -30,7 +30,7 @@
                      data-bs-parent="#notification-accordion">
                     <div class="accordion-body">
                         @{
-                            var members = await _groupService.GetMembers(group.Id);
+                            var members = await _httpService.HttpGetRequest<List<ItTakesAVillageUser>>($"Group/Members/{group.Id}");
                         }
                         @foreach (var member in members)
                         {

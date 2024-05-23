@@ -1,7 +1,6 @@
 ﻿@page
 @model ItTakesAVillage.Pages.ToolBorrowedModel
 @using static ItTakesAVillage.Resources
-@inject UserManager<ItTakesAVillageUser> _userManager
 
 @if (Model.CurrentUser != null)
 {
@@ -21,7 +20,6 @@
                     <div class="row">
                         @foreach (var tool in Model.BorrowedTools)
                         {
-                            var creator = await _userManager.FindByIdAsync(tool.ToolPool.CreatorId);
                             <div class="card ms-2">
                                 <div>
                                     <img src="@(tool.ToolPool.Image != null ?

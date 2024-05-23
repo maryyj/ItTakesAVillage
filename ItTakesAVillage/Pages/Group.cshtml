@@ -24,6 +24,7 @@
                        class="form-control bg-transparent w-50"
                        placeholder="Ange gruppnamn"
                        asp-for="NewGroup.Name" />
+                <input type="hidden" asp-for="NewGroup.CreatorId" value="@Model.CurrentUser.Id" />
                 <input type="submit" class="btn my-2 pinkBgColor fw-bold" value="@Resources.Save" />
             </form>
         </div>

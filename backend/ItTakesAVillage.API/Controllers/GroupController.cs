@@ -85,12 +85,25 @@ public class GroupController(IGroupService groupService) : ControllerBase
             return BadRequest(ex.Message);
         }
     }
+    [HttpDelete("UserGroup/{userId}/{groupId}")]
+    public async Task<IActionResult> DeleteUserAsync([FromRoute] string userId, int groupId)
+    {
+        try
+        {
+            var deleted = await _groupService.DeleteUserAsync(userId, groupId);
+            return Ok(deleted);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
     [HttpDelete("{userId}/{groupId}")]
     public async Task<IActionResult> DeleteAsync([FromRoute] string userId, int groupId)
     {
         try
         {
-            var deleted = await _groupService.DeleteUserAsync(userId, groupId);
+            var deleted = await _groupService.DeleteAsync(userId, groupId);
             return Ok(deleted);
         }
         catch (Exception ex)

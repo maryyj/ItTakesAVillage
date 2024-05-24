@@ -1,9 +1,12 @@
-﻿@model List<ItTakesAVillage.Frontend.Models.UserGroup>
+﻿@model dynamic
 @using ItTakesAVillage.Frontend.Interfaces
 @using Microsoft.AspNetCore.Identity
 @using ItTakesAVillage.Frontend
 @inject UserManager<ItTakesAVillageUser> _userManager
-
+@{
+    var UsersInGroup = Model.UsersInGroup as List<UserGroup>;
+    var CurrentGroup = Model.CurrentGroup as Group;
+}
 <link rel="stylesheet" href="~/css/group.css" />
     <div class="accordion greenBgColor mb-3" id="notification-accordion">
         <div class="accordion-item border-0">
@@ -21,13 +24,15 @@
 
             <div id="collapse_usersAccordion" class="accordion-collapse collapse " aria-labelledby="heading_usersAccordion" data-bs-parent="#notification-accordion">
                 <div class="accordion-body">
-                    @foreach (var member in Model)
+                @foreach (var member in UsersInGroup)
                     {
                         if (member != null)
                         {
-                            <div class="container d-flex pt-2 member-container">
+                        var user = _userManager.GetUserId(User);
+                        <div class="container d-flex pt-2 member-container">
                                 <p>@member.User?.FirstName @member.User?.LastName</p>
-                                @if (member.UserId == _userManager.GetUserId(User))
+                                
+                                @if (member.UserId == user || CurrentGroup?.CreatorId == user)
                                 {
                                     <form method="post" asp-page-handler="RemoveFromGroup">
                                         <input type="hidden" name="userId" value="@member.UserId" />

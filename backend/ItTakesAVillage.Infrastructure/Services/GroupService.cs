@@ -57,6 +57,28 @@ public class GroupService(IRepository<Group> groupRepository,
         await _userGroupRepository.DeleteAsync(userGroup);
         return true;
     }
+    public async Task<bool> DeleteAsync(string userId, int groupId)
+    {
+        var usergroups = await _userGroupRepository.GetAsync();
+
+        if (usergroups == null)
+            return false;
+
+        var usersInGroup = usergroups.Where(x => x.GroupId == groupId).Count();
+        if (usersInGroup > 1)
+            return false;
+
+        var userGroup = usergroups.FirstOrDefault(x => x.GroupId == groupId && x.UserId == userId);
+        if (userGroup == null)
+            return false;
+
+        if (userGroup.Group?.CreatorId != userId)
+            return false;
+
+        await _userGroupRepository.DeleteAsync(userGroup);
+        return true;
+    }
+
     public async Task<List<ItTakesAVillageUser?>> GetMembersAsync(int groupId)
     {
         var userGroups = await _userGroupRepository.GetByFilterAsync(x => x.GroupId == groupId);

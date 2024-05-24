@@ -47,9 +47,9 @@ namespace ItTakesAVillage.API
                 app.UseHsts();
             }
 
+            app.UseSwagger();
             if (app.Environment.IsDevelopment())
             {
-                app.UseSwagger();
                 app.UseSwaggerUI();
             }
 

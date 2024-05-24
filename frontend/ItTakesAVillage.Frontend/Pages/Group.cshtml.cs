@@ -32,5 +32,10 @@ namespace ItTakesAVillage.Frontend.Pages
             }
             return RedirectToPage("/Group");
         }
+        public async Task<IActionResult> OnPostDeleteGroupAsync(string userId, int deleteId)
+        {
+            bool success = await _httpService.HttpDeleteRequest<Group>($"Group/{userId}/{deleteId}");
+            return RedirectToPage("/Group");
+        }
     }
 }

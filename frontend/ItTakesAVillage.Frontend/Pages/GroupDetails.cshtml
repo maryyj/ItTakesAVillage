@@ -31,7 +31,7 @@
         <div class="container w-75">
             @if (Model.UsersInGroup != null && Model.UsersInGroup.Any())
             {
-                await Html.RenderPartialAsync("_MemberPartial", Model.UsersInGroup);
+                await Html.RenderPartialAsync("_MemberPartial", new { UsersInGroup = Model.UsersInGroup, CurrentGroup = Model.CurrentGroup });
                 <form method="post" asp-page-handler="AddUserToGroup">
                     <h5 class="abrilFont mt-3">@Resources.AddMember</h5>
                     <div class="d-flex w-50 gap-2">

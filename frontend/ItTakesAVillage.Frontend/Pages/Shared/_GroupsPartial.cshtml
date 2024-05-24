@@ -2,25 +2,43 @@
 @using ItTakesAVillage.Frontend.Interfaces
 @using Microsoft.AspNetCore.Identity
 @using ItTakesAVillage.Frontend
+@inject UserManager<ItTakesAVillageUser> _userManager
 <link rel="stylesheet" href="~/css/group.css" />
+@{
+    var userId = _userManager.GetUserId(User);
+}
 <div class="container w-75  mb-4">
 
     <h4 class="abrilFont mb-4">@Resources.MyGroups</h4>
     @foreach (var group in Model)
     {
-        <a asp-page="/GroupDetails" asp-route-groupId="@group.Id"> 
-            <div class="row group-row d-flex">
-                <div class="col group-container">
-                    <i class="bi bi-circle-fill pinkFontColor p-2"></i>
-                    <span class="fw-bold">@group.Name</span>
-                </div>
-                <div class="col d-flex arrow-container">
-                    <i class="bi bi-arrow-right-circle-fill" 
-                    data-bs-toggle="tooltip" 
-                    data-bs-placement="bottom" 
-                    title="@Resources.GoToGroup"></i>
-                </div>
+        <div class="d-flex row group-row">
+            <div class="col-12">
+                <a asp-page="/GroupDetails" asp-route-groupId="@group.Id">
+                    <div class="d-flex">
+                        <div class="col-7 group-container">
+                            <i class="bi bi-circle-fill pinkFontColor p-2"></i>
+                            <span class="fw-bold">@group.Name</span>
+                        </div>
+                        <div class="col-auto d-flex align-item-center arrow-container">
+                            <i class="bi bi-arrow-right-circle-fill"
+                               data-bs-toggle="tooltip"
+                               data-bs-placement="bottom"
+                               title="@Resources.GoToGroup"></i>
+                        </div>
+                    </div>
+                </a>
+                @if (userId == group.CreatorId)
+                {
+                    <div class="col-auto">
+                        <form method="post" asp-page-handler="DeleteGroup">
+                            <input type="hidden" name="deleteId" value="@group.Id" />
+                            <input type="hidden" name="userId" value="@userId" />
+                            <button type="submit" class="bi bi-x-circle delete-btn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ta bort från grupp"></button>
+                        </form>
+                    </div>
+                }
             </div>
-        </a>
+        </div>
     }
 </div>

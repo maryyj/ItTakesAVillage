@@ -43,9 +43,7 @@ namespace ItTakesAVillage.Frontend.Pages
         }
         public async Task<IActionResult> OnPostRemoveFromGroup(string userId, int groupId)
         {
-            CurrentUser = await _userManager.GetUserAsync(User);
-            if (CurrentUser != null)
-            await _httpService.HttpDeleteRequest<Group>($"Group/{userId}/{groupId}");
+            await _httpService.HttpDeleteRequest<Group>($"Group/UserGroup/{userId}/{groupId}");
             return RedirectToPage("/Group");
         }
         public async Task<IActionResult> OnPostAddUserToGroup(int groupId)

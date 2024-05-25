@@ -1,6 +1,6 @@
 ﻿namespace ItTakesAVillage.API.Controllers;
 
-[Route("api/[controller]")]
+[Route("/")]
 [ApiController]
 public class PlayDateController(IEventService<PlayDate> playDateService) : ControllerBase
 {

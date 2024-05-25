@@ -1,6 +1,6 @@
 ﻿namespace ItTakesAVillage.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("/")]
     [ApiController]
     public class ToolLoanController(IEventService<ToolLoan> toolLoanService) : ControllerBase
     {

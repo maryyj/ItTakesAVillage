@@ -1,7 +1,7 @@
 ﻿namespace ItTakesAVillage.API.Controllers;
 
-//[Route("api/[controller]")]
-[Route("/")]
+[Route("api/[controller]")]
+//[Route("/")]
 [ApiController]
 public class ToolPoolController(IEventService<ToolPool> toolPoolService) : ControllerBase
 {

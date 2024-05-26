@@ -1,6 +1,7 @@
 ﻿namespace ItTakesAVillage.API.Controllers;
 
-[Route("/")]
+//[Route("/")]
+[Route("api/[controller]")]
 [ApiController]
 public class GroupController(IGroupService groupService) : ControllerBase
 {

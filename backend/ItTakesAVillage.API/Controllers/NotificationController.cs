@@ -1,6 +1,7 @@
 ﻿namespace ItTakesAVillage.API.Controllers;
 
-[Route("/")]
+[Route("api/[controller]")]
+
 [ApiController]
 public class NotificationController(INotificationService notificationService) : ControllerBase
 {

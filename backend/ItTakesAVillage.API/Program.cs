@@ -5,7 +5,17 @@ namespace ItTakesAVillage.API
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            var connectionString = builder.Configuration.GetConnectionString("ItTakesAVillageContextConnection") ?? throw new InvalidOperationException("Connection string 'ItTakesAVillageContextConnection' not found.");
+
+            string connectionString;
+
+            if (builder.Environment.IsDevelopment())
+            {
+                connectionString = builder.Configuration.GetConnectionString("ItTakesAVillageContextConnection") ?? throw new InvalidOperationException("Connection string 'ItTakesAVillageContextConnection' not found.");
+            }
+            else
+            {
+                connectionString = Environment.GetEnvironmentVariable("ItTakesAVillageContextConnection") ?? throw new InvalidOperationException("Environment variable 'ItTakesAVillageContextConnection' not found or is null.");
+            }
 
             builder.Services.AddScoped<IGroupService, GroupService>();
             builder.Services.AddScoped<IGroupChatService, GroupChatService>();

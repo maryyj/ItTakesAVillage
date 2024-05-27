@@ -11,7 +11,9 @@ namespace ItTakesAVillage.Frontend.Pages
 
         public async Task<IActionResult> OnGetAsync()
         {
-            CurrentUser = await _userManager.GetUserAsync(User);
+            //CurrentUser = await _userManager.GetUserAsync(User);
+            var user = await _userManager.GetUserAsync(User);
+            CurrentUser = await _httpService.HttpGetRequest<ItTakesAVillageUser>($"User/{user?.Id}");
             if (CurrentUser == null)
                 return Redirect("/Identity/Account/Register");
             Notifications = await _httpService.HttpGetRequest<List<Notification>>($"Notification/All/{CurrentUser.Id}");

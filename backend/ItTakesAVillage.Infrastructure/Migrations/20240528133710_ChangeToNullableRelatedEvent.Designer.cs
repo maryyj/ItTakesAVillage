@@ -3,9 +3,11 @@
 namespace ItTakesAVillage.Infrastructure.Migrations;
 
 [DbContext(typeof(ItTakesAVillageContext))]
-partial class ItTakesAVillageContextModelSnapshot : ModelSnapshot
+[Migration("20240528133710_ChangeToNullableRelatedEvent")]
+partial class ChangeToNullableRelatedEvent
 {
-    protected override void BuildModel(ModelBuilder modelBuilder)
+    /// <inheritdoc />
+    protected override void BuildTargetModel(ModelBuilder modelBuilder)
     {
 #pragma warning disable 612, 618
         modelBuilder

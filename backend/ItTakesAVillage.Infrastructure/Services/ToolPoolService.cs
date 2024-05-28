@@ -54,6 +54,18 @@ public class ToolPoolService(
 
         return true;
     }
+    public static void ValidateReturnDate(List<ToolLoan> loans)
+    {
+        DateOnly today = DateOnly.FromDateTime(DateTime.Today);
+        foreach (var loan in loans)
+        {
+            if (loan.ToDate < today && loan.IsReturned == false)
+            {
+                loan.ToolPool.IsBorrowed = false;
+                loan.IsReturned = true;
+            }
+        }
+    }
     private async Task<List<UserGroup>> GetUserGroups(string id)
     {
         var groupsAndUsers = await _userGroupRepository.GetAsync();
@@ -68,17 +80,5 @@ public class ToolPoolService(
             sharedTools.AddRange(toolsForGroup);
         }
         return sharedTools;
-    }
-    public void ValidateReturnDate(List<ToolLoan> loans)
-    {
-        DateOnly today = DateOnly.FromDateTime(DateTime.Today);
-        foreach (var loan in loans)
-        {
-            if (loan.ToDate < today && loan.IsReturned == false)
-            {
-                loan.ToolPool.IsBorrowed = false;
-                loan.IsReturned = true;
-            }
-        }
     }
 }

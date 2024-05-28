@@ -54,7 +54,7 @@ public class ToolPoolService(
 
         return true;
     }
-    public static void ValidateReturnDate(List<ToolLoan> loans)
+    public void ValidateReturnDate(List<ToolLoan> loans)
     {
         DateOnly today = DateOnly.FromDateTime(DateTime.Today);
         foreach (var loan in loans)

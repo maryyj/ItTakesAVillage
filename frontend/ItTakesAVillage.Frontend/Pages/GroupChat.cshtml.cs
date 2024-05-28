@@ -8,6 +8,7 @@ public class GroupChatModel(
     private readonly IHttpService _httpService = httpService;
 
     public ItTakesAVillageUser? CurrentUser { get; set; }
+    public ItTakesAVillageUser? MemberOfGroup { get; set; }
     public Group? CurrentGroup { get; set; }
     public List<UserGroup>? UsersInGroup { get; set; } = [];
     public List<GroupChat>? GroupMessages { get; set; } = [];
@@ -23,6 +24,8 @@ public class GroupChatModel(
         {
             CurrentGroup = await _httpService.HttpGetRequest<Group>($"Group/{groupId}");
             UsersInGroup = await _httpService.HttpGetRequest<List<UserGroup>>($"Group/UsersGroup/{groupId}");
+            MemberOfGroup = UserExistsInGroup(UsersInGroup, CurrentUser);
+
             GroupMessages = await _httpService.HttpGetRequest<List<GroupChat>>($"GroupChat/{groupId}");
         }
         return Page();
@@ -36,5 +39,17 @@ public class GroupChatModel(
         }
 
         return RedirectToPage("/GroupChat", new { groupId });
+    }
+    private ItTakesAVillageUser UserExistsInGroup(List<UserGroup> usersInGroup, ItTakesAVillageUser currentUser)
+    {
+        var member = usersInGroup.Find(x => x.UserId == currentUser.Id);
+        if (member?.User == null)
+        {
+            return null;
+        }
+        else
+        {
+            return member.User;
+        }
     }
 }

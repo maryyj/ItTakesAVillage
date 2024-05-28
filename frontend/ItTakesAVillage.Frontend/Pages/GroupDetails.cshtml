@@ -3,7 +3,7 @@
 @using ItTakesAVillage.Frontend
 @{
 }
-@if (Model.CurrentUser != null)
+@if (Model.CurrentUser != null && Model.MemberOfGroup != null)
 {
     <div class="container w-75">
         <a asp-page="/Group" class="btn abrilFont p-2 blueBgColor border-0">@Resources.BackToGroup</a>
@@ -15,14 +15,17 @@
         <div class="text-center abrilFont text-muted mb-5">- @Resources.OnGoing - @Resources.Members - </div>
         <div class="container w-75 mb-3">
             <h5 class="abrilFont">@Resources.OnGoing</h5>
-            @if (Model.EventsOfGroup.Any())
-            {
-                await Html.RenderPartialAsync("_GroupDetailsAccordionPartial", new { Events = Model.EventsOfGroup, EditDinnerInvitation = Model.EditDinnerInvitation, EditPlayDate = Model.EditPlayDate});
-            }
-            else
-            {
-                <div class="abrilFont text-muted mb-5">@Resources.NoEvents</div>
-            }
+            <div class="scroll-container overflow-auto">
+                @if (Model.EventsOfGroup.Any())
+                {
+                    await Html.RenderPartialAsync("_GroupDetailsAccordionPartial", new { Events = Model.EventsOfGroup, EditDinnerInvitation = Model.EditDinnerInvitation, EditPlayDate = Model.EditPlayDate });
+                }
+                else
+                {
+                    <div class="abrilFont text-muted mb-5">@Resources.NoEvents</div>
+                }
+                <hr />
+            </div>
         </div>
 
         await Html.RenderPartialAsync("_GroupTabPartial", Model.CurrentGroup);
@@ -45,5 +48,9 @@
             }
         </div>
     </div>
-    <partial name="Shared/_FooterQuote" />
 }
+else
+{
+    <h1 class="text-center">You're not allowed</h1>
+}
+<partial name="Shared/_FooterQuote" />

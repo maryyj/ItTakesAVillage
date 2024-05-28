@@ -5,7 +5,7 @@
 @{
 }
 <link rel="stylesheet" href="~/css/group.css" />
-@if (Model.CurrentUser != null)
+@if (Model.CurrentUser != null && Model.MemberOfGroup != null)
 {
     <div class="container w-75">
         <a asp-page="/Group" class="btn abrilFont p-2 blueBgColor border-0">@Resources.BackToGroup</a>
@@ -97,3 +97,8 @@
         </div>
     </div>
 }
+else
+{
+    <h1 class="text-center">You're not allowed</h1>
+}
+<partial name="Shared/_FooterQuote" />

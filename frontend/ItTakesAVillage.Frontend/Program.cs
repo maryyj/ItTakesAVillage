@@ -15,7 +15,7 @@ public class Program
             connectionString = Environment.GetEnvironmentVariable("ItTakesAVillageContextConnection") ?? throw new InvalidOperationException("Environment variable 'ItTakesAVillageContextConnection' not found or is null.");
         }
         builder.Services.AddScoped<IRepository<ItTakesAVillageUser>,EFRepository <ItTakesAVillageUser>>();
-        builder.Services.AddScoped<IHttpService, HttpService>();
+        builder.Services.AddSingleton<IHttpService, HttpService>();
 
         builder.Services.AddDbContext<ItTakesAVillageContext>(options => options.UseSqlServer(connectionString));
 

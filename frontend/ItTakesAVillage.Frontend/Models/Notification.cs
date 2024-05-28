@@ -6,5 +6,5 @@ public class Notification
     public string UserId { get; set; } = string.Empty;
     public string Title { get; set; } = string.Empty;
     public bool IsRead { get; set; }
-    public BaseEvent RelatedEvent { get; set; } = new BaseEvent();
+    public BaseEvent? RelatedEvent { get; set; }
 }

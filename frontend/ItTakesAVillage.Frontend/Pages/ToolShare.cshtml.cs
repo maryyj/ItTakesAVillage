@@ -31,18 +31,6 @@ public class ToolPoolModel(
         }
         return Page();
     }
-    private async Task SetRelatedevent(List<Notification> notifications)
-    {
-        foreach (var notification in notifications)
-        {
-            var baseEvent = await _httpService.HttpGetRequest<ToolPool>($"ToolPool/{notification.RelatedEvent.Id}");
-            if (baseEvent != null)
-            {
-                notification.RelatedEvent = baseEvent;
-            }
-
-        }
-    }
     public async Task<IActionResult> OnPostAddToolToPool()
     {
         if (ModelState.IsValid)
@@ -72,5 +60,17 @@ public class ToolPoolModel(
             await uploadedImage.CopyToAsync(fileStream);
         }
         return uniqueFileName;
+    }
+    private async Task SetRelatedevent(List<Notification> notifications)
+    {
+        foreach (var notification in notifications)
+        {
+            var baseEvent = await _httpService.HttpGetRequest<ToolPool>($"ToolPool/{notification.RelatedEvent.Id}");
+            if (baseEvent != null)
+            {
+                notification.RelatedEvent = baseEvent;
+            }
+
+        }
     }
 }

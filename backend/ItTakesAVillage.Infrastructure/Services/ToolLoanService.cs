@@ -54,7 +54,7 @@ public class ToolLoanService(
     public async Task<bool> DeleteAsync(int toolId)
     {
         List<ToolLoan> toolLoans = await _toolLoanRepository.GetByFilterAsync(x => x.ToolId == toolId);
-        if (toolLoans == null)
+        if (toolLoans == null || toolLoans.Any())
             return false;
         foreach (var loan in toolLoans)
         {

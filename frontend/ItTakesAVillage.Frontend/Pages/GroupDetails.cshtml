@@ -3,7 +3,7 @@
 @using ItTakesAVillage.Frontend
 @{
 }
-@if (Model.CurrentUser != null)
+@if (Model.CurrentUser != null && Model.MemberOfGroup != null)
 {
     <div class="container w-75">
         <a asp-page="/Group" class="btn abrilFont p-2 blueBgColor border-0">@Resources.BackToGroup</a>
@@ -17,7 +17,7 @@
             <h5 class="abrilFont">@Resources.OnGoing</h5>
             @if (Model.EventsOfGroup.Any())
             {
-                await Html.RenderPartialAsync("_GroupDetailsAccordionPartial", new { Events = Model.EventsOfGroup, EditDinnerInvitation = Model.EditDinnerInvitation, EditPlayDate = Model.EditPlayDate});
+                await Html.RenderPartialAsync("_GroupDetailsAccordionPartial", new { Events = Model.EventsOfGroup, EditDinnerInvitation = Model.EditDinnerInvitation, EditPlayDate = Model.EditPlayDate });
             }
             else
             {
@@ -45,5 +45,9 @@
             }
         </div>
     </div>
-    <partial name="Shared/_FooterQuote" />
 }
+else
+{
+    <h1 class="text-center">You're not allowed</h1>
+}
+<partial name="Shared/_FooterQuote" />

@@ -8,6 +8,7 @@ namespace ItTakesAVillage.Frontend.Pages
         private readonly IHttpService _httpService = httpService;
 
         public ItTakesAVillageUser? CurrentUser { get; set; }
+        public ItTakesAVillageUser? MemberOfGroup { get; set; }
         public Group? CurrentGroup { get; set; }
         [BindProperty]
         public UserGroup NewUserGroup { get; set; } = new();
@@ -28,7 +29,7 @@ namespace ItTakesAVillage.Frontend.Pages
             {
                 CurrentGroup = await _httpService.HttpGetRequest<Group>($"Group/{groupId}");
                 UsersInGroup = await _httpService.HttpGetRequest<List<UserGroup>>($"Group/UsersGroup/{groupId}");
-
+                MemberOfGroup = UserExistsInGroup(UsersInGroup, CurrentUser);
                 var dinnerinvitationOfGroup = await _httpService.HttpGetRequest<List<DinnerInvitation>>($"DinnerInvitation/AllForUserGroup/{groupId}");
                 var playdatesOfGroup = await _httpService.HttpGetRequest<List<PlayDate>>($"PlayDate/AllForUserGroup/{groupId}");
 
@@ -50,7 +51,7 @@ namespace ItTakesAVillage.Frontend.Pages
         {
             if (ModelState.IsValid)
             {
-                await _httpService.HttpPostRequest($"Group/{groupId}",NewUserGroup.UserId);
+                await _httpService.HttpPostRequest($"Group/{groupId}", NewUserGroup.UserId);
             }
             return RedirectToPage("/GroupDetails", new { groupId });
         }
@@ -59,7 +60,7 @@ namespace ItTakesAVillage.Frontend.Pages
             if (ModelState.IsValid)
             {
                 EditDinnerInvitation.Creator = await _userManager.GetUserAsync(User);
-                await _httpService.HttpPutRequest("DinnerInvitation" , EditDinnerInvitation);
+                await _httpService.HttpPutRequest("DinnerInvitation", EditDinnerInvitation);
             }
             return RedirectToPage("GroupDetails", new { EditDinnerInvitation.GroupId });
         }
@@ -68,7 +69,7 @@ namespace ItTakesAVillage.Frontend.Pages
             if (ModelState.IsValid)
             {
                 EditPlayDate.Creator = await _userManager.GetUserAsync(User);
-                await _httpService.HttpPutRequest("PlayDate" , EditPlayDate);
+                await _httpService.HttpPutRequest("PlayDate", EditPlayDate);
             }
             return RedirectToPage("GroupDetails", new { EditPlayDate.GroupId });
         }
@@ -101,6 +102,18 @@ namespace ItTakesAVillage.Frontend.Pages
             EventsOfGroup.AddRange(playdate.Where(x => x.DateTime.Date >= DateTime.Now.Date));
             EventsOfGroup = EventsOfGroup.OrderBy(e => e.DateTime.Date).ToList();
             return EventsOfGroup;
+        }
+        private ItTakesAVillageUser UserExistsInGroup(List<UserGroup> usersInGroup, ItTakesAVillageUser currentUser)
+        {
+            var member = usersInGroup.Find(x => x.UserId == currentUser.Id);
+            if (member?.User == null)
+            {
+                return null;
+            }
+            else
+            {
+                return member.User;
+            }
         }
     }
 }

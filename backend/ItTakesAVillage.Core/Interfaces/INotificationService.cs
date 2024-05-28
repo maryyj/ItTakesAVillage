@@ -7,4 +7,5 @@ public interface INotificationService
     Task<Notification> GetAsync(int Id);
     Task UpdateIsReadAsync(Notification notification);
     Task CreateNotificationAsync<TEvent>(TEvent invitation) where TEvent : BaseEvent;
+    Task DeleteAsync(int id);
 }

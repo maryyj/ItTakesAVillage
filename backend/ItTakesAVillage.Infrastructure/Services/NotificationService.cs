@@ -56,8 +56,9 @@ public class NotificationService(IGroupService groupService,
         };
 
         await _notificationRepository.AddAsync(newNotification);
-        newNotification.RelatedEvent = invitation;
-        await _notificationRepository.UpdateAsync(newNotification);
+
+        //newNotification.RelatedEvent = invitation;
+        //await _notificationRepository.UpdateAsync(newNotification);
     }
     private static string SetTitleOfNotification<TEvent>(TEvent invitation, ItTakesAVillageUser creator) where TEvent : BaseEvent
     {
@@ -79,5 +80,14 @@ public class NotificationService(IGroupService groupService,
             title = creator == null ? $"{eventtype} {Resources.At} {Resources.Unknown}" : $"{eventtype} {Resources.At} {creator.FirstName} {creator.LastName}";
         }
         return title;
+    }
+
+    public async Task DeleteAsync(int id)
+    {
+        var notificatons = await _notificationRepository.GetByFilterAsync(x => x.RelatedEvent != null && x.RelatedEvent.Id == id);
+        foreach (var notification in notificatons)
+        {
+            await _notificationRepository.DeleteAsync(notification);
+        }
     }
 }

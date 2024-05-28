@@ -5,15 +5,19 @@
         private readonly Mock<IRepository<ToolPool>> _toolPoolRepositoryMock;
         private readonly Mock<IEventService<ToolLoan>> _toolLoanServiceMock;
         private readonly Mock<IRepository<UserGroup>> _userGroupRepositoryMock;
+        private readonly Mock<INotificationService> _notificationServiceMock;
         private readonly ToolPoolService _sut;
         public ToolPoolTests()
         {
             _toolPoolRepositoryMock = new Mock<IRepository<ToolPool>>();
             _userGroupRepositoryMock = new Mock<IRepository<UserGroup>>();
             _toolLoanServiceMock = new Mock<IEventService<ToolLoan>>();
+            _notificationServiceMock = new Mock<INotificationService>();
 
-            _sut = new ToolPoolService(_toolPoolRepositoryMock.Object,
+
+        _sut = new ToolPoolService(_toolPoolRepositoryMock.Object,
                 _userGroupRepositoryMock.Object,
+                _notificationServiceMock.Object,
                 _toolLoanServiceMock.Object);
         }
 

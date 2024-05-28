@@ -3,11 +3,13 @@
 public class ToolPoolService(
     IRepository<ToolPool> toolPoolRepository,
     IRepository<UserGroup> userGroupRepository,
+    INotificationService notificationService,
     IEventService<ToolLoan> toolLoanService) : IEventService<ToolPool>
 {
     private readonly IRepository<ToolPool> _toolPoolRepository = toolPoolRepository;
-    private readonly IEventService<ToolLoan> _toolLoanService = toolLoanService;
     private readonly IRepository<UserGroup> _userGroupRepository = userGroupRepository;
+    private readonly INotificationService _notificationService = notificationService;
+    private readonly IEventService<ToolLoan> _toolLoanService = toolLoanService;
 
     public async Task<bool> CreateAsync(ToolPool tool)
     {
@@ -50,6 +52,7 @@ public class ToolPoolService(
         if (tool == null || tool.IsBorrowed == true)
             return false;
         await _toolLoanService.DeleteAsync(toolId);
+        await _notificationService.DeleteAsync(toolId);
         await _toolPoolRepository.DeleteAsync(tool);
 
         return true;

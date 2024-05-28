@@ -3,8 +3,8 @@
     public class HttpService : IHttpService
     {
         private readonly HttpClient _httpClient;
-        //private const string _baseAddress = "https://localhost:44306/api/";
-        private const string _baseAddress = "https://ittakesavillageapi.azurewebsites.net/api/";
+        private const string _baseAddress = "https://localhost:44306/api/";
+        //private const string _baseAddress = "https://ittakesavillageapi.azurewebsites.net/api/";
         public HttpService()
         {
             _httpClient = new HttpClient()

@@ -3,9 +3,8 @@
     public class HttpService : IHttpService
     {
         private readonly HttpClient _httpClient;
-        //private const string _baseAddress = "https://localhost:7233/api/";
-        private const string _baseAddress = "https://ittakesavillageapi.azurewebsites.net/api/";
-
+        private const string _baseAddress = "https://localhost:44306/api/";
+        //private const string _baseAddress = "https://ittakesavillageapi.azurewebsites.net/api/";
         public HttpService()
         {
             _httpClient = new HttpClient()
@@ -13,7 +12,6 @@
                 BaseAddress = new Uri(_baseAddress)
             };
         }
-
         public async Task<T?> HttpGetRequest<T>(string requestUri)
         {
             var response = await _httpClient.GetAsync(requestUri);

@@ -50,14 +50,16 @@
                             @Resources.OtherInfo
                         </label>
                         <textarea class="form-control bg-transparent"
-                                  asp-for="NewToolPool.Message">
-                                                                    </textarea>
-                        <input type="submit"
-                               class="btn blueBgColor fw-bold mt-2"
-                               value="Spara" />
-                        <span class="ms-2 ">
-                            <b> * </b> - @Resources.RequiredFields
-                        </span>
+                                  asp-for="NewToolPool.Message"></textarea>
+                        <div>
+                            <button type="submit"
+                                    class="btn blueBgColor fw-bold mt-2">
+                                @Resources.Save
+                            </button>
+                            <span class="ms-2 ">
+                                <b> * </b> - @Resources.RequiredFields
+                            </span>
+                        </div>
                     </form>
                 </div>
             </div>

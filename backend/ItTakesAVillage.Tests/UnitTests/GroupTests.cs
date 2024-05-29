@@ -16,7 +16,7 @@ namespace ItTakesAVillage.Tests.UnitTests
                                    _userRepositoryMock.Object,
                                    _userGroupRepositoryMock.Object);
         }
-
+        #region Create
         [Theory]
         [InlineData("TestGroup")]
         [InlineData("testgroup")]
@@ -70,7 +70,8 @@ namespace ItTakesAVillage.Tests.UnitTests
 
             _groupRepositoryMock.Verify(x => x.AddAsync(It.IsAny<Group>()), Times.Never);
         }
-
+        #endregion
+        #region Add
         [Fact]
         public async Task AddUser_UserNotInList_ShouldAddUserAndReturnTrue()
         {
@@ -111,5 +112,176 @@ namespace ItTakesAVillage.Tests.UnitTests
             // Assert
             Assert.False(actual);
         }
+        #endregion
+        #region DeleteUser
+        [Fact]
+        public async Task DeleteUser_UserGroupIsNull_ShouldNotDeleteUserAndReturnFalse()
+        {
+            string userId = "user1";
+            int groupId = 1;
+
+            //Arrange
+            _userGroupRepositoryMock.Setup(x => x.GetAsync()).ReturnsAsync((List<UserGroup>)null);
+
+            //Act
+            var result = await _sut.DeleteUserAsync(userId, groupId);
+
+            //Assert
+            Assert.False(result);
+            _userGroupRepositoryMock.Verify(x => x.DeleteAsync(It.Is<UserGroup>(x => x.UserId == userId && x.GroupId == groupId)), Times.Never);
+        }
+        [Fact]
+        public async Task DeleteUser_UserGroupNotFound_ShouldNotDeleteUserAndReturnFalse()
+        {
+            // Arrange
+            string userId = "user1";
+            int groupId = 1;
+            var userGroups = new List<UserGroup>
+             {
+                new() { UserId = "user2", GroupId = 1 },
+                new() { UserId = "user3", GroupId = 2 }
+             };
+            _userGroupRepositoryMock.Setup(x => x.GetAsync())
+                                    .ReturnsAsync(userGroups);
+            // Act
+            var result = await _sut.DeleteUserAsync(userId, groupId);
+
+            // Assert
+            Assert.False(result);
+            _userGroupRepositoryMock.Verify(x => x.DeleteAsync(It.Is<UserGroup>(x => x.UserId == userId && x.GroupId == groupId)), Times.Never);
+
+        }
+        [Fact]
+        public async Task DeleteUser_UserGroupFound_ShouldDeletesUserAndReturnTrue()
+        {
+            // Arrange
+            string userId = "user1";
+            int groupId = 1;
+            var userGroups = new List<UserGroup>
+            {
+                new() { UserId = "user1", GroupId = 1 },
+                new() { UserId = "user2", GroupId = 2 }
+            };
+            _userGroupRepositoryMock.Setup(x => x.GetAsync())
+                                    .ReturnsAsync(userGroups);
+
+            _userGroupRepositoryMock.Setup(x => x.DeleteAsync(It.IsAny<UserGroup>()))
+                                    .Returns(Task.CompletedTask);
+
+            // Act
+            var result = await _sut.DeleteUserAsync(userId, groupId);
+
+            // Assert
+            Assert.True(result);
+            _userGroupRepositoryMock.Verify(x => x.DeleteAsync(It.Is<UserGroup>(x => x.UserId == userId && x.GroupId == groupId)), Times.Once);
+        }
+        #endregion
+
+        #region DeleteGroup
+        [Fact]
+        public async Task DeleteGroup_UserGroupsIsNull_ShouldNotDeleteGroupAndReturnFalse()
+        {
+            // Arrange
+            string userId = "user1";
+            int groupId = 1;
+            _userGroupRepositoryMock.Setup(x => x.GetAsync())
+                                    .ReturnsAsync((List<UserGroup>)null);
+
+            // Act
+            var result = await _sut.DeleteAsync(userId, groupId);
+
+            // Assert
+            Assert.False(result);
+            _userGroupRepositoryMock.Verify(x => x.DeleteAsync(It.Is<UserGroup>(x => x.UserId == userId && x.GroupId == groupId)), Times.Never);
+        }
+        [Fact]
+        public async Task DeleteGroup_MoreThanOneUserInGroup_ShouldNotDeleteGroupAndReturnFalse()
+        {
+            string userId = "user1";
+            int groupId = 1;
+            // Arrange
+            var userGroups = new List<UserGroup>
+             {
+                new() { UserId = "user1", GroupId = 1 },
+                new() { UserId = "user2", GroupId = 1 }
+             };
+            _userGroupRepositoryMock.Setup(x => x.GetAsync())
+                                    .ReturnsAsync(userGroups);
+
+            // Act
+            var result = await _sut.DeleteAsync(userId, groupId);
+
+            // Assert
+            Assert.False(result);
+            _userGroupRepositoryMock.Verify(x => x.DeleteAsync(It.Is<UserGroup>(x => x.UserId == userId && x.GroupId == groupId)), Times.Never);
+        }
+        [Fact]
+        public async Task DeleteGroup_UserGroupNotFound_ShouldNotDeleteGroupAndReturnFalse()
+        {
+            // Arrange
+            string userId = "user1";
+            int groupId = 1;
+            var userGroups = new List<UserGroup>
+            {
+                new () { UserId = "user2", GroupId = 1 }
+            };
+            _userGroupRepositoryMock.Setup(x => x.GetAsync())
+                                    .ReturnsAsync(userGroups);
+
+            // Act
+            var result = await _sut.DeleteAsync(userId, groupId);
+
+            // Assert
+            Assert.False(result);
+            _userGroupRepositoryMock.Verify(x => x.DeleteAsync(It.Is<UserGroup>(x => x.UserId == userId && x.GroupId == groupId)), Times.Never);
+        }
+        [Fact]
+        public async Task DeleteGroup_UserIsNotGroupCreator_ShouldNotDeleteGroupAndReturnFalse()
+        {
+            // Arrange
+            string userId = "user1";
+            int groupId = 1;
+            string creatorId = "user2";
+            var userGroups = new List<UserGroup>
+            {
+                new() { UserId = userId, GroupId = groupId, Group = new Group { CreatorId = creatorId} }
+            };
+            _userGroupRepositoryMock.Setup(x => x.GetAsync())
+                                    .ReturnsAsync(userGroups);
+
+            // Act
+            var result = await _sut.DeleteAsync(userId, groupId);
+
+            // Assert
+            Assert.False(result);
+            _userGroupRepositoryMock.Verify(x => x.DeleteAsync(It.Is<UserGroup>(x => x.UserId == userId && x.GroupId == groupId)), Times.Never);
+
+        }
+        [Fact]
+        public async Task DeleteGroup_UserIsGroupCreator_ShouldDeleteGroupAndReturnTrue()
+        {
+            // Arrange
+            string userId = "user1";
+            int groupId = 1;
+            string creatorId = "user1";
+
+            var userGroups = new List<UserGroup>
+            {
+                new(){ UserId = userId, GroupId = groupId, Group = new Group { CreatorId = creatorId } }
+            };
+            _userGroupRepositoryMock.Setup(x => x.GetAsync())
+                                    .ReturnsAsync(userGroups);
+
+            _userGroupRepositoryMock.Setup(x => x.DeleteAsync(It.IsAny<UserGroup>()))
+                                    .Returns(Task.CompletedTask);
+
+            // Act
+            var result = await _sut.DeleteAsync(userId, groupId);
+
+            // Assert
+            Assert.True(result);
+            _userGroupRepositoryMock.Verify(x => x.DeleteAsync(It.Is<UserGroup>(x => x.UserId == userId && x.GroupId == groupId)), Times.Once);
+        }
+        #endregion
     }
 }

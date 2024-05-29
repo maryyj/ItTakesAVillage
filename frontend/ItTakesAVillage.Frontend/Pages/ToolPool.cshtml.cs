@@ -19,6 +19,7 @@ public class ToolLoanModel(
     public ToolPool EditTool { get; set; } = new();
     [BindProperty]
     public IFormFile? UploadedImage { get; set; }
+
     public async Task<IActionResult> OnGet()
     {
         CurrentUser = await _userManager.GetUserAsync(User);

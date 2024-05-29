@@ -3,9 +3,12 @@
 
 [Route("api/[controller]")]
 [ApiController]
-public class PlayDateController(IEventService<PlayDate> playDateService) : ControllerBase
+public class PlayDateController(
+    IEventService<PlayDate> playDateService,
+    INotificationService notificationService) : ControllerBase
 {
     private readonly IEventService<PlayDate> _playDateService = playDateService;
+    private readonly INotificationService _notificationService = notificationService;
 
     [HttpGet("{id}")]
     public async Task<IActionResult> GetAsync(int id)
@@ -52,6 +55,8 @@ public class PlayDateController(IEventService<PlayDate> playDateService) : Contr
         try
         {
             var result = await _playDateService.CreateAsync(playDate);
+            if (result)
+                await _notificationService.CreateNotificationAsync(playDate);
             return Ok(result);
         }
         catch (Exception ex)

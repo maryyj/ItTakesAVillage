@@ -3,9 +3,12 @@
 [Route("api/[controller]")]
 
 [ApiController]
-public class DinnerInvitationController(IEventService<DinnerInvitation> dinnerInvitationService) : ControllerBase
+public class DinnerInvitationController(
+    IEventService<DinnerInvitation> dinnerInvitationService,
+    INotificationService notificationService) : ControllerBase
 {
     private readonly IEventService<DinnerInvitation> _dinnerInvitationService = dinnerInvitationService;
+    private readonly INotificationService _notificationService = notificationService;
 
     [HttpGet("{id}")]
     public async Task<IActionResult> GetAsync(int id)
@@ -52,6 +55,8 @@ public class DinnerInvitationController(IEventService<DinnerInvitation> dinnerIn
         try
         {
             var result = await _dinnerInvitationService.CreateAsync(invitation);
+            if (result)
+                await _notificationService.CreateNotificationAsync(invitation);
             return Ok(result);
         }
         catch (Exception ex)

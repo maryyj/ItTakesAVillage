@@ -59,39 +59,4 @@ public class NotificationController(INotificationService notificationService) : 
             return BadRequest(ex.Message);
         }
     }
-    [HttpPost]
-    public async Task<IActionResult> CreateAsync([FromBody] JsonElement baseEventJson)
-    {
-        try
-        {
-            BaseEvent baseEvent = DeserializeBaseEvent(baseEventJson);
-
-            if (baseEvent != null)
-            {
-                await _notificationService.CreateNotificationAsync(baseEvent);
-                return Ok();
-            }
-            return BadRequest("Invalid event data.");
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(ex.Message);
-        }
-    }
-    private static BaseEvent DeserializeBaseEvent(JsonElement baseEventJson)
-    {
-        if (baseEventJson.TryGetProperty("Course", out var courseProp) && courseProp.ValueKind != JsonValueKind.Null)
-        {
-            return JsonSerializer.Deserialize<DinnerInvitation>(baseEventJson.GetRawText());
-        }
-        if (baseEventJson.TryGetProperty("ChildName", out var childNameProp) && childNameProp.ValueKind != JsonValueKind.Null)
-        {
-            return JsonSerializer.Deserialize<PlayDate>(baseEventJson.GetRawText());
-        }
-        if (baseEventJson.TryGetProperty("Name", out var toolNameProp) && toolNameProp.ValueKind != JsonValueKind.Null)
-        {
-            return JsonSerializer.Deserialize<ToolPool>(baseEventJson.GetRawText());
-        }
-        throw new ArgumentException("Unknown event type");
-    }
 }

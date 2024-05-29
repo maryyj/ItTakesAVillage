@@ -47,18 +47,15 @@ public class NotificationService(IGroupService groupService,
     {
         var creator = await _userRepository.GetAsync(creatorId);
         var title = SetTitleOfNotification(invitation, creator);
-
         var newNotification = new Notification
         {
             UserId = userId,
             Title = title,
             IsRead = false,
+            RelatedEvent = invitation,
         };
 
         await _notificationRepository.AddAsync(newNotification);
-
-        //newNotification.RelatedEvent = invitation;
-        //await _notificationRepository.UpdateAsync(newNotification);
     }
     private static string SetTitleOfNotification<TEvent>(TEvent invitation, ItTakesAVillageUser creator) where TEvent : BaseEvent
     {

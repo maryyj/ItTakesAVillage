@@ -1,12 +1,8 @@
 ﻿namespace ItTakesAVillage.Infrastructure.Repository
 {
-    public class EFRepository<T> : IRepository<T> where T : class
+    public class EFRepository<T>(ItTakesAVillageContext context) : IRepository<T> where T : class
     {
-        private readonly ItTakesAVillageContext _context;
-        public EFRepository(ItTakesAVillageContext context)
-        {
-            _context = context;
-        }
+        private readonly ItTakesAVillageContext _context = context;
         public async Task AddAsync(T t)
         {
             await _context.Set<T>().AddAsync(t);

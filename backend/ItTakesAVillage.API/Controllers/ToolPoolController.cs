@@ -3,9 +3,11 @@
 [Route("api/[controller]")]
 //[Route("/")]
 [ApiController]
-public class ToolPoolController(IEventService<ToolPool> toolPoolService) : ControllerBase
+public class ToolPoolController(IEventService<ToolPool> toolPoolService,
+    INotificationService notificationService) : ControllerBase
 {
     private readonly IEventService<ToolPool> _toolPoolService = toolPoolService;
+    private readonly INotificationService _notificationService = notificationService;
 
     [HttpGet("{id}")]
     public async Task<IActionResult> GetAsync(int id)
@@ -53,6 +55,10 @@ public class ToolPoolController(IEventService<ToolPool> toolPoolService) : Contr
         try
         {
             var result = await _toolPoolService.CreateAsync(toolPool);
+            if(result)
+            {
+                await _notificationService.CreateNotificationAsync(toolPool);
+            } 
             return Ok(result);
         }
         catch (Exception ex)

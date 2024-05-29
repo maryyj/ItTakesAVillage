@@ -33,8 +33,6 @@ namespace ItTakesAVillage.Frontend.Pages
             if (ModelState.IsValid)
             {
                 bool success = await _httpService.HttpPostRequest("DinnerInvitation/", NewInvitation);
-                if (success)
-                    await _httpService.HttpPostRequest("Notification", NewInvitation);
             }
             return RedirectToPage("/DinnerInvitation");
         }

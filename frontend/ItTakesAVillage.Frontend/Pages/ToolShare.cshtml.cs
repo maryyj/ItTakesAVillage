@@ -41,8 +41,6 @@ public class ToolPoolModel(
                 NewToolPool.Image = uniqueFileName;
             }
             bool success = await _httpService.HttpPostRequest("ToolPool", NewToolPool);
-            if (success)
-                await _httpService.HttpPostRequest("Notification", NewToolPool);
         }
         return RedirectToPage("/ToolPool");
     }

@@ -103,7 +103,7 @@
                             @if (playDate.CreatorId == currentUser?.Id)
                             {
                                 <button class="btn pinkBgColor me-2" data-bs-toggle="modal" data-bs-target="#editPlayDateModal-@playDate.Id">
-                                    Ändra
+                                    @Resources.Change
                                 </button>
                                 <div class="modal fade" id="editPlayDateModal-@playDate.Id" tabindex="-1" aria-labelledby="modalLabel-@playDate.Id" aria-hidden="true">
                                     <div class="modal-dialog">

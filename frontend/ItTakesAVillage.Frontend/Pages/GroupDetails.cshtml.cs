@@ -18,6 +18,10 @@ namespace ItTakesAVillage.Frontend.Pages
         public PlayDate EditPlayDate { get; set; } = new();
         public List<UserGroup>? UsersInGroup { get; set; } = [];
         public List<BaseEvent> EventsOfGroup { get; set; } = [];
+        [TempData]
+        public bool IsSuccess { get; set; }
+        [TempData]
+        public bool IsUnsuccessful { get; set; }
         public async Task<IActionResult> OnGet(int groupId)
         {
             if (groupId == 0)
@@ -60,7 +64,11 @@ namespace ItTakesAVillage.Frontend.Pages
             if (ModelState.IsValid)
             {
                 EditDinnerInvitation.Creator = await _userManager.GetUserAsync(User);
-                await _httpService.HttpPutRequest("DinnerInvitation", EditDinnerInvitation);
+                IsSuccess = await _httpService.HttpPutRequest("DinnerInvitation", EditDinnerInvitation);
+                if (!IsSuccess)
+                {
+                    IsUnsuccessful = true;
+                }
             }
             return RedirectToPage("GroupDetails", new { EditDinnerInvitation.GroupId });
         }
@@ -69,7 +77,11 @@ namespace ItTakesAVillage.Frontend.Pages
             if (ModelState.IsValid)
             {
                 EditPlayDate.Creator = await _userManager.GetUserAsync(User);
-                await _httpService.HttpPutRequest("PlayDate", EditPlayDate);
+                IsSuccess = await _httpService.HttpPutRequest("PlayDate", EditPlayDate);
+                if (!IsSuccess)
+                {
+                    IsUnsuccessful = true;
+                }
             }
             return RedirectToPage("GroupDetails", new { EditPlayDate.GroupId });
         }

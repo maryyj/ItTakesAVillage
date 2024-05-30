@@ -224,6 +224,10 @@
     <value>Ta bort</value>
     <comment>/GroupDetailsAccordionPartial</comment>
   </data>
+  <data name="Denied" xml:space="preserve">
+    <value>Åtkomst nekad. Du saknar behörighet att se denna sida.</value>
+    <comment>/GroupDetails /Groupchat</comment>
+  </data>
   <data name="DescriptionText" xml:space="preserve">
     <value>Beskrivning</value>
     <comment>/ToolPool /ToolPoolNotificationPartial</comment>
@@ -336,6 +340,10 @@
     <value>Ingenting på gång just nu..</value>
     <comment>/Notification</comment>
   </data>
+  <data name="NotSaved" xml:space="preserve">
+    <value>Ett fel uppstod. Ändringarna sparades inte.</value>
+    <comment>Alert: /GroupDetails</comment>
+  </data>
   <data name="OfGroup" xml:space="preserve">
     <value>i gruppen</value>
     <comment>/ToolPool</comment>
@@ -382,6 +390,10 @@
   <data name="Save" xml:space="preserve">
     <value>Spara</value>
     <comment>/ToolPool /PlayDate /DinnerInvitation /Group /GroupDetails /GroupDetailsAccordionPartial</comment>
+  </data>
+  <data name="Saved" xml:space="preserve">
+    <value>Dina ändringar har sparats.</value>
+    <comment>Alert: /GroupDetails</comment>
   </data>
   <data name="Send" xml:space="preserve">
     <value>Skicka</value>
@@ -478,6 +490,10 @@
   <data name="WithPlay" xml:space="preserve">
     <value>Vem vill barnet leka med?</value>
     <comment>/PlayDate /GroupDetailsAccordionPartial</comment>
+  </data>
+  <data name="WriteMessage" xml:space="preserve">
+    <value>Skriv in ditt meddelande...</value>
+    <comment>/GroupChat</comment>
   </data>
   <data name="Your" xml:space="preserve">
     <value>din</value>

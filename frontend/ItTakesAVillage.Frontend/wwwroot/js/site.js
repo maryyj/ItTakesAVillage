@@ -69,3 +69,9 @@ $(document).ready(function () {
     $('.scroll-container').scrollTop($('.scroll-container')[0].scrollHeight);
 });
 //#endregion
+
+var toastElList = [].slice.call(document.querySelectorAll('.toast'))
+var toastList = toastElList.map(function (toastEl) {
+    return new bootstrap.Toast(toastEl, option)
+})
+

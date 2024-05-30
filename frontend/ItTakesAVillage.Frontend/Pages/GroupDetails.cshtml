@@ -19,6 +19,20 @@
                 @if (Model.EventsOfGroup.Any())
                 {
                     await Html.RenderPartialAsync("_GroupDetailsAccordionPartial", new { Events = Model.EventsOfGroup, EditDinnerInvitation = Model.EditDinnerInvitation, EditPlayDate = Model.EditPlayDate });
+                    if (Model.IsSuccess)
+                    {
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            @Resources.Saved
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    }
+                    else if (Model.IsUnsuccessful)
+                    {
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            @Resources.NotSaved
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    }
                 }
                 else
                 {
@@ -51,6 +65,6 @@
 }
 else
 {
-    <h1 class="text-center">You're not allowed</h1>
+    <h1 class="text-center">@Resources.Denied</h1>
 }
 <partial name="Shared/_FooterQuote" />

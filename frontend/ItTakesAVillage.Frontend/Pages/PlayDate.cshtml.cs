@@ -11,7 +11,10 @@ public class PlayDateModel(UserManager<ItTakesAVillageUser> userManager,
     public PlayDate NewPlayDate { get; set; } = new();
     public List<Notification>? Notifications { get; set; } = [];
     public List<Group>? GroupsOfCurrentUser { get; set; } = [];
-
+    [TempData]
+    public bool IsSuccess { get; set; }
+    [TempData]
+    public bool IsUnsuccessful { get; set; }
     public async Task<IActionResult> OnGet()
     {
         CurrentUser = await _userManager.GetUserAsync(User);
@@ -30,7 +33,11 @@ public class PlayDateModel(UserManager<ItTakesAVillageUser> userManager,
     {
         if (ModelState.IsValid)
         {
-            bool success = await _httpService.HttpPostRequest("PlayDate", NewPlayDate);
+            IsSuccess = await _httpService.HttpPostRequest("PlayDate", NewPlayDate);
+            if(!IsSuccess)
+            {
+                IsUnsuccessful = true;
+            }
         }
         return RedirectToPage("/PlayDate");
     }

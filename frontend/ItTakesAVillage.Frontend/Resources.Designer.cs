@@ -304,6 +304,15 @@ namespace ItTakesAVillage.Frontend {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Åtkomst nekad. Du saknar behörighet att se denna sida..
+        /// </summary>
+        public static string Denied {
+            get {
+                return ResourceManager.GetString("Denied", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Beskrivning.
         /// </summary>
         public static string DescriptionText {
@@ -556,6 +565,15 @@ namespace ItTakesAVillage.Frontend {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ett fel uppstod. Ändringarna sparades inte..
+        /// </summary>
+        public static string NotSaved {
+            get {
+                return ResourceManager.GetString("NotSaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to i gruppen.
         /// </summary>
         public static string OfGroup {
@@ -660,6 +678,15 @@ namespace ItTakesAVillage.Frontend {
         public static string Save {
             get {
                 return ResourceManager.GetString("Save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dina ändringar har sparats..
+        /// </summary>
+        public static string Saved {
+            get {
+                return ResourceManager.GetString("Saved", resourceCulture);
             }
         }
         
@@ -876,6 +903,15 @@ namespace ItTakesAVillage.Frontend {
         public static string WithPlay {
             get {
                 return ResourceManager.GetString("WithPlay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Skriv in ditt meddelande....
+        /// </summary>
+        public static string WriteMessage {
+            get {
+                return ResourceManager.GetString("WriteMessage", resourceCulture);
             }
         }
         

@@ -89,7 +89,7 @@
                 <div class="d-flex mt-2">
                     <textarea asp-for="@Model.NewMessage.Message"
                               class="bg-lightrounded form-control me-2"
-                              placeholder="Skriv in ditt meddelande...">
+                              placeholder="@Resources.WriteMessage">
                                                                     </textarea>
                     <button type="submit" class="pinkBgColor border-0 rounded">@Resources.Send</button>
                 </div>
@@ -99,6 +99,6 @@
 }
 else
 {
-    <h1 class="text-center">You're not allowed</h1>
+    <h1 class="text-center">@Resources.Denied</h1>
 }
 <partial name="Shared/_FooterQuote" />

@@ -12,7 +12,10 @@ namespace ItTakesAVillage.Frontend.Pages
         public ItTakesAVillageUser? CurrentUser { get; set; }
         public List<Group>? GroupsOfCurrentUser { get; set; } = [];
         public List<Notification>? Notifications { get; set; } = [];
-
+        [TempData]
+        public bool IsSuccess { get; set; }
+        [TempData]
+        public bool IsUnsuccessful { get; set; }
         public async Task<IActionResult> OnGet()
         {
             CurrentUser = await _userManager.GetUserAsync(User);
@@ -32,7 +35,11 @@ namespace ItTakesAVillage.Frontend.Pages
         {
             if (ModelState.IsValid)
             {
-                bool success = await _httpService.HttpPostRequest("DinnerInvitation/", NewInvitation);
+                IsSuccess = await _httpService.HttpPostRequest("DinnerInvitation/", NewInvitation);
+                if (!IsSuccess)
+                {
+                    IsUnsuccessful = true;
+                }
             }
             return RedirectToPage("/DinnerInvitation");
         }

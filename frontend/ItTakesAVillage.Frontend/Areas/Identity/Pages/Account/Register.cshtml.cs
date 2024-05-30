@@ -156,7 +156,7 @@ namespace ItTakesAVillage.Frontend.Areas.Identity.Pages.Account
                     else
                     {
                         await _signInManager.SignInAsync(user, isPersistent: false);
-                        return LocalRedirect(returnUrl);
+                        return LocalRedirect("/Index");
                     }
                 }
                 foreach (var error in result.Errors)

@@ -15,6 +15,20 @@
 
         <div class="greenBgColor py-4">
             <div class="container w-75">
+                @if (Model.IsSuccess)
+                {
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        @Resources.Saved
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                }
+                else if (Model.IsUnsuccessful)
+                {
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        @Resources.NotSaved
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                }
                 <h4 class="abrilFont mt-4 mb-3">@Resources.CreatePlayDate</h4>
                 <div class="w-50">
                     <form method="post">

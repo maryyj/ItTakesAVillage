@@ -10,9 +10,9 @@ public class ItTakesAVillageUser : IdentityUser
 
     public ICollection<UserGroup>? UserGroups { get; set; }
 
-    public static implicit operator ItTakesAVillageUser(Group v)
-    {
-        throw new NotImplementedException();
-    }
+    //public static implicit operator ItTakesAVillageUser(Group v)
+    //{
+    //    throw new NotImplementedException();
+    //}
 }
 
